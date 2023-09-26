@@ -155,6 +155,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 500
+  Amour: 0
+  Defense: 0
+  DamageRatio: 1
 --- !u!212 &334471508
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -215,12 +218,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334471506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9779741, y: -0.060699373, z: 0}
+  m_LocalPosition: {x: 1.44, y: -0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &334471510
 BoxCollider2D:
@@ -258,11 +261,11 @@ GameObject:
   m_Component:
   - component: {fileID: 419908067}
   - component: {fileID: 419908066}
-  - component: {fileID: 419908065}
   - component: {fileID: 419908064}
   - component: {fileID: 419908068}
+  - component: {fileID: 419908069}
   m_Layer: 0
-  m_Name: "\uAC15\uCCA0\uC8FC\uBA39"
+  m_Name: SteelFist
   m_TagString: Relic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -289,19 +292,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &419908065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 419908063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 480394b77402c81409f9c06a9211d159, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: 
 --- !u!212 &419908066
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -367,7 +357,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &419908068
 BoxCollider2D:
@@ -395,6 +385,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &419908069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419908063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 480394b77402c81409f9c06a9211d159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: no name
 --- !u!1 &482848867
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 482848869}
-  - component: {fileID: 482848868}
+  - component: {fileID: 482848870}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -412,7 +415,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &482848868
+--- !u!4 &482848869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482848867}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9779741, y: -0.060699373, z: 0.042319506}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &482848870
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -428,21 +446,6 @@ MonoBehaviour:
   tag_player: Player
   tag_enemy: Enemy
   script_player: {fileID: 0}
---- !u!4 &482848869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 482848867}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9779741, y: -0.060699373, z: 0.042319506}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,29 +540,16 @@ GameObject:
   m_Component:
   - component: {fileID: 1018914611}
   - component: {fileID: 1018914610}
-  - component: {fileID: 1018914609}
   - component: {fileID: 1018914612}
   - component: {fileID: 1018914613}
+  - component: {fileID: 1018914614}
   m_Layer: 0
-  m_Name: "\uBD80\uD65C \uC544\uC774\uD15C"
+  m_Name: Idol
   m_TagString: Relic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1018914609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018914608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c452cb90db38d724db0d0cf71a362e90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: 
 --- !u!212 &1018914610
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -625,7 +615,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1018914612
 BoxCollider2D:
@@ -674,3 +664,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1018914614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018914608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c452cb90db38d724db0d0cf71a362e90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: no name

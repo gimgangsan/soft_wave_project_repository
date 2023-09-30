@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class RelicType : MonoBehaviour, IRelic
 {
-    public string Name = "no name";
-    private void Awake()
+    public string Name;
+
+    public void Start()
     {
         gameObject.tag = General.Instance.tag_relic;
     }

@@ -5,10 +5,12 @@ using UnityEngine;
 public class SteelFist : RelicType
 {
     Rigidbody2D rigid;
-    private void Start()
+    private void Awake()
     {
+        this.Name = "steel fist";
         rigid = gameObject.GetComponent<Rigidbody2D>();
     }
+
     private void Update()
     {
         rigid.velocity = new Vector2(1, 0);

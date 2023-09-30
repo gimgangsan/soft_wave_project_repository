@@ -17,7 +17,7 @@ public class BasicActions : MonoBehaviour
     public int Defense = 0;
     public int DamageRatio = 1;
 
-    private void Awake()
+    private void Start()
     {
         General.Instance.script_player = this;
     }

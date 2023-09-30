@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Idol : RelicType
+public class BuduIdol : RelicType
 {
     Rigidbody2D rigid;
-    private void Start()
+    private void Awake()
     {
+        this.Name = "budu idol";
         rigid = gameObject.GetComponent<Rigidbody2D>();
     }
     private void Update()

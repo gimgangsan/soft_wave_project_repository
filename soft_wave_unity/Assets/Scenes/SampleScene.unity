@@ -544,7 +544,7 @@ GameObject:
   - component: {fileID: 1018914613}
   - component: {fileID: 1018914614}
   m_Layer: 0
-  m_Name: Budu Idol
+  m_Name: BuduIdol
   m_TagString: Relic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

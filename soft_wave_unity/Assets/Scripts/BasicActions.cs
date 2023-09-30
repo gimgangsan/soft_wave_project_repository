@@ -2,15 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BasicActions : MonoBehaviour
 {
-
+    public UnityEvent<DamageInfo> whenHarmed;
     public Action<int> onDamaged;
     public Action<int> onReducedAmour;
     public Action<int> onReducedHp;
     public Action onDead;
 
+    public int MaxHP = 500;
     public int HP = 500;
     public int Amour = 0;
 
@@ -47,6 +49,7 @@ public class BasicActions : MonoBehaviour
     void GetDamage(int power)
     {
         int Damage = CalculateDamage(power);
+        DamageInfo info = WriteDamageInfo(CalculateDamage(power));
         if (Damage <= Amour)
         {
             Amour -= Damage;
@@ -69,6 +72,24 @@ public class BasicActions : MonoBehaviour
             onDead?.Invoke();
             Debug.Log("player died");
         }
+    }
+
+    public DamageInfo WriteDamageInfo(int Damage)
+    {
+        DamageInfo info = new();
+        int ActualHarm = 0;
+        if (Damage <= Amour)
+        {
+            info.ReducedAmour = Damage;
+        }
+        else
+        {
+            ActualHarm = Damage - Amour;
+            info.ReducedAmour = Amour;
+            info.ReducedHP = ActualHarm;
+        }
+        info.HP_Ratio = Mathf.Max((HP - ActualHarm), 0) / MaxHP;
+        return info;
     }
 
     public int CalculateDamage(int power)

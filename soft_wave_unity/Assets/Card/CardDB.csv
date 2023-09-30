@@ -1,0 +1,4 @@
+id,name,imageDirectory,cooltime,description
+1,Attack,TestImage\Attack,0,Inflict 2 Damage
+2,Defense,TestImage\Defense,0,Defend 2 Damage
+3,Roll,TestImage\Roll,0,Roll Forward

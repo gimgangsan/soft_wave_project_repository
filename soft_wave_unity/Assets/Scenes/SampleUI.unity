@@ -348,13 +348,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 5913711386207410348, guid: b35f7ee7f0970ed418475ef078f3b211, type: 3}
-  deckPos: {fileID: 906845182}
   handsPos:
   - {fileID: 936928625}
   - {fileID: 5913711385447179727}
   - {fileID: 5913711384809608638}
   - {fileID: 5913711384435918532}
   - {fileID: 5913711386026999795}
+  cardsInHands: []
 --- !u!1 &906845181
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +620,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b05aac21dd39ff4cbc9d24292bbcef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cards: 000000000000000000000000
   hands: 0000000000000000000000000000000000000000
 --- !u!4 &1343396260
 Transform:

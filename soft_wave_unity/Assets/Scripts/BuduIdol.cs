@@ -2,30 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SteelFist : RelicType
+public class BuduIdol : RelicType
 {
     Rigidbody2D rigid;
     private void Awake()
     {
-        this.Name = "steel fist";
+        this.Name = "budu idol";
         rigid = gameObject.GetComponent<Rigidbody2D>();
     }
-
     private void Update()
     {
         rigid.velocity = new Vector2(1, 0);
     }
+
     public override void GetEquiped()
     {
-        General.Instance.script_player.onDamaged += this.onDamaged;
+        General.Instance.script_player.onDead.AddListener(this.OnDead);
         base.GetEquiped();
     }
 
-    public void onDamaged(int Amount)
+    public void OnDead()
     {
-        if(Amount < 80)
-        {
-            General.Instance.script_player.HP += Amount;
-        }
+        General.Instance.script_player.HP = 150;
+        General.Instance.script_player.onDead.RemoveListener(this.OnDead);
     }
 }

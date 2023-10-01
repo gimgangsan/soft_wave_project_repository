@@ -2,31 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuduIdol : RelicType
+public class SteelFist : RelicType
 {
     Rigidbody2D rigid;
     private void Awake()
     {
-        this.Name = "budu idol";
+        this.Name = "steel fist";
         rigid = gameObject.GetComponent<Rigidbody2D>();
     }
+
     private void Update()
     {
         rigid.velocity = new Vector2(1, 0);
     }
-
     public override void GetEquiped()
     {
-        General.Instance.script_player.onDamaged += this.onDamaged;
+        General.Instance.script_player.whenHarmed.AddListener(this.WhenHarmed);
         base.GetEquiped();
     }
 
-    void onDamaged(int Amount) 
+    public void WhenHarmed(DamageInfo info)
     {
-        if(General.Instance.script_player.HP <= 0)
+        if (info.ReducedHP + info.ReducedAmour < 80)
         {
-            General.Instance.script_player.HP = 150;
-            General.Instance.script_player.onDamaged -= this.onDamaged;
+            General.Instance.script_player.HP += info.ReducedHP;
+            General.Instance.script_player.Amour += info.ReducedAmour;
         }
     }
 }

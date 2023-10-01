@@ -17,16 +17,13 @@ public class BuduIdol : RelicType
 
     public override void GetEquiped()
     {
-        General.Instance.script_player.onDamaged += this.onDamaged;
+        General.Instance.script_player.onDead.AddListener(this.OnDead);
         base.GetEquiped();
     }
 
-    void onDamaged(int Amount) 
+    public void OnDead()
     {
-        if(General.Instance.script_player.HP <= 0)
-        {
-            General.Instance.script_player.HP = 150;
-            General.Instance.script_player.onDamaged -= this.onDamaged;
-        }
+        General.Instance.script_player.HP = 150;
+        General.Instance.script_player.onDead.RemoveListener(this.OnDead);
     }
 }

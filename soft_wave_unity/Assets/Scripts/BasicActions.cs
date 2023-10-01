@@ -7,10 +7,9 @@ using UnityEngine.Events;
 public class BasicActions : MonoBehaviour
 {
     public UnityEvent<DamageInfo> whenHarmed;
-    public Action<int> onDamaged;
-    public Action<int> onReducedAmour;
-    public Action<int> onReducedHp;
-    public Action onDead;
+    public UnityEvent<HealInfo> whenHealed;
+    public UnityEvent<float> whenHPChanged;
+    public UnityEvent onDead;
 
     public int MaxHP = 500;
     public int HP = 500;
@@ -48,36 +47,25 @@ public class BasicActions : MonoBehaviour
 
     void GetDamage(int power)
     {
-        int Damage = CalculateDamage(power);
         DamageInfo info = WriteDamageInfo(CalculateDamage(power));
-        if (Damage <= Amour)
+        HP -= info.ReducedHP;
+        Amour -= info.ReducedAmour;
+        whenHarmed.Invoke(info);
+        if (HP <= 0)
         {
-            Amour -= Damage;
-            onReducedAmour?.Invoke(Damage);
+            onDead.Invoke();
         }
-        else
-        {
-            int ActualHarm = Damage - Amour;
-            onReducedAmour?.Invoke(Amour);
-            Amour = 0;
-            this.HP -= ActualHarm;
-            onReducedHp?.Invoke(ActualHarm);
-        }
-        onDamaged?.Invoke(Damage);
+        whenHPChanged.Invoke((float)Mathf.Max(HP, 0) / (float)MaxHP);
 
         Debug.Log(HP);
 
-        if (HP <= 0)
-        {
-            onDead?.Invoke();
-            Debug.Log("player died");
-        }
+        
     }
 
     public DamageInfo WriteDamageInfo(int Damage)
     {
         DamageInfo info = new();
-        int ActualHarm = 0;
+        int ActualHarm;
         if (Damage <= Amour)
         {
             info.ReducedAmour = Damage;
@@ -88,7 +76,29 @@ public class BasicActions : MonoBehaviour
             info.ReducedAmour = Amour;
             info.ReducedHP = ActualHarm;
         }
-        info.HP_Ratio = Mathf.Max((HP - ActualHarm), 0) / MaxHP;
+        //float newHP_Ratio = ((float)Mathf.Max((HP - ActualHarm), 0) / (float)MaxHP);
+        //info.HP_Ratio = newHP_Ratio;
+        return info;
+    }
+
+    public void GetHeal(int heal, int amour)
+    {
+        HealInfo info = WriteHealInfo(heal, amour);
+        this.HP += info.HealedHP;
+        this.Amour += info.HealedAmour;
+        whenHealed.Invoke(info);
+        whenHPChanged.Invoke((float)Mathf.Max(HP, 0) / (float)MaxHP);
+    }
+
+    public HealInfo WriteHealInfo(int heal, int amour)
+    {
+        HealInfo info = new()
+        {
+            HealedHP = Mathf.Min(heal, (this.MaxHP - this.HP)),
+            HealedAmour = amour
+        };
+        //float newHP_Ratio = ((float)Mathf.Min((HP + heal), MaxHP) / (float)MaxHP);
+        //info.HP_Ratio = newHP_Ratio;
         return info;
     }
 

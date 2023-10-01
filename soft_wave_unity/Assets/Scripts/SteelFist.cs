@@ -17,15 +17,15 @@ public class SteelFist : RelicType
     }
     public override void GetEquiped()
     {
-        General.Instance.script_player.onDamaged += this.onDamaged;
+        General.Instance.script_player.whenHarmed.AddListener(this.WhenHarmed);
         base.GetEquiped();
     }
 
-    public void onDamaged(int Amount)
+    public void WhenHarmed(DamageInfo info)
     {
-        if(Amount < 80)
+        if (info.ReducedHP < 80)
         {
-            General.Instance.script_player.HP += Amount;
+            General.Instance.script_player.HP += info.ReducedHP;
         }
     }
 }

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using TMPro;
 using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
     public RectTransform LeadFill;
     public RectTransform FollowerFill;
+    public TMP_Text TextUI;
     float Ratio = 1;
     float FollowerRatio = 1;
     float Width;
@@ -17,11 +20,6 @@ public class HealthBar : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Ratio -= 0.1f;
-        }
-
         if(Ratio < FollowerRatio)
         {
             FollowerRatio -= 0.0005f;
@@ -30,23 +28,11 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    public void WhenHPChanged(float HP_Ratio)
+    public void WhenHPChanged(HPInfo info)
     {
-        this.Ratio = HP_Ratio;
+        this.Ratio = info.GetHPRatio();
         float newWidth = Mathf.RoundToInt(Width * Ratio);
         LeadFill.offsetMax = new Vector2(-(Width - newWidth), 0);
+        TextUI.text = info.HP.ToString() + " / " + info.MaxHP.ToString();
     }
-
-    //public void WhenHarmed(DamageInfo info)
-    //{
-    //    float newWidth = Mathf.RoundToInt(Width * Ratio);
-    //    LeadFill.offsetMax = new Vector2(-(Width - newWidth), 0);
-    //}
-
-    //public void WhenHealed(HealInfo info)
-    //{
-    //    float newWidth = Mathf.RoundToInt(Width * Ratio);
-    //    LeadFill.offsetMax = new Vector2(-(Width - newWidth), 0);
-    //    FollowerFill.offsetMax = new Vector2(-(Width - newWidth), 0);
-    //}
 }

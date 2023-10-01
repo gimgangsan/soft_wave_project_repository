@@ -8,7 +8,7 @@ public class BasicActions : MonoBehaviour
 {
     public UnityEvent<DamageInfo> whenHarmed;
     public UnityEvent<HealInfo> whenHealed;
-    public UnityEvent<float> whenHPChanged;
+    public UnityEvent<HPInfo> whenHPChanged;
     public UnityEvent onDead;
 
     public int MaxHP = 500;
@@ -17,6 +17,11 @@ public class BasicActions : MonoBehaviour
 
     public int Defense = 0;
     public int DamageRatio = 1;
+
+    private void Awake()
+    {
+        whenHPChanged.Invoke(WriteHPInfo());
+    }
 
     private void Start()
     {
@@ -55,11 +60,20 @@ public class BasicActions : MonoBehaviour
         {
             onDead.Invoke();
         }
-        whenHPChanged.Invoke((float)Mathf.Max(HP, 0) / (float)MaxHP);
+        whenHPChanged.Invoke(WriteHPInfo());
 
         Debug.Log(HP);
+    }
 
-        
+    public HPInfo WriteHPInfo()
+    {
+        HPInfo info = new()
+        {
+            MaxHP = this.MaxHP,
+            HP = this.HP,
+            Amour = this.Amour
+        };
+        return info;
     }
 
     public DamageInfo WriteDamageInfo(int Damage)
@@ -76,8 +90,6 @@ public class BasicActions : MonoBehaviour
             info.ReducedAmour = Amour;
             info.ReducedHP = ActualHarm;
         }
-        //float newHP_Ratio = ((float)Mathf.Max((HP - ActualHarm), 0) / (float)MaxHP);
-        //info.HP_Ratio = newHP_Ratio;
         return info;
     }
 
@@ -87,7 +99,7 @@ public class BasicActions : MonoBehaviour
         this.HP += info.HealedHP;
         this.Amour += info.HealedAmour;
         whenHealed.Invoke(info);
-        whenHPChanged.Invoke((float)Mathf.Max(HP, 0) / (float)MaxHP);
+        whenHPChanged.Invoke(WriteHPInfo());
     }
 
     public HealInfo WriteHealInfo(int heal, int amour)
@@ -97,8 +109,6 @@ public class BasicActions : MonoBehaviour
             HealedHP = Mathf.Min(heal, (this.MaxHP - this.HP)),
             HealedAmour = amour
         };
-        //float newHP_Ratio = ((float)Mathf.Min((HP + heal), MaxHP) / (float)MaxHP);
-        //info.HP_Ratio = newHP_Ratio;
         return info;
     }
 

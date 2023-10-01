@@ -25,6 +25,13 @@ public struct HPInfo
 
     public readonly float GetHPRatio()
     {
-        return (float)HP/ (float)MaxHP;
+        if(HP + Amour <= MaxHP) { return (float)HP / (float)MaxHP; }
+        else { return (float)HP / (float)(HP + Amour); }
+    }
+
+    public readonly float GetAmourRatio()
+    {
+        if (HP + Amour <= MaxHP) { return (float)Amour / (float)MaxHP; }
+        else { return (float)Amour / (float)(HP + Amour); }
     }
 }

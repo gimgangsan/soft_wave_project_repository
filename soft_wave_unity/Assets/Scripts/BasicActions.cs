@@ -39,6 +39,15 @@ public class BasicActions : MonoBehaviour
         {
             GetDamage(50);
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GetHeal(50, 0);
+        }
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            GetHeal(0, 50);
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -100,6 +109,7 @@ public class BasicActions : MonoBehaviour
         this.Amour += info.HealedAmour;
         whenHealed.Invoke(info);
         whenHPChanged.Invoke(WriteHPInfo());
+        Debug.Log(HP);
     }
 
     public HealInfo WriteHealInfo(int heal, int amour)

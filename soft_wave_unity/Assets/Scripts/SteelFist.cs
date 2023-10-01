@@ -23,9 +23,10 @@ public class SteelFist : RelicType
 
     public void WhenHarmed(DamageInfo info)
     {
-        if (info.ReducedHP < 80)
+        if (info.ReducedHP + info.ReducedAmour < 80)
         {
             General.Instance.script_player.HP += info.ReducedHP;
+            General.Instance.script_player.Amour += info.ReducedAmour;
         }
     }
 }

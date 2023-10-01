@@ -620,7 +620,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b05aac21dd39ff4cbc9d24292bbcef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deck: 
   hands: 0000000000000000000000000000000000000000
+  drawIndex: 0
 --- !u!4 &1343396260
 Transform:
   m_ObjectHideFlags: 0

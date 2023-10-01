@@ -7,15 +7,6 @@ using UnityEngine.UIElements;
 using System.Linq;
 using System.Threading;
 
-/* 10/1 00:50 수정사항 - 송경민
- * 정수배열이었던 deck을 딕셔너리로 변경
- * deck의 key는 카드의 고유 ID (CardDB.csv 참고)
- * deck의 value는 해당 카드의 개수
- * Update에서 랜덤한 카드를 드로우하도록 변경
- * UseCard메소드의 카드 개수 증가 코드를 수정
- * DrawCard메소드의 카드 개수 감소 코드를 수정, 사용하지 않았던 hands배열을 사용하도록 수정
- * GetRandomIndex의 코드 대폭 수정
- */
 public class CardManager : MonoBehaviour
 {
     public List<int> deck = new List<int>();    // 플레이어가 소지한 덱
@@ -32,8 +23,8 @@ public class CardManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
-
-        deck = new List<int>(new[] { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 });    // 테스트 목적으로 임의의 덱을 소유하도록 함
+        
+        deck = new List<int>() { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 };    // 테스트 목적으로 임의의 덱을 소유하도록 함
     }
 
     void Update()

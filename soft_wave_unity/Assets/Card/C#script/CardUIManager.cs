@@ -4,11 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/* 10/1 00:50 수정사항 - 송경민
- * 본 코드를 읽기 전에 CardDBreader.cs 및 CardManager.cs를 먼저 읽고 올 것
- * UpdateCard에서 CardInfo을 참조하지 않고 CardDBreader를 참조하도록 변경
- */
-
 public class CardUIManager : MonoBehaviour
 {
     public GameObject cardPrefab;       // 정보가 입력되지 않은 카드 프리팹
@@ -52,11 +47,11 @@ public class CardUIManager : MonoBehaviour
         {
             if (obj.name == "Image")                                                                                // 그림 갱신
             {
-                obj.GetComponent<Image>().sprite = Resources.Load<Sprite>(CardDBreader.ReadDB(cardIndex)[2]);
+                obj.GetComponent<Image>().sprite = CardInfo.cardInfo[cardIndex].image;
                 obj.GetComponent<Image>().color = Color.white;
             }
-            if (obj.name == "Name") obj.GetComponent<TMP_Text>().text = CardDBreader.ReadDB(cardIndex)[1];          // 이름 갱신
-            if (obj.name == "Description") obj.GetComponent<TMP_Text>().text = CardDBreader.ReadDB(cardIndex)[4];   // 설명 갱신
+            if (obj.name == "Name") obj.GetComponent<TMP_Text>().text = CardInfo.cardInfo[cardIndex].name;          // 이름 갱신
+            if (obj.name == "Description") obj.GetComponent<TMP_Text>().text = CardInfo.cardInfo[cardIndex].desc;   // 설명 갱신
         }
     }
 

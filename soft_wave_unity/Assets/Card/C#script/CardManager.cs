@@ -1,7 +1,11 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.UIElements;
+using System.Linq;
+using System.Threading;
 
 /* 10/1 00:50 수정사항 - 송경민
  * 정수배열이었던 deck을 딕셔너리로 변경
@@ -14,8 +18,9 @@ using UnityEngine;
  */
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] public Dictionary<int, int> deck;   // 플레이어가 소유한 덱
+    public List<int> deck = new List<int>();    // 플레이어가 소지한 덱
     public int[] hands = new int[5];            // 플레이어가 손에 들고 있는 패
+    public int drawIndex = 0;                   // 이번 드로우에서 뽑을 카드 인덱스
 
     private static CardManager _instance;       // 싱글턴 패턴 구현부
 
@@ -28,7 +33,7 @@ public class CardManager : MonoBehaviour
     {
         _instance = this;
 
-        deck = new Dictionary<int, int> { { 1, 10 }, { 2, 10 }, { 3, 10 } };       // 테스트 목적으로 임의의 덱을 소유하도록 함
+        deck = new List<int>(new[] { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 });    // 테스트 목적으로 임의의 덱을 소유하도록 함
     }
 
     void Update()
@@ -36,11 +41,11 @@ public class CardManager : MonoBehaviour
         // 테스트 목적
         // 1-5 키를 누르면 손에 카드를 드로우
         // 6-0 키를 누르면 손에 든 카드를 냄
-        if (Input.GetKeyDown(KeyCode.Alpha1)) DrawCard(0, GetRandomIndex());
-        if (Input.GetKeyDown(KeyCode.Alpha2)) DrawCard(1, GetRandomIndex());
-        if (Input.GetKeyDown(KeyCode.Alpha3)) DrawCard(2, GetRandomIndex());
-        if (Input.GetKeyDown(KeyCode.Alpha4)) DrawCard(3, GetRandomIndex());
-        if (Input.GetKeyDown(KeyCode.Alpha5)) DrawCard(4, GetRandomIndex());
+        if (Input.GetKeyDown(KeyCode.Alpha1)) DrawCard(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) DrawCard(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) DrawCard(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) DrawCard(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) DrawCard(4);
 
         if (Input.GetKeyDown(KeyCode.Alpha6)) UseCard(0);
         if (Input.GetKeyDown(KeyCode.Alpha7)) UseCard(1);
@@ -52,41 +57,31 @@ public class CardManager : MonoBehaviour
     // 카드 사용 예제
     void UseCard(int handIndex)
     {
-        CardUIManager.Instance.Discard(handIndex);              // UI에 카드 사용 함수를 호출
-        deck[hands[handIndex]] = deck[hands[handIndex]] +1;     // 현재 손에 있는 카드를 덱에 반환
+        CardUIManager.Instance.Discard(handIndex);  // UI에 카드 사용 함수를 호출
     }
 
     // 카드 뽑기 예제
-    void DrawCard(int handIndex, int cardIndex)
+    void DrawCard(int handIndex)
     {
-        if (!(deck[cardIndex] > 0))     // 소지하지 않은 카드를 뽑으려고 할 경우
+        if (drawIndex == deck.Count())              // 뽑을 인덱스가 마지막에 도달한 경우
         {
-            Debug.Log("소지하지 않은 카드를 뽑으려고 함.");
-            return;
+            ShuffleDeck();                          // 덱을 셔플한 후
+            drawIndex = 0;                          // 처음부터 다시 시작
         }
 
-        deck[cardIndex] = deck[cardIndex] - 1;                      // 덱에서 카드를 하나 가져옴
-        CardUIManager.Instance.DrawCard(handIndex, cardIndex);      // UI에 카드 뽑기 함수를 호출
-        hands[handIndex] = cardIndex;
-        Debug.Log($"{deck[1]}, {deck[2]}, {deck[3]}");              // 딕셔너리는 인스펙터창에 표시가 안돼서 만든 코드
+        CardUIManager.Instance.DrawCard(handIndex, deck[drawIndex]);  // UI에 카드 뽑기 함수를 호출
+        hands[handIndex] = deck[drawIndex++];       // 손에 든 패 갱신 후, drawIndex 증가
     }
 
-    // 가진 카드의 수를 고려해 랜덤한 인덱스를 반환하는 함수
-    // 뽑을 카드의 인덱스를 정할 때 사용할 수 있음
-    public int GetRandomIndex()
+    // 덱 셔플
+    // 피셔-예이츠(Fisher-Yate) 셔플 방식으로 구현
+    void ShuffleDeck()
     {
-        int total = 0;                              // total에는 덱에 있는 모든 카드의 개수가 저장됨
-        foreach(int value in deck.Values)           // 카드의 개수가 저장된 deck.Values를 순회하며 total에 모든 카드의 개수를 저장
-            total += value;
-
-        int rand = Random.Range(1, total + 1);      // 1~모든카드의개수 사이의 정수 하나를 선택
-        foreach(int key in deck.Keys)               // deck을 순회하며 선택한 정수에서 value를 뺌
-        {
-            if (rand <= deck[key])                  // 마침내 rand를 value보다 작게 만든 key가 선택됨
-                return key;
-            rand -= deck[key];
+        for (int i = deck.Count() - 1; i > 1; i--) {
+            int rand = Random.Range(0, i + 1);
+            int temp = deck[rand];
+            deck[rand] = deck[i];
+            deck[i] = temp;
         }
-
-        return -1;                                  // 모든 카드를 소모하면 오류 발생
     }
 }

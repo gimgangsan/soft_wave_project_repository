@@ -9,42 +9,41 @@ public class HealthBar : MonoBehaviour
     public RectTransform LeadFill;
     public RectTransform FollowerFill;
     public RectTransform AmourFill;
-    public TMP_Text TextUI;
-    float Ratio = 1;
-    float FollowerRatio = 1;
-    float Width;
+    protected int HP = 0;
+    protected int MaxHP = 9999999;
+    protected float Trace = 0;
+    protected float Width;
 
-    private void Awake()
+    public void Awake()
     {
         Width = GetComponent<RectTransform>().rect.width;
     }
 
-    private void Update()
+    public void Update()
     {
-        if(Ratio < FollowerRatio)
+        // 초록 체력바 + 회색 체력바가 빨강 체력바보다 짧을 때
+        if(HP < Trace)
         {
-            FollowerRatio -= 0.0005f;
-            float FollowerWidth = Mathf.RoundToInt(Width * FollowerRatio);
-            FollowerFill.offsetMax = new Vector2(-(Width - FollowerWidth), 0);
+            Trace -= 0.3f;
         }
         else
         {
-            FollowerRatio = Ratio;
-            float FollowerWidth = Mathf.RoundToInt(Width * FollowerRatio);
-            FollowerFill.offsetMax = new Vector2(-(Width - FollowerWidth), 0);
+            Trace = HP;
         }
+        float FollowerWidth = Width * (Trace / MaxHP);
+        FollowerFill.offsetMax = new Vector2(-(Width - FollowerWidth), 0);
     }
 
-    public void WhenHPChanged(HPInfo info)
+    public virtual void WhenHPChanged(HPInfo info)
     {
-        this.Ratio = info.GetHPRatio();
-        float LeadWidth = Mathf.RoundToInt(Width * Ratio);
+        this.HP = info.HP;
+        this.MaxHP = info.MaxHP;
+        
+        float LeadWidth = Width * info.GetHPRatio();
         LeadFill.offsetMax = new Vector2(-(Width - LeadWidth), 0);
 
-        float AmourWidth = Mathf.RoundToInt(Width * info.GetAmourRatio());
+        float AmourWidth = Width * info.GetAmourRatio();
         AmourFill.offsetMax = new Vector2(-(Width - LeadWidth - AmourWidth), 0);
         AmourFill.offsetMin = new Vector2(LeadWidth, 0);
-
-        TextUI.text = (info.HP + info.Amour).ToString() + " / " + info.MaxHP.ToString();
     }
 }

@@ -18,14 +18,10 @@ public class BasicActions : MonoBehaviour
     public int Defense = 0;
     public int DamageRatio = 1;
 
-    private void Awake()
-    {
-        whenHPChanged.Invoke(WriteHPInfo());
-    }
-
     private void Start()
     {
         General.Instance.script_player = this;
+        whenHPChanged.Invoke(WriteHPInfo());
     }
 
     // Update is called once per frame
@@ -55,8 +51,6 @@ public class BasicActions : MonoBehaviour
         {
             collision.gameObject.GetComponent<IRelic>().GetEquiped();
         }
-        
-        
     }
 
     void GetDamage(int power)
@@ -70,8 +64,6 @@ public class BasicActions : MonoBehaviour
             onDead.Invoke();
         }
         whenHPChanged.Invoke(WriteHPInfo());
-
-        Debug.Log(HP);
     }
 
     public HPInfo WriteHPInfo()
@@ -109,7 +101,6 @@ public class BasicActions : MonoBehaviour
         this.Amour += info.HealedAmour;
         whenHealed.Invoke(info);
         whenHPChanged.Invoke(WriteHPInfo());
-        Debug.Log(HP);
     }
 
     public HealInfo WriteHealInfo(int heal, int amour)

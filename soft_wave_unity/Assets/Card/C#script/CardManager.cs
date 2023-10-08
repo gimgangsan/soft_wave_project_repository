@@ -6,9 +6,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System.Threading;
+using UnityEngine.Events;
 
 public class CardManager : MonoBehaviour
 {
+    public UnityEvent<int> whenCasting; // 카드 사용시 이벤트 (카드 ID를 매개변수로 전달)
+    public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
+
     public List<int> deck = new List<int>();            // 플레이어가 소지한 덱
     public int[] hands = new int[5];                    // 플레이어가 손에 들고 있는 패
     public int drawIndex = 0;                           // 이번 드로우에서 뽑을 카드 인덱스

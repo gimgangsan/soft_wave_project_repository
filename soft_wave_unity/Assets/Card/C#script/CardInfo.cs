@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 // 카드 정보를 담은 구조체
 public struct Card
@@ -10,14 +12,16 @@ public struct Card
     public Sprite image;
     public float cooltime;
     public string desc;
+    public ICard effects;
 
     // 카드 구조체 생성자
-    public Card(string name, Sprite image, float cooltime, string desc)
+    public Card(string name, Sprite image, float cooltime, string desc, ICard effects)
     {
         this.name = name;
         this.image = image;
         this.cooltime = cooltime;
         this.desc = desc;
+        this.effects = effects;
     }
 }
 
@@ -47,7 +51,13 @@ public static class CardInfo
             float   cooltime = float.Parse(datas[3]);                   // cooltime     문자열을 실수형으로 변환
             string  desc     = datas[4];                                // desc
 
-            cardInfo[id] = new Card(name, image, cooltime, desc);   // id를 key로 Card구조체를 value값으로 저장
+            Type type = Type.GetType("Card_" + String.Format("{0:D3}", id));        // "Card_{id}" 이름을 가진 클래스가 존재하는지 확인
+            ICard effects;
+            if (type != null) effects = (ICard)(Activator.CreateInstance(type));    // 존재하는 경우 해당 클래스 생성
+            else effects = null;                                                    // 존재하지 않는 경우 null로 처리
+
+            cardInfo[id] = new Card(name, image, cooltime, desc, effects);   // id를 key로 Card구조체를 value값으로 저장
+            Debug.Log(id + " saved");
         }
         streamReader.Close();                                       // 메모리 낭비를 막기 위해
         size = cardInfo.Count;

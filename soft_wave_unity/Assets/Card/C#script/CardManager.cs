@@ -57,11 +57,26 @@ public class CardManager : MonoBehaviour
             staminaCircle[i].fillAmount = stamina - i;        
     }
 
-    // 카드 사용 예제
+    // 덱에 카드 추가
+    void addToDeck(int cardIndex)
+    {
+        deck.Add(cardIndex);        // cardIndex가 가리키는 카드를 덱의 맨뒤에 추가한다
+        if (CardInfo.cardInfo[cardIndex].effects != null) CardInfo.cardInfo[cardIndex].effects.OnUse();     // 카드 추가 효과 호출
+    }
+
+    // 덱에서 카드 제거
+    void removeFromDeck(int deckIndex)
+    {
+        if (CardInfo.cardInfo[deck[deckIndex]].effects != null) CardInfo.cardInfo[deck[deckIndex]].effects.OnUse(); // 카드 제거 효과 호출
+        deck.RemoveAt(deckIndex);   // 덱 내에서 (deckIndex+1)번째 카드를 제거한다
+    }
+
+    // 카드 사용
     void UseCard(int handIndex)
     {
         if (CardUIManager.Instance.cardsInHands[handIndex] == null) return;     // 패를 가지고 있는지 검사
         if (stamina < 1) return;                                                // 스태미나가 충분한지 검사
+        if (CardInfo.cardInfo[hands[handIndex]].effects != null) CardInfo.cardInfo[hands[handIndex]].effects.OnUse();  // 카드 사용 효과 호출
 
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
 
@@ -72,7 +87,7 @@ public class CardManager : MonoBehaviour
         stamina -= 1;       // 스태미나 소모
     }
 
-    // 카드 뽑기 예제
+    // 카드 뽑기
     void DrawCard(int handIndex)
     {
         if (drawIndex == deck.Count())              // 뽑을 인덱스가 마지막에 도달한 경우
@@ -83,6 +98,7 @@ public class CardManager : MonoBehaviour
 
         CardUIManager.Instance.DrawCard(handIndex, deck[drawIndex]);  // UI에 카드 뽑기 함수를 호출
         hands[handIndex] = deck[drawIndex++];       // 손에 든 패 갱신 후, drawIndex 증가
+        if (CardInfo.cardInfo[hands[handIndex]].effects != null) CardInfo.cardInfo[hands[handIndex]].effects.OnDraw();  // 카드 드로우 효과 호출
     }
 
     // 덱 셔플

@@ -3,24 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerManagement : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
-    //Animation
-    private enum State { idle, move, attack, damaged }
-    State state = State.idle;
-    private Animator playerAnim;
-
-    //PlayerMove
     [SerializeField] private float moveSpeed;
     [SerializeField] private Rigidbody2D rb;
+    private InputAction moveAction;
+    private InputAction mousePositionAction;
     private Camera cam;
     private Vector2 mousePos;
     private Vector2 targetPos;
-    [SerializeField] private InputAction moveAction;
-    [SerializeField] private InputAction mousePositionAction;
-    public void Awake()
+    
+    void Awake()
     {
-        playerAnim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         moveAction = new InputAction(binding: "<Mouse>/rightButton");
         moveAction.performed += ctx => clickToMove(ctx);
@@ -28,7 +22,6 @@ public class PlayerManagement : MonoBehaviour
         mousePositionAction.performed += ctx => getMousePosition(ctx);
         cam = Camera.main;
     }
-    //Move method
     public void OnEnable()
     {
         moveAction.Enable();
@@ -51,30 +44,8 @@ public class PlayerManagement : MonoBehaviour
     {
         if (Mathf.Abs((rb.position.x + rb.position.y) - (targetPos.x + targetPos.y)) < 0.3f) rb.velocity = Vector2.zero;
     }
-    //Anim method
-    public void switchAnim()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            state = State.idle;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            state = State.move;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            state = State.attack;
-        }
-        else if (Input.GetKeyDown(KeyCode.F))
-        {
-            state = State.damaged;
-        }
-        playerAnim.SetInteger("state", (int)state);
-    }
-    public void Update()
+    void fixedUpdate()
     {
         checkMove();
-        switchAnim();
     }
 }

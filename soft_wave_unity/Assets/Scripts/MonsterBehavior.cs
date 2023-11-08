@@ -68,12 +68,11 @@ public class MonsterBehavior : MonoBehaviour
                 ba.GetDamage(attackDamage);
                 attackCooldown = attackCoolRate;
                 animator.SetTrigger("isAttack");
-                Attacked(); //공격 당하는 모션인데 전사한테 공격기가 없어서 여기 사용함
             }
         }
     }
 
-    void Attacked()
+    public void Attacked()
     {
         StartCoroutine(BlinkObject());
     }

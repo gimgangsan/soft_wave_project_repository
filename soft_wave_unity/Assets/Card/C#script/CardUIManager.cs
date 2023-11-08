@@ -8,6 +8,8 @@ public class CardUIManager : MonoBehaviour
 {
     public GameObject cardPrefab;                       // 정보가 입력되지 않은 카드 프리팹
     public Transform[] handsPos;                        // 뽑은 카드가 이동할 위치들
+    public Transform peekPos;
+    private GameObject peekCard;
     public GameObject[] cardsInHands;                   // 현재 손에 있는 카드에 대한 레퍼런스를 저장
 
     private static CardUIManager _instance; // 싱글턴 패턴 구현
@@ -41,7 +43,7 @@ public class CardUIManager : MonoBehaviour
     }
 
     // card가 가리키는 카드 오브젝트에 cardIndex에 해당하는 정보를 적용
-    void UpdateCard(GameObject card, int cardIndex)
+    public void UpdateCard(GameObject card, int cardIndex)
     {
         foreach (Transform obj in card.GetComponent<Transform>())   // 카드 오브젝트의 자식 오브젝트들 중에서 검색
         {
@@ -53,6 +55,16 @@ public class CardUIManager : MonoBehaviour
             if (obj.name == "Name") obj.GetComponent<TMP_Text>().text = CardInfo.cardInfo[cardIndex].name;          // 이름 갱신
             if (obj.name == "Description") obj.GetComponent<TMP_Text>().text = CardInfo.cardInfo[cardIndex].desc;   // 설명 갱신
         }
+    }
+
+    // 미리보기 카드를 cardIndex에 해당하는 카드로 갱신
+    public void UpdatePeekCard(int cardIndex)
+    {
+        if (peekCard == null)
+        {
+            peekCard = Instantiate(cardPrefab, peekPos);
+        }
+        UpdateCard(peekCard, cardIndex);
     }
 
     // 카드 뽑기/사용 애니메이션 후 마무리 코루틴

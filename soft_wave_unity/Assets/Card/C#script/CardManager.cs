@@ -46,23 +46,13 @@ public class CardManager : MonoBehaviour
         stamina = Mathf.Min(stamina+Time.deltaTime, staminaCircle.Length);      // 스태미나 회복
 
         // 테스트 목적
-        // 1-5 키를 누르면 손에 든 카드를 냄
+        // 1-4 키를 누르면 손에 든 카드를 냄
         if (Input.GetKeyDown(KeyCode.Alpha1)) UseCard(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) UseCard(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) UseCard(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) UseCard(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) UseCard(4);
-
-        /* 쿨타임 제거
-        // 각 패의 쿨타임 감소 && 쿨 찼으면 드로우
-        for (int handIndex = 0; handIndex < 5; handIndex++)                     
-        {
-            if (handCooltime[handIndex].value > 0) handCooltime[handIndex].value -= Time.deltaTime;     // 쿨타임 감소
-            else if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       // 빈 패를 확인하고 드로우
-        }
-        */
         
-        for (int handIndex = 0; handIndex < 5; handIndex++)                     
+        for (int handIndex = 0; handIndex < 4; handIndex++)                     
         {
             if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       // 빈 패를 확인하고 드로우
         }
@@ -101,12 +91,6 @@ public class CardManager : MonoBehaviour
         if (CardInfo.cardInfo[hands[handIndex]].effects != null) CardInfo.cardInfo[hands[handIndex]].effects.OnUse();  // 카드 사용 효과 호출
 
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
-
-        /* 쿨타임 제거
-        handCooltime[handIndex].value           // 쿨타임 적용
-            = handCooltime[handIndex].maxValue
-            = CardInfo.cardInfo[hands[handIndex]].cooltime;
-        */
 
         stamina -= 1;       // 스태미나 소모
     }

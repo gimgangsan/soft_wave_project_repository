@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card_001 :MonoBehaviour, ICard
+public class FireBall :MonoBehaviour, ICard
 {
     public void OnAcquire() 
     {
@@ -16,7 +16,8 @@ public class Card_001 :MonoBehaviour, ICard
 
     public void OnUse()
     {
-        Debug.Log("Card 001 Used");
+        GameObject player = GameObject.Find("Player");
+        player.GetComponent<TestFireBall>().ShootFireBall();
     }
 
     public void OnRemove()

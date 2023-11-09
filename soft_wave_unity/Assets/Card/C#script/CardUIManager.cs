@@ -21,16 +21,17 @@ public class CardUIManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
-        cardsInHands = new GameObject[5];
+        cardsInHands = new GameObject[4];
     }
 
-    // 카드 뽑기 애니메이션 구현
-    public void DrawCard(int handIndex, int cardIndex)
+        // 카드 뽑기 애니메이션 구현
+        public void DrawCard(int handIndex, int cardIndex)
     {
         GameObject newCard = Instantiate(cardPrefab, transform);                // 프리팹으로 카드 오브젝트 생성
         UpdateCard(newCard, cardIndex);                                         // 카드 정보에 맞게 외형 업데이트
-        newCard.GetComponent<Animator>().SetInteger("HandIndex", handIndex);    // 주어진 번호의 위치로 이동하는 애니메이션 실행
+        //newCard.GetComponent<Animator>().SetInteger("HandIndex", handIndex);    // 주어진 번호의 위치로 이동하는 애니메이션 실행
         cardsInHands[handIndex] = newCard;                                      // 그 위치에 있던 카드를 현재 카드로 갱신
+        StartCoroutine(DrawnCardMove(newCard, handIndex));                      // 카드 이동 코루틴
     }
 
     // 카드 사용 애니메이션 구현
@@ -39,7 +40,7 @@ public class CardUIManager : MonoBehaviour
         if (!cardsInHands[handIndex]) return;       // 해당 위치에 아무 카드가 없을 경우
 
         cardsInHands[handIndex].GetComponent<Animator>().SetTrigger("Discard"); // 카드를 사용하는 애니메이션 실행
-        StartCoroutine(UpdateHandWithDelay(handIndex, null));                   // 애니메이션 종료 후 마무리 코루틴 호출
+        StartCoroutine(UpwardMove(cardsInHands[handIndex], 10));                   // 애니메이션 종료 후 마무리 코루틴 호출
     }
 
     // card가 가리키는 카드 오브젝트에 cardIndex에 해당하는 정보를 적용
@@ -68,12 +69,41 @@ public class CardUIManager : MonoBehaviour
     }
 
     // 카드 뽑기/사용 애니메이션 후 마무리 코루틴
-    IEnumerator UpdateHandWithDelay(int handIndex, GameObject newCard)
+    IEnumerator UpwardMove(GameObject card, int speed)
     {
-        yield return new WaitForSeconds(.2f);   // .2초 후...
+        Vector3 currentPos = card.transform.position;    // 카드UI의 위치
 
-        Destroy(cardsInHands[handIndex]);       // 기존에 그 위치에 있던 카드는 파괴
-        cardsInHands[handIndex] = newCard;      // 그 위치에 있던 카드를 현재 카드로 갱신
+        for(int i = 0; i < 100; i++)
+        {
+            currentPos.y += speed;
+            card.transform.position = currentPos;
+            yield return null;
+        }
+
+        Destroy(card);       // 기존에 그 위치에 있던 카드는 파괴
+        yield break;
+    }
+
+    //카드 이동 코루틴
+    IEnumerator DrawnCardMove(GameObject newCard, int handIndex)
+    {
+        Vector3 currentPos;
+        Vector3 StartPos = currentPos = peekPos.position;
+        Vector3 EndPos = handsPos[handIndex].position;
+        float Coefficient = 30000 / Mathf.Pow((EndPos.x - StartPos.x), 2);
+
+        newCard.transform.position = StartPos; 
+        while (currentPos.x < EndPos.x)
+        {
+            currentPos.x += 10;
+            currentPos.y += Coefficient * ((StartPos.x - currentPos.x) + (EndPos.x - currentPos.x));  // 포물선 궤적을 그리며 움직임
+
+            newCard.transform.position = currentPos;
+            yield return null;      // 다음 프레임때 반복문을 이어하기
+        }
+        newCard.transform.position = EndPos;   // 카드위치 조정
+
+        yield break;
     }
 
     // 들고 있는 모든 패를 갱신 (세이브/로드 등에 활용)

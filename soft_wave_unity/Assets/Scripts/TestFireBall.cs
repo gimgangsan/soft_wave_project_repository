@@ -18,23 +18,20 @@ public class TestFireBall : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void ShootFireBall()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            playerPos = playerTransform.position;
-            CalTargetPos();
-            
-            GameObject fireball = Instantiate(fireballPrefab, playerPos, Quaternion.identity);
-            Vector2 direction = (Vector2)targetPos - (Vector2)fireball.transform.position;
-            direction.Normalize();
-            Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
-            rb.velocity = direction * ballSpeed;
-            Destroy(fireball, 3);
+        playerPos = playerTransform.position;
+        CalTargetPos();
 
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            fireball.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
+        GameObject fireball = Instantiate(fireballPrefab, playerPos, Quaternion.identity);
+        Vector2 direction = (Vector2)targetPos - (Vector2)fireball.transform.position;
+        direction.Normalize();
+        Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
+        rb.velocity = direction * ballSpeed;
+        Destroy(fireball, 3);
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        fireball.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
     void CalTargetPos() //마우스 좌표

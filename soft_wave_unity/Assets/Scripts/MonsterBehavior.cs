@@ -9,19 +9,20 @@ public class MonsterBehavior : MonoBehaviour
     Transform target;
     SpriteRenderer rend;
     Animator animator;
-    BasicActions ba;
+    BasicActions player;
+    Color originalColor;
     
-    public float blinkDuration = 0.5f;
-    public float health = 3f;
-    public float speed = 3f;
-    public float contactDistance = 1f;
+    private float blinkDuration = 0.5f;
+    public float health;
+    public float speed;
+    public float contactDistance;
 
     //bool follow = false;
 
-    public float attackCooldown = 0;
-    public float attackCoolRate = 1f;
-    public float attackRange = 5f;
-    public int attackDamage = 1;
+    private float attackCooldown = 0;
+    public float attackCoolRate;
+    public float attackRange;
+    public int attackDamage;
 
     void Start()
     {
@@ -29,7 +30,8 @@ public class MonsterBehavior : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        ba = GameObject.FindGameObjectWithTag("Player").GetComponent<BasicActions>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<BasicActions>();
+        originalColor = rend.color; // 현재 색상 저장
     }
 
     void Update()
@@ -43,7 +45,7 @@ public class MonsterBehavior : MonoBehaviour
     
     void FollowTarget()
     {
-        if(Vector2.Distance(transform.position, target.position) > contactDistance && Vector2.Distance(transform.position, target.position) < attackRange)
+        if(Vector2.Distance(transform.position, target.position) > contactDistance)
         {
             if(transform.position.x - target.position.x < 0)
                 rend.flipX = false;
@@ -61,11 +63,11 @@ public class MonsterBehavior : MonoBehaviour
 
     void Attacking()
     {
-        if(Vector2.Distance(transform.position, target.position) <= 2f)
+        if(Vector2.Distance(transform.position, target.position) <= attackRange)
         {
             if(attackCooldown <= 0)
             {
-                ba.GetDamage(attackDamage);
+                player.GetDamage(attackDamage);
                 attackCooldown = attackCoolRate;
                 animator.SetTrigger("isAttack");
             }
@@ -79,8 +81,6 @@ public class MonsterBehavior : MonoBehaviour
 
     IEnumerator BlinkObject()
     {
-        Color originalColor = rend.color; // 현재 색상 저장
-
         rend.color = Color.red; // 빨간색
         yield return new WaitForSeconds(blinkDuration);
 

@@ -5,6 +5,7 @@ public class General : MonoBehaviour
     public string tag_relic = "Relic";
     public string tag_player = "Player";
     public string tag_enemy = "Enemy";
+    public int layer_ConnetorTail = 7;
     public BasicActions script_player;
 
     private static General _instance;
@@ -17,5 +18,10 @@ public class General : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+    }
+
+    public Vector2 MousePos()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Relic
   - Enemy
+  - Tail
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - UI_2
-  - 
-  - 
+  - ConnectorTail
+  - ConnectorHead
   - 
   - 
   - 

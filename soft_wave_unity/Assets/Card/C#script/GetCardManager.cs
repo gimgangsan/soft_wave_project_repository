@@ -158,6 +158,21 @@ public class GetCardManager : MonoBehaviour
         StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
     }
 
+    // 카드 조합 버튼 시 발생하는 이벤트
+    public void OnCraft()
+    {
+        isClosing = true;
+        getCardUI.GetComponent<Animator>().SetTrigger("Fade Off");          // 카드 선택 UI 배경을 지움
+        for (int i = 0; i < 5; i++)                                         // 각 카드를 돌면서 사라지는 애니메이션 재생
+        {
+            if (cardsRef[i] == null) continue;
+            cardsRef[i].GetComponent<Animator>().SetTrigger("Fade Off");
+        }
+        StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
+
+        // 이 부분에서 카드 조합 UI 호출하기 
+    }
+
     // 일정 시간 후 카드 선택 UI를 비활성화하기 위한 함수
     IEnumerator FadeOff()
     {

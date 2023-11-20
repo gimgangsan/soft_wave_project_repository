@@ -1,0 +1,184 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Text;
+using System.Linq;
+
+// 덱 편집 UI를 관리하는 매니저 스크립트
+public class DeckManager : MonoBehaviour
+{
+    public GameObject deckManagerUI;    // 덱 편집 UI 캔버스
+    public GameObject contentBox;       // 카드들이 표시될 목록 상자
+
+    public GameObject cardPrefab;       // 기본 카드 프리팹
+    public GameObject dropdownMenu;     // 결합/제거 등 작업 드롭다운 메뉴
+    public GameObject removeMessage;    // 카드 제거 시 확인 메시지
+
+    const int horizontalGap = 380;      // 카드 사이의 가로 거리
+    const int verticalGap = 520;        // 카드 사이의 세로 거리
+
+    GameObject[] cardList;              // 표시되고 있는 카드들에 대한 레퍼런스
+    List<int> sortedDeck;
+
+    public int selectedCard;            // 현재 선택된 카드
+    bool isClosing;                     // 현재 화면을 닫고 있는지 확인
+    bool canClose = true;               // 현재 화면을 닫을 수 잇는지 확인
+
+    // 카드 획득 화면에서 관련 버튼 클릭 시 이 함수 호출
+    // 덱 편집 관련 UI를 초기화한다
+    public void Initialize()
+    {
+        deckManagerUI.SetActive(true);                                  // 캔버스 활성화
+        deckManagerUI.GetComponent<Animator>().SetTrigger("Fade In");   // 페이드인 애니메이션 재생
+
+        RefreachCardList();                                             // 카드 목록 초기화
+    }
+
+    // 카드 목록을 초기화하는 함수
+    void RefreachCardList()
+    {
+        if (cardList != null)               // 기존에 생성된 카드 오브젝트가 있으면...
+        {
+            foreach (var card in cardList)  // 모두 제거한다
+            {
+                Destroy(card);
+            }
+        }
+
+        sortedDeck = CardManager.Instance.deck.ToList();    // 플레이어 덱을 임시로 복사한 뒤
+        sortedDeck.Sort();                                  // 이를 정렬해서 사용한다
+
+        int size = CardManager.Instance.deck.Count;     // 덱의 크기
+        cardList = new GameObject[size];                // 오브젝트를 담을 배열 초기화
+        int height = size / 4 + 1;                      // 목록에 표시될 행의 개수
+
+        float boxHeight = height * 550;                 // 카드를 담을 상자의 높이 계산
+        RectTransform rectTransform = contentBox.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(0, boxHeight);    // 계산한 높이를 목록 상자에 적용
+
+        int currentX = 200;     // 현재 카드를 배치할 (x, y) 좌표를 초기화
+        int currentY = -280;
+
+        for (int i = 0; i < size; i++)  // 소지한 모든 카드에 대해
+        {
+            cardList[i] = Instantiate(cardPrefab);                  // 카드 오브젝트 생성 후 배열에 저장
+            cardList[i].transform.SetParent(contentBox.transform);  // 목록 상자의 자식 오브젝트로 설정
+
+            RectTransform cardTransform = cardList[i].GetComponent<RectTransform>();    // 위치 설정
+            cardTransform.anchorMin = new Vector2(0, 1);
+            cardTransform.anchorMax = new Vector2(0, 1);
+            cardTransform.anchoredPosition = new Vector2(currentX, currentY);
+
+            Button button = cardList[i].AddComponent<Button>();     // 카드 오브젝트에 버튼 컴포넌트를 추가한 뒤
+            int temp = i;                                           // 오류 방지를 위한 임시 변수
+            button.onClick.AddListener(() => OnClickCard(temp));    // 카드 클릭시 드롭다운 메뉴를 표시하는 리스너 추가
+
+            foreach (Transform obj in cardList[i].transform)        // 카드 오브젝트의 자식 중...
+            {
+                if (obj.name == "Tint")
+                {
+                    obj.GetComponent<Image>().raycastTarget = true; // 틴트 오브젝트의 레이캐스트 타겟 설정 변경
+                }
+            }
+
+            CardUIManager.Instance.UpdateCard(cardList[i], sortedDeck[i]);  // 카드 외형 갱신
+
+            if (i % 4 == 3)                 // 현재 표시 중인 카드의 번호에 따라 다음 위치를 설정
+            {
+                currentX = 200;
+                currentY -= verticalGap;
+            }
+            else
+            {
+                currentX += horizontalGap;
+            }
+        }
+
+        dropdownMenu.transform.SetAsLastSibling();  // 드롭다운 메뉴가 맨위에 표시되도록 순서 변경
+    }
+
+    // 카드 클릭 시 호출
+    // 드롭다운 메뉴 표시, 선택된 카드 번호 갱신
+    public void OnClickCard(int i) {
+        if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
+
+        selectedCard = i;               // 선택된 카드 번호 갱신
+        dropdownMenu.SetActive(true);   // 드롭다운 메뉴 활성화
+        RectTransform menuTransform = dropdownMenu.GetComponent<RectTransform>();
+        menuTransform.anchoredPosition = cardList[i].GetComponent<RectTransform>().anchoredPosition;
+        menuTransform.anchoredPosition += new Vector2(-771, 80);    // 드롭다운 메뉴 위치 지정
+    }
+
+    // 카드 결합 버튼 클릭 시 호출
+    public void OnCraft()
+    {
+        if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
+
+        // 카드 결합 관련 내용...
+    }
+
+    // 카드 제거 버튼 클릭 시 호출
+    public void OnRemove()
+    {
+        if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
+        if (CardManager.Instance.deck.Count < 6) return;    // 최소한의 카드에서 더 제거할 수 없도록 방지
+
+        canClose = false;               // 제거 확인 창이 뜬 상태에서는 작업 금지
+        removeMessage.SetActive(true);  // 제거 확인 창 활성화
+
+        foreach(Transform obj in removeMessage.transform)
+        {
+            if (obj.name == "Remove Text")
+            {
+                string text = "Remove?\n" + CardInfo.cardInfo[sortedDeck[selectedCard]].name;
+                obj.GetComponent<TextMeshProUGUI>().text = text;    // 제거 확인 창에 표시할 텍스트 갱신
+            }
+        }
+    }
+    
+    // 덱 편집 완료 버튼 클릭 시 호출
+    public void OnComplete()
+    {
+        if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
+        isClosing = true;                   // 닫는 중으로 설정
+
+        dropdownMenu.SetActive(false);      // 드롭다운 메뉴 비활성화
+        foreach(var card in cardList)       // 모든 카드 오브젝트 제거
+        {
+            Destroy(card);
+        }
+
+        deckManagerUI.GetComponent<Animator>().SetTrigger("Fade Out");  // 페이드 아웃 애니메이션 재생
+        StartCoroutine("FadeOff");                                      // UI 비활성화를 위한 코루틴 호출
+    }
+
+    // 제거 확인 버튼 클릭 시 호출
+    public void OnConfirmRemove()
+    {
+        CardManager.Instance.removeFromDeck(sortedDeck[selectedCard]);  // 덱에서 카드 제거
+        RefreachCardList();                                             // 카드 목록 새로고침
+
+        dropdownMenu.SetActive(false);      // 드롭다운 메뉴 비활성화
+        removeMessage.SetActive(false);     // 제거 확인 창 비활성화
+        canClose = true;
+    }
+
+    // 제거 취소 버튼 클릭 시 호출
+    public void OnCancelRemove()
+    {
+        removeMessage.SetActive(false);     // 제거 확인 창 비활성화
+        canClose = true;
+    }
+
+    // 일정 시간 후 UI를 비활성화하기 위한 함수
+    IEnumerator FadeOff()
+    {
+        yield return new WaitForSeconds(0.3f);
+        deckManagerUI.SetActive(false);
+        isClosing = false;
+    }
+}

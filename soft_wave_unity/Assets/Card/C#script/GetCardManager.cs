@@ -158,8 +158,8 @@ public class GetCardManager : MonoBehaviour
         StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
     }
 
-    // 카드 조합 버튼 시 발생하는 이벤트
-    public void OnCraft()
+    // 덱 수정 버튼 클릭 시 발생하는 이벤트
+    public void OnManagerDeck()
     {
         isClosing = true;
         getCardUI.GetComponent<Animator>().SetTrigger("Fade Off");          // 카드 선택 UI 배경을 지움
@@ -169,8 +169,7 @@ public class GetCardManager : MonoBehaviour
             cardsRef[i].GetComponent<Animator>().SetTrigger("Fade Off");
         }
         StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
-
-        // 이 부분에서 카드 조합 UI 호출하기 
+        GetComponent<DeckManager>().Initialize();                           // 덱 관리자 호출
     }
 
     // 일정 시간 후 카드 선택 UI를 비활성화하기 위한 함수
@@ -178,5 +177,6 @@ public class GetCardManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         getCardUI.SetActive(false);
+        isClosing = false;
     }
 }

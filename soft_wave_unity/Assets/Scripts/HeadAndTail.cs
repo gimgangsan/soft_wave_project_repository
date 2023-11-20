@@ -2,24 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadAndTail : MonoBehaviour
+public class HeadAndTail : MonoBehaviour, ISpellCaster
 {
     public int Heads;
     public GameObject HeadObject;
     public int Tails;
     public GameObject TailObject;
-    ISpellCaster[] NextNodes;
+    public ISpellCaster[] NextNodes;
 
     private void Awake()
     {
-        for(int i = 0; i<Heads; i++)
+        GenerateHead();
+        GenerateTail();
+        NextNodes = new ISpellCaster[Heads];
+    }
+
+    public void GenerateHead()
+    {
+        for (int i = 0; i < Heads; i++)
         {
             GameObject newObject = Instantiate(HeadObject);
             newObject.transform.SetParent(transform, true);
             newObject.transform.localPosition = HeadLocalPosOf(i);
             newObject.GetComponent<ConnectorHead>().Parent = gameObject;
         }
-        for(int i = 0;i<Tails; i++)
+    }
+
+    public void GenerateTail()
+    {
+        for (int i = 0; i < Tails; i++)
         {
             GameObject newObject = Instantiate(TailObject);
             newObject.transform.SetParent(transform, true);
@@ -38,5 +49,13 @@ public class HeadAndTail : MonoBehaviour
     {
         Vector2 pos = new((float)(index + 1) / (float)(this.Tails + 1) - 0.5f, 0.5f);
         return pos;
+    }
+
+    public virtual void Cast()
+    {
+        for(int i = 0; i < Heads; i++)
+        {
+            (NextNodes[i])?.Cast();
+        }
     }
 }

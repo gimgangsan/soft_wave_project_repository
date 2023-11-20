@@ -5,6 +5,7 @@ using UnityEngine;
 public class ConnectorTail : MonoBehaviour
 {
     public bool IsConnected;
+    public GameObject Parent;
 
     private void Awake()
     {
@@ -13,8 +14,15 @@ public class ConnectorTail : MonoBehaviour
 
     public void ConnectHead(ConnectorHead HeadScript)
     {
-        IsConnected = true;
-        HeadScript.IsConnected = true;
+        if (this.Parent == HeadScript.Parent) return;
+        if (IsConnected) return;
+        this.IsConnected = true;
         HeadScript.SetHead(transform.position);
+        HeadScript.CurrentTail = this;
+    }
+
+    public void Disconnect()
+    {
+        this.IsConnected = false;
     }
 }

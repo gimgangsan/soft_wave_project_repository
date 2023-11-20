@@ -6,20 +6,27 @@ public class ConnectorHead : MonoBehaviour
 {
     private LineRenderer Line;
     private SpriteRenderer Sprite;
+    public GameObject Parent;
+    public ConnectorTail CurrentTail;
     public Vector2 InitialPos { get; set; }
-    public bool IsConnected { get; set; }
 
     private void Awake()
     {
         Line = GetComponent<LineRenderer>();
         Sprite = GetComponent<SpriteRenderer>();
-        InitialPos = transform.position;
-        IsConnected = false;
     }
 
     private void OnMouseDown()
     {
-        IsConnected = false;
+        if (CurrentTail == null)
+        {
+            InitialPos = transform.position;
+        }
+        else
+        {
+            CurrentTail.Disconnect();
+            CurrentTail = null;
+        }
         Sprite.color = new Color(1, 0, 0, 0.6f);
         Line.SetPosition(0, InitialPos);
     }
@@ -31,14 +38,14 @@ public class ConnectorHead : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Sprite.color = new Color(1, 1, 1, 1);
+        Sprite.color = new Color(0, 1, 0, 1);
         Vector2 BoxSize = new(transform.localScale.x, transform.localScale.y);
         Collider2D hit = Physics2D.OverlapBox(transform.position, BoxSize,0,LayerMask.GetMask("ConnectorTail"));
-        if (hit != null )
+        if (hit != null)
         {
             hit.GetComponent<ConnectorTail>().ConnectHead(this);
         }
-        if (IsConnected == false)
+        if (CurrentTail == null)
         {
             SetHead(InitialPos);
         }

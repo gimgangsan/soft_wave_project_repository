@@ -19,7 +19,7 @@ public class ConnectorTail : MonoBehaviour
         this.IsConnected = true;
         HeadScript.SetHead(transform.position);
         HeadScript.CurrentTail = this;
-        HeadScript.Parent.GetComponent<HeadAndTail>().NextNodes[0] = this.Parent.GetComponent<ISpellCaster>();
+        HeadScript.Parent.NextNodes[HeadScript.Index] = this.Parent.GetComponent<ISpellCaster>();
     }
 
     public void Disconnect()

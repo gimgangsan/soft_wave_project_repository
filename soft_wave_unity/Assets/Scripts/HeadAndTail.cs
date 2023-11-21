@@ -9,6 +9,7 @@ public class HeadAndTail : MonoBehaviour, ISpellCaster
     public int Tails;
     public GameObject TailObject;
     public ISpellCaster[] NextNodes;
+    public bool IsExecuted { get; private set; }
 
     private void Awake()
     {
@@ -24,7 +25,9 @@ public class HeadAndTail : MonoBehaviour, ISpellCaster
             GameObject newObject = Instantiate(HeadObject);
             newObject.transform.SetParent(transform, true);
             newObject.transform.localPosition = HeadLocalPosOf(i);
-            newObject.GetComponent<ConnectorHead>().Parent = gameObject;
+            ConnectorHead script = newObject.GetComponent<ConnectorHead>();
+            script.Parent = this;
+            script.Index = i;
         }
     }
 
@@ -51,11 +54,20 @@ public class HeadAndTail : MonoBehaviour, ISpellCaster
         return pos;
     }
 
-    public virtual void Cast()
+    public void Cast()
     {
+        if (IsExecuted) return;
+        IsExecuted = true;
+        ReleaseSpell();
         for(int i = 0; i < Heads; i++)
         {
             (NextNodes[i])?.Cast();
         }
+        IsExecuted = false;
+    }
+
+    public virtual void ReleaseSpell()
+    {
+        Debug.Log("ReleaseSpell func not overrided");
     }
 }

@@ -6,9 +6,10 @@ public class ConnectorHead : MonoBehaviour
 {
     private LineRenderer Line;
     private SpriteRenderer Sprite;
-    public GameObject Parent;
+    public HeadAndTail Parent;
     public ConnectorTail CurrentTail;
     public Vector2 InitialPos { get; set; }
+    public int Index { get; set; }
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class ConnectorHead : MonoBehaviour
         {
             CurrentTail.Disconnect();
             CurrentTail = null;
+            Parent.NextNodes[Index] = null;
         }
         Sprite.color = new Color(1, 0, 0, 0.6f);
         Line.SetPosition(0, InitialPos);

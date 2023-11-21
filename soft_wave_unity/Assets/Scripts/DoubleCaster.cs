@@ -11,9 +11,8 @@ public class DoubleCaster : HeadAndTail
             Cast();
         }
     }
-    public override void Cast()
+    public override void ReleaseSpell()
     {
         Debug.Log("doubleCaster casted");
-        base.Cast();
     }
 }

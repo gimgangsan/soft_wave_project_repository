@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class FireballCaster : HeadAndTail
 {
-    public override void Cast()
+    public override void ReleaseSpell()
     {
         Debug.Log("fireball casted");
-        base.Cast();
     }
 }

@@ -674,7 +674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &416296724
 Animator:
   serializedVersion: 4
@@ -2314,7 +2314,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1343396261}
         m_TargetAssemblyTypeName: GetCardManager, Assembly-CSharp
         m_MethodName: OnCardSelect
         m_Mode: 3
@@ -2484,7 +2484,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1343396261}
         m_TargetAssemblyTypeName: GetCardManager, Assembly-CSharp
         m_MethodName: OnCardSelect
         m_Mode: 3
@@ -2685,21 +2685,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsPos:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 800941801}
+  - {fileID: 573981654}
+  - {fileID: 348728619}
+  - {fileID: 1196562671}
+  - {fileID: 1454445743}
   cardsIndices: 
   selectedIndex: 0
   cardsRef: []
-  getCardUI: {fileID: 0}
+  getCardUI: {fileID: 416296723}
   buttonsRef:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1916843511}
+  - {fileID: 1978970349}
+  - {fileID: 1250120880}
+  - {fileID: 1610623901}
+  - {fileID: 1108994236}
   mustChoose: 1
   isClosing: 0
 --- !u!1 &1372735682
@@ -42789,7 +42789,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1343396261}
         m_TargetAssemblyTypeName: GetCardManager, Assembly-CSharp
         m_MethodName: OnCardSelect
         m_Mode: 3
@@ -47948,7 +47948,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1343396261}
         m_TargetAssemblyTypeName: GetCardManager, Assembly-CSharp
         m_MethodName: OnCardSelect
         m_Mode: 3
@@ -48081,7 +48081,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1343396261}
         m_TargetAssemblyTypeName: GetCardManager, Assembly-CSharp
         m_MethodName: OnCardSelect
         m_Mode: 3

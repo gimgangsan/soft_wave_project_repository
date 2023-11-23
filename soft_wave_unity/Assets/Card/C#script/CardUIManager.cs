@@ -11,6 +11,7 @@ public class CardUIManager : MonoBehaviour
     public Transform peekPos;
     private GameObject peekCard;
     public GameObject[] cardsInHands;                   // 현재 손에 있는 카드에 대한 레퍼런스를 저장
+    public int canvansx;
 
     private static CardUIManager _instance; // 싱글턴 패턴 구현
     public static CardUIManager Instance
@@ -22,10 +23,11 @@ public class CardUIManager : MonoBehaviour
     {
         _instance = this;
         cardsInHands = new GameObject[4];
+        canvansx = Screen.width;
     }
 
-        // 카드 뽑기 애니메이션 구현
-        public void DrawCard(int handIndex, int cardIndex)
+    // 카드 뽑기 애니메이션 구현
+    public void DrawCard(int handIndex, int cardIndex)
     {
         GameObject newCard = Instantiate(cardPrefab, transform);                // 프리팹으로 카드 오브젝트 생성
         UpdateCard(newCard, cardIndex);                                         // 카드 정보에 맞게 외형 업데이트
@@ -90,13 +92,14 @@ public class CardUIManager : MonoBehaviour
         Vector3 currentPos;
         Vector3 StartPos = currentPos = peekPos.position;
         Vector3 EndPos = handsPos[handIndex].position;
-        float Coefficient = 30000 / Mathf.Pow((EndPos.x - StartPos.x), 2);
+        
+        float a = Screen.height * 0.6f / Mathf.Pow((EndPos.x - StartPos.x), 2);
 
         newCard.transform.position = StartPos; 
         while (currentPos.x < EndPos.x)
         {
-            currentPos.x += 10;
-            currentPos.y += Coefficient * ((StartPos.x - currentPos.x) + (EndPos.x - currentPos.x));  // 포물선 궤적을 그리며 움직임
+            currentPos.x += Screen.width/200;
+            currentPos.y = -a * ((currentPos.x - StartPos.x) * (currentPos.x - EndPos.x)) + StartPos.y;  // 포물선 궤적을 그리며 움직임
 
             newCard.transform.position = currentPos;
             yield return null;      // 다음 프레임때 반복문을 이어하기

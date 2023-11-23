@@ -22,7 +22,7 @@ public class DeckManager : MonoBehaviour
     const int verticalGap = 520;        // 카드 사이의 세로 거리
 
     GameObject[] cardList;              // 표시되고 있는 카드들에 대한 레퍼런스
-    List<int> inventory;
+    List<GameObject> inventory;
 
     public int selectedCard;            // 현재 선택된 카드
     bool isClosing;                     // 현재 화면을 닫고 있는지 확인
@@ -71,6 +71,7 @@ public class DeckManager : MonoBehaviour
             cardTransform.anchorMin = new Vector2(0, 1);
             cardTransform.anchorMax = new Vector2(0, 1);
             cardTransform.anchoredPosition = new Vector2(currentX, currentY);
+            cardTransform.localScale = Vector3.one * 1.8f;
 
             Button button = cardList[i].AddComponent<Button>();     // 카드 오브젝트에 버튼 컴포넌트를 추가한 뒤
             int temp = i;                                           // 오류 방지를 위한 임시 변수
@@ -84,7 +85,7 @@ public class DeckManager : MonoBehaviour
                 }
             }
 
-            CardUIManager.Instance.UpdateCard(cardList[i], inventory[i]);  // 카드 외형 갱신
+            CardUIManager.Instance.UpdateCard(cardList[i], inventory[i].GetComponent<CardBase>().index);  // 카드 외형 갱신
 
             if (i % 4 == 3)                 // 현재 표시 중인 카드의 번호에 따라 다음 위치를 설정
             {
@@ -133,7 +134,7 @@ public class DeckManager : MonoBehaviour
         {
             if (obj.name == "Remove Text")
             {
-                string text = "Remove?\n" + CardInfo.cardInfo[inventory[selectedCard]].name;
+                string text = "Remove?\n" + CardInfo.cardInfo[inventory[selectedCard].GetComponent<CardBase>().index].name;
                 obj.GetComponent<TextMeshProUGUI>().text = text;    // 제거 확인 창에 표시할 텍스트 갱신
             }
         }
@@ -158,7 +159,7 @@ public class DeckManager : MonoBehaviour
     // 제거 확인 버튼 클릭 시 호출
     public void OnConfirmRemove()
     {
-        CardManager.Instance.removeFromInventory(inventory[selectedCard]);  // 덱에서 카드 제거
+        CardManager.Instance.removeFromInventory(inventory[selectedCard].GetComponent<CardBase>().index);  // 덱에서 카드 제거
         RefreachCardList();                                             // 카드 목록 새로고침
 
         dropdownMenu.SetActive(false);      // 드롭다운 메뉴 비활성화

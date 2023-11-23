@@ -145,7 +145,7 @@ public class GetCardManager : MonoBehaviour
         }
         else                                        // 현재 선택한 카드를 덱에 추가
         {
-            if (selectedIndex != -1) CardManager.Instance.addToDeck(cardsIndices[selectedIndex]);
+            if (selectedIndex != -1) CardManager.Instance.addToInventory(cardsIndices[selectedIndex]);
         }
 
         isClosing = true;

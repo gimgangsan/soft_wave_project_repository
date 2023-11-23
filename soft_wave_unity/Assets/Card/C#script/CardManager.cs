@@ -7,15 +7,18 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Threading;
 using UnityEngine.Events;
+using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 public class CardManager : MonoBehaviour
 {
     public UnityEvent<int> whenCasting; // 카드 사용시 이벤트 (카드 ID를 매개변수로 전달)
     public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
 
-    public List<int> inventory = new List<int>();
-    public List<int> deck;              // 플레이어가 소지한 덱
-    public int[] hands = new int[5];    // 플레이어가 손에 들고 있는 패
+    public List<GameObject> inventory = new List<GameObject>();
+    public List<GameObject> deck;              // 플레이어가 소지한 덱
+    public GameObject[] hands;           // 플레이어가 손에 들고 있는 패
     public int drawIndex = 0;           // 이번 드로우에서 뽑을 카드 인덱스
     public int peekIndex = 0;           
     public Slider mana;                 // 마나
@@ -31,10 +34,17 @@ public class CardManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
-        
-        inventory = new List<int>() { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 };    // 테스트 목적으로 임의의 덱을 소유하도록 함
-        inventory.Sort();
-        deck = new List<int>(inventory);
+        int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
+        foreach (int i in initInven)
+        {
+            addToInventory(i);
+        }
+        foreach(Transform t in transform)
+        {
+            addToDeck(t.gameObject);
+        }
+        deck = new List<GameObject>(inventory);
+        hands = new GameObject[5];
     }
 
     void Update()
@@ -55,46 +65,59 @@ public class CardManager : MonoBehaviour
     }
 
     // 덱에 카드 추가
-    public void addToDeck(int cardIndex)
+    public void addToDeck(GameObject obj)
     {
-        deck.Add(cardIndex);        // cardIndex가 가리키는 카드를 덱의 맨뒤에 추가한다
-        if (CardInfo.cardInfo[cardIndex].effects != null) CardInfo.cardInfo[cardIndex].effects.OnAcquire();     // 카드 추가 효과 호출
+        deck.Add(obj);        // cardIndex가 가리키는 카드를 덱의 맨뒤에 추가한다
+        int index = IndexFromObject(obj);
+        if (CardInfo.cardInfo[index].script != null)
+        {
+            Type script = CardInfo.cardInfo[index].script;
+            ((ICard)(obj.GetComponent(script))).OnAcquire();     // 카드 추가 효과 호출
+        }
         Debug.Log(deck.ToString());
     }
 
     public void addToInventory(int cardIndex)
     {
-        inventory.Add(cardIndex);
-        inventory.Sort();
+        GameObject obj = InstantiateCard(cardIndex);
+        inventory.Add(obj);
+        inventory.Sort((a, b) => IndexFromObject(a) - IndexFromObject(b)) ;
     }
 
-    public void removeFromInventory(int cardIndex)
+    public void removeFromInventory(int invenIndex)
     {
-        inventory.Remove(cardIndex);
-        if(deck.Contains(cardIndex))   
-            removeFromDeck(cardIndex);
+        GameObject obj = inventory[invenIndex];
+
+        inventory.RemoveAt(invenIndex);
+        if (deck.Contains(obj)) removeFromDeck(obj);
+
+        Destroy(obj);
     }
 
     // 덱에서 cardIndex가 가리키는 카드 제거
-    public void removeFromDeck(int cardIndex)
+    public void removeFromDeck(GameObject obj)
     {
-        if (CardInfo.cardInfo[cardIndex].effects != null) CardInfo.cardInfo[cardIndex].effects.OnRemove();
-        deck.Remove(cardIndex);
-    }
-
-    // 덱에서 deckIndex+1번째 카드 제거
-    public void removeFromDeckAt(int deckIndex)
-    {
-        if (CardInfo.cardInfo[deck[deckIndex]].effects != null) CardInfo.cardInfo[deck[deckIndex]].effects.OnRemove(); // 카드 제거 효과 호출
-        deck.RemoveAt(deckIndex);   // 덱 내에서 (deckIndex+1)번째 카드를 제거한다
+        int index = IndexFromObject(obj);
+        if (CardInfo.cardInfo[index].script != null)
+        {
+            Type script = CardInfo.cardInfo[index].script;
+            ((ICard)(obj.GetComponent(script))).OnRemove();
+        }
+        deck.Remove(obj);
     }
 
     // 카드 사용
     void UseCard(int handIndex)
     {
         if (CardUIManager.Instance.cardsInHands[handIndex] == null) return;     // 패를 가지고 있는지 검사
-        if (mana.value < manaConsume) return;                                                // 스태미나가 충분한지 검사
-        if (CardInfo.cardInfo[hands[handIndex]].effects != null) CardInfo.cardInfo[hands[handIndex]].effects.OnUse();  // 카드 사용 효과 호출
+        if (mana.value < manaConsume) return;                                   // 스태미나가 충분한지 검사
+        Debug.Log(handIndex + "/" + hands.Length);
+        int index = IndexFromObject(hands[handIndex]);
+        if (CardInfo.cardInfo[index].script != null)
+        {
+            Type script = CardInfo.cardInfo[index].script;
+            ((ICard)(hands[handIndex].GetComponent(script))).OnUse();     // 카드 사용 효과 호출
+        }
 
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
 
@@ -104,15 +127,20 @@ public class CardManager : MonoBehaviour
     // 카드 뽑기
     void DrawCard(int handIndex)
     {
-        CardUIManager.Instance.DrawCard(handIndex, deck[drawIndex]);  // UI에 카드 뽑기 함수를 호출
+        CardUIManager.Instance.DrawCard(handIndex, IndexFromObject(deck[drawIndex]));  // UI에 카드 뽑기 함수를 호출
         hands[handIndex] = deck[drawIndex++];       // 손에 든 패 갱신 후, drawIndex 증가
         if (drawIndex == deck.Count())
         {
             ShuffleDeck();
             drawIndex = 0;
         }
-        CardUIManager.Instance.UpdatePeekCard(deck[drawIndex]);
-        if (CardInfo.cardInfo[hands[handIndex]].effects != null) CardInfo.cardInfo[hands[handIndex]].effects.OnDraw();  // 카드 드로우 효과 호출
+        CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
+        int index = IndexFromObject(hands[handIndex]);
+        if (CardInfo.cardInfo[index].script != null)
+        {
+            Type script = CardInfo.cardInfo[index].script;
+            ((ICard)(hands[handIndex].GetComponent(script))).OnDraw();     // 카드 드로우 효과 호출
+        }
     }
 
     // 덱 셔플
@@ -120,10 +148,38 @@ public class CardManager : MonoBehaviour
     void ShuffleDeck()
     {
         for (int i = deck.Count() - 1; i > 1; i--) {
-            int rand = Random.Range(0, i + 1);
-            int temp = deck[rand];
+            int rand = UnityEngine.Random.Range(0, i + 1);
+            GameObject temp = deck[rand];
             deck[rand] = deck[i];
             deck[i] = temp;
         }
+    }
+
+    GameObject InstantiateCard(int cardIndex)
+    {
+        GameObject obj = new GameObject();
+        obj.transform.SetParent(transform);
+
+        obj.name = "Card" + cardIndex;
+        obj.AddComponent<CardBase>();
+        obj.GetComponent<CardBase>().index = cardIndex;
+        obj.AddComponent(CardInfo.cardInfo[cardIndex].script);
+
+        return obj;
+    }
+
+    public int IndexFromObject(GameObject obj)
+    {
+        return obj.GetComponent<CardBase>().index;
+    }
+
+    public int IndexFromInven(int i)
+    {
+        return inventory[i].GetComponent<CardBase>().index;
+    }
+
+    public int IndexFromDeck(int i)
+    {
+        return deck[i].GetComponent<CardBase>().index;
     }
 }

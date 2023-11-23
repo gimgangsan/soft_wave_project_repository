@@ -11,15 +11,15 @@ public struct Card
     public string name;
     public Sprite image;
     public string desc;
-    public ICard effects;
+    public Type script;
 
     // 카드 구조체 생성자
-    public Card(string name, Sprite image, string desc, ICard effects)
+    public Card(string name, Sprite image, string desc, Type script)
     {
         this.name = name;
         this.image = image;
         this.desc = desc;
-        this.effects = effects;
+        this.script = script;
     }
 }
 
@@ -47,13 +47,9 @@ public static class CardInfo
             string  name     = datas[1];                                // name
             Sprite  image    = Resources.Load<Sprite>(datas[2]);        // image        Resoures폴더에서 data[2]주소에 해당하는 이미지를 가져옴
             string  desc     = datas[4];                                // desc
+            Type script      = Type.GetType(datas[3]);                  // script                                                 // 존재하지 않는 경우 null로 처리
 
-            Type type = Type.GetType(datas[3]);        // 해당 이름을 가진 클래스가 존재하는지 확인
-            ICard effects;
-            if (type != null) effects = (ICard)(Activator.CreateInstance(type));    // 존재하는 경우 해당 클래스 생성
-            else effects = null;                                                    // 존재하지 않는 경우 null로 처리
-
-            cardInfo[id] = new Card(name, image, desc, effects);   // id를 key로 Card구조체를 value값으로 저장
+            cardInfo[id] = new Card(name, image, desc, script);   // id를 key로 Card구조체를 value값으로 저장
             Debug.Log(id + " saved");
         }
         streamReader.Close();                                       // 메모리 낭비를 막기 위해

@@ -384,8 +384,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1861525129}
   m_HandleRect: {fileID: 1861525128}
   m_Direction: 2
-  m_Value: 0.99999946
-  m_Size: 0.44848484
+  m_Value: 0.99999917
+  m_Size: 0.73109627
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4414,9 +4414,9 @@ MonoBehaviour:
   whenHit:
     m_PersistentCalls:
       m_Calls: []
-  inventory: 
-  deck: 
-  hands: 0000000000000000000000000000000000000000
+  inventory: []
+  deck: []
+  hands: []
   drawIndex: 0
   peekIndex: 0
   mana: {fileID: 330250566}
@@ -45086,7 +45086,7 @@ RectTransform:
   m_Father: {fileID: 860652612}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.55151486}
+  m_AnchorMin: {x: 0, y: 0.26890358}
   m_AnchorMax: {x: 1, y: 0.9999997}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}

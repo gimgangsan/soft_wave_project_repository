@@ -14,12 +14,13 @@ public class CardManager : MonoBehaviour
     public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
 
     public List<int> inventory = new List<int>();
-    public List<int> deck;            // 플레이어가 소지한 덱
-    public int[] hands = new int[5];                    // 플레이어가 손에 들고 있는 패
-    public int drawIndex = 0;                           // 이번 드로우에서 뽑을 카드 인덱스
-    public int peekIndex = 0;
-    public Image[] staminaCircle;                       // 스태미나를 보여줄 UI
-    public float stamina;                               // 실제 스태미나
+    public List<int> deck;              // 플레이어가 소지한 덱
+    public int[] hands = new int[5];    // 플레이어가 손에 들고 있는 패
+    public int drawIndex = 0;           // 이번 드로우에서 뽑을 카드 인덱스
+    public int peekIndex = 0;           
+    public Slider mana;                 // 마나
+    public float manaRestoreSpeed;      // 실제 스태미나
+    public int manaConsume;
 
     private static CardManager _instance;       // 싱글턴 패턴 구현부
     public static CardManager Instance
@@ -34,15 +35,11 @@ public class CardManager : MonoBehaviour
         inventory = new List<int>() { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 };    // 테스트 목적으로 임의의 덱을 소유하도록 함
         inventory.Sort();
         deck = new List<int>(inventory);
-
-        // 스테미나 초기화
-        foreach (Image circle in staminaCircle) 
-            circle.fillAmount = 0;
     }
 
     void Update()
     {
-        stamina = Mathf.Min(stamina+Time.deltaTime, staminaCircle.Length);      // 스태미나 회복
+        mana.value += manaRestoreSpeed * Time.deltaTime;      // 스태미나 회복
 
         // 테스트 목적
         // 1-4 키를 누르면 손에 든 카드를 냄
@@ -54,10 +51,7 @@ public class CardManager : MonoBehaviour
         for (int handIndex = 0; handIndex < 4; handIndex++)                     
         {
             if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       // 빈 패를 확인하고 드로우
-        }
-
-        for (int i = 0; i < staminaCircle.Length; i++)      // 스태미나 UI 관리
-            staminaCircle[i].fillAmount = stamina - i;        
+        }        
     }
 
     // 덱에 카드 추가
@@ -99,12 +93,12 @@ public class CardManager : MonoBehaviour
     void UseCard(int handIndex)
     {
         if (CardUIManager.Instance.cardsInHands[handIndex] == null) return;     // 패를 가지고 있는지 검사
-        if (stamina < 1) return;                                                // 스태미나가 충분한지 검사
+        if (mana.value < manaConsume) return;                                                // 스태미나가 충분한지 검사
         if (CardInfo.cardInfo[hands[handIndex]].effects != null) CardInfo.cardInfo[hands[handIndex]].effects.OnUse();  // 카드 사용 효과 호출
 
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
 
-        stamina -= 1;       // 스태미나 소모
+        mana.value -= manaConsume;       // 스태미나 소모
     }
 
     // 카드 뽑기

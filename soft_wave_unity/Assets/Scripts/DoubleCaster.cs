@@ -8,7 +8,7 @@ public class DoubleCaster : HeadAndTail
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cast();
+            OnUse();
         }
     }
     public override void ReleaseSpell()

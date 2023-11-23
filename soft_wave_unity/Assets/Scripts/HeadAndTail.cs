@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadAndTail : MonoBehaviour, ISpellCaster
+public class HeadAndTail : MonoBehaviour, ICard
 {
     public int Heads;
     public GameObject HeadObject;
     public int Tails;
     public GameObject TailObject;
-    public ISpellCaster[] NextNodes;
+    public ICard[] NextNodes;
     public bool IsExecuted { get; private set; }
 
     private void Awake()
     {
         GenerateHead();
         GenerateTail();
-        NextNodes = new ISpellCaster[Heads];
+        NextNodes = new ICard[Heads];
     }
 
     public void GenerateHead()
@@ -54,14 +54,29 @@ public class HeadAndTail : MonoBehaviour, ISpellCaster
         return pos;
     }
 
-    public void Cast()
+    public void OnAcquire()
+    {
+
+    }
+
+    public void OnDraw()
+    {
+
+    }
+
+    public void OnRemove()
+    {
+
+    }
+
+    public void OnUse()
     {
         if (IsExecuted) return;
         IsExecuted = true;
         ReleaseSpell();
         for(int i = 0; i < Heads; i++)
         {
-            (NextNodes[i])?.Cast();
+            (NextNodes[i])?.OnUse();
         }
         IsExecuted = false;
     }

@@ -3,14 +3,14 @@
 public interface ICard
 {
     // 덱에 카드가 추가될 때 발동하는 효과
-    public void OnAcquire();
+    void OnAcquire();
 
     // 카드를 손패에 드로우했을 때 발동하는 효과
-    public void OnDraw();
+    void OnDraw();
 
     // 손패에 있는 카드를 사용했을 때 발동하는 효과
-    public void OnUse();
+    void OnUse();
 
     // 덱에서 카드를 제거할 때 발동하는 효과
-    public void OnRemove();
+    void OnRemove();
 }

@@ -11,8 +11,17 @@ public class HeadAndTail : MonoBehaviour, ICard
     public ICard[] NextNodes;
     public bool IsExecuted { get; private set; }
 
+    public string Name { get; set; }
+    public Sprite Sprite { get; set; }
+    public string Describtion { get; set; }
+    public int ManaCost { get; set; }
+
     private void Awake()
     {
+        Name = gameObject.name;
+        Sprite = null;
+        Describtion = "empty describtion";
+        ManaCost = 1;
         GenerateHead();
         GenerateTail();
         NextNodes = new ICard[Heads];
@@ -54,25 +63,26 @@ public class HeadAndTail : MonoBehaviour, ICard
         return pos;
     }
 
-    public void OnAcquire()
+    public virtual void OnAcquire()
     {
 
     }
 
-    public void OnDraw()
+    public virtual void OnDraw()
     {
 
     }
 
-    public void OnRemove()
+    public virtual void OnRemove()
     {
 
     }
 
-    public void OnUse()
+    public virtual void OnUse()
     {
         if (IsExecuted) return;
         IsExecuted = true;
+        CardManager.Instance.mana.value -= this.ManaCost;
         ReleaseSpell();
         for(int i = 0; i < Heads; i++)
         {

@@ -13,18 +13,15 @@ public class CardManager : MonoBehaviour
     public UnityEvent<int> whenCasting; // 카드 사용시 이벤트 (카드 ID를 매개변수로 전달)
     public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
 
-    public List<int> deck = new List<int>();            // 플레이어가 소지한 덱
+    public List<int> inventory = new List<int>();
+    public List<int> deck;            // 플레이어가 소지한 덱
     public int[] hands = new int[5];                    // 플레이어가 손에 들고 있는 패
     public int drawIndex = 0;                           // 이번 드로우에서 뽑을 카드 인덱스
     public int peekIndex = 0;
     public Image[] staminaCircle;                       // 스태미나를 보여줄 UI
     public float stamina;                               // 실제 스태미나
-    /* 쿨타임 제거
-    [SerializeField] public Slider[] handCooltime;      // 패의 쿨타임(카드를 사용한 후 다시 뽑기까지의 시간)을 보여줄 슬라이더
-    */
 
     private static CardManager _instance;       // 싱글턴 패턴 구현부
-
     public static CardManager Instance
     {
         get { return _instance; }
@@ -34,7 +31,9 @@ public class CardManager : MonoBehaviour
     {
         _instance = this;
         
-        deck = new List<int>() { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 };    // 테스트 목적으로 임의의 덱을 소유하도록 함
+        inventory = new List<int>() { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 };    // 테스트 목적으로 임의의 덱을 소유하도록 함
+        inventory.Sort();
+        deck = new List<int>(inventory);
 
         // 스테미나 초기화
         foreach (Image circle in staminaCircle) 
@@ -67,6 +66,19 @@ public class CardManager : MonoBehaviour
         deck.Add(cardIndex);        // cardIndex가 가리키는 카드를 덱의 맨뒤에 추가한다
         if (CardInfo.cardInfo[cardIndex].effects != null) CardInfo.cardInfo[cardIndex].effects.OnAcquire();     // 카드 추가 효과 호출
         Debug.Log(deck.ToString());
+    }
+
+    public void addToInventory(int cardIndex)
+    {
+        inventory.Add(cardIndex);
+        inventory.Sort();
+    }
+
+    public void removeFromInventory(int cardIndex)
+    {
+        inventory.Remove(cardIndex);
+        if(deck.Contains(cardIndex))   
+            removeFromDeck(cardIndex);
     }
 
     // 덱에서 cardIndex가 가리키는 카드 제거

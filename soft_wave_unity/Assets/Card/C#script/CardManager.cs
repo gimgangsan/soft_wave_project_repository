@@ -10,6 +10,7 @@ using UnityEngine.Events;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 public class CardManager : MonoBehaviour
 {
@@ -20,7 +21,6 @@ public class CardManager : MonoBehaviour
     public List<GameObject> deck;              // 플레이어가 소지한 덱
     public GameObject[] hands;           // 플레이어가 손에 들고 있는 패
     public int drawIndex = 0;           // 이번 드로우에서 뽑을 카드 인덱스
-    public int peekIndex = 0;           
     public Slider mana;                 // 마나
     public float manaRestoreSpeed;      // 실제 스태미나
     public int manaConsume;
@@ -69,72 +69,81 @@ public class CardManager : MonoBehaviour
     // 덱에 카드 추가
     public void addToDeck(GameObject obj)
     {
-        deck.Add(obj);        // cardIndex가 가리키는 카드를 덱의 맨뒤에 추가한다
+        deck.Add(obj);                                          // 인벤토리에 있는 obj 카드를 덱에 추가한다
         int index = IndexFromObject(obj);
         if (CardInfo.cardInfo[index].script != null)
         {
             Type script = CardInfo.cardInfo[index].script;
-            ((ICard)(obj.GetComponent(script))).OnAcquire();     // 카드 추가 효과 호출
+            ((ICard)(obj.GetComponent(script))).OnAcquire();    // 카드 추가 효과 호출
         }
-        Debug.Log(deck.ToString());
 
-        obj.GetComponent<CardBase>().inDeck = true;
+        obj.GetComponent<CardBase>().inDeck = true;             // 카드가 deck에 있다고 표시
     }
 
+    // 인벤토리에 카드 추가
     public void addToInventory(int cardIndex)
     {
-        GameObject obj = InstantiateCard(cardIndex);
-        inventory.Add(obj);
-        inventory.Sort((a, b) => IndexFromObject(a) - IndexFromObject(b)) ;
+        GameObject obj = InstantiateCard(cardIndex);            // 카드 오브젝트 생성
+        inventory.Add(obj);                                     // 인벤토리에 카드 오브젝트 추가
+        inventory.Sort((a, b) => IndexFromObject(a) - IndexFromObject(b)) ; // 정렬
     }
 
+    // 인벤토리에서 카드 제거
     public void removeFromInventory(GameObject obj)
     {
-        inventory.Remove(obj);
-        if (deck.Contains(obj)) removeFromDeck(obj);
+        inventory.Remove(obj);                          // 인벤토리에서 카드 제거
+        if (deck.Contains(obj)) removeFromDeck(obj);    // 덱에도 카드가 있다면 덱에서도 제거
 
-        Destroy(obj);
+        Destroy(obj);                                   // 카드 오브젝트 파괴
     }
 
-    // 덱에서 cardIndex가 가리키는 카드 제거
+    // 덱에서 카드 제거
     public void removeFromDeck(GameObject obj)
     {
-        int objIndexInDeck = -1;
+        int objIndexInDeck = -1;                        // 덱 내에서 제거할 카드의 인덱스를 구한다
         for(int i = 0; i < deck.Count(); i++)
         {
             if (deck[i] == obj) objIndexInDeck = i;
         }
-        if (objIndexInDeck == -1) return;
+        if (objIndexInDeck == -1) return;               // 덱 내에 카드가 없으면 리턴
 
         int cardIndex = IndexFromObject(obj);
         if (CardInfo.cardInfo[cardIndex].script != null)
         {
             Type script = CardInfo.cardInfo[cardIndex].script;
-            ((ICard)(obj.GetComponent(script))).OnRemove();
+            ((ICard)(obj.GetComponent(script))).OnRemove();     // 카드 제거 효과 호출
         }
-        deck.Remove(obj);
-
-        if (objIndexInDeck < drawIndex)
-        {
-            drawIndex--;
-        }
-        else if (objIndexInDeck == drawIndex)
-        {
-            peekIndex = drawIndex + 1;
-            CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex + 1]));
-        }
-        else if (objIndexInDeck == peekIndex)
-        {
-            CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex + 1]));
-        }
-
-        for(int i = 0; i < hands.Length; i++)
-        {
-            if (hands[i] == obj) DrawCard(i);
-        }
-
+        deck.Remove(obj);                               // 덱에서 카드 제거
         obj.GetComponent<CardBase>().inDeck = false;
-    }
+
+        for(int i = 0; i < hands.Length; i++)           // 제거한 카드가 손패에 있었다면
+        {
+            if (hands[i] == obj)
+            {
+                CardUIManager.Instance.Discard(i);      // 카드를 손패에서 뺀 후
+                DrawCard(i);                            // 새로 카드 드로우
+                break;
+            }
+        }
+
+        if (drawIndex >= deck.Count)                    // 다음에 뽑을 인덱스가 범위를 벗어나 있으면
+        {
+            ShuffleDeck();                              // 셔플 후 다시 드로우 시작
+            drawIndex = 0;
+            CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
+        }
+        else
+        {
+            if (objIndexInDeck == drawIndex)            // 다음에 뽑을 인덱스에서 카드를 제거했다면
+            {
+                CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));    // 미리보기 갱신
+            }
+            else if (objIndexInDeck < drawIndex)        // drawIndex 앞에 있는 카드를 제거했다면
+            {
+                drawIndex--;                            // drawIndex를 하나 줄여 정상적으로 진행되도록 함
+            }
+        }
+    } 
 
     // 카드 사용
     void UseCard(int handIndex)
@@ -164,7 +173,6 @@ public class CardManager : MonoBehaviour
             ShuffleDeck();
             drawIndex = 0;
         }
-        peekIndex = drawIndex;
         CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
         int index = IndexFromObject(hands[handIndex]);
         if (CardInfo.cardInfo[index].script != null)
@@ -186,6 +194,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    // 카드 오브젝트 생성
     GameObject InstantiateCard(int cardIndex)
     {
         GameObject obj = new GameObject();
@@ -199,16 +208,19 @@ public class CardManager : MonoBehaviour
         return obj;
     }
 
+    // 오브젝트로부터 카드 고유 번호를 불러온다
     public int IndexFromObject(GameObject obj)
     {
         return obj.GetComponent<CardBase>().index;
     }
 
+    // 인벤토리 인덱스로부터 카드 고유 번호를 불러온다
     public int IndexFromInven(int i)
     {
         return inventory[i].GetComponent<CardBase>().index;
     }
 
+    // 덱 인덱스로부터 카드 고유 번호를 불러온다
     public int IndexFromDeck(int i)
     {
         return deck[i].GetComponent<CardBase>().index;

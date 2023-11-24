@@ -96,10 +96,10 @@ public class DeckManager : MonoBehaviour
             }
 
             CardUIManager.Instance.UpdateCard(cardList[i], CardManager.Instance.inventory[i].GetComponent<CardBase>().index);  // 카드 외형 갱신
-            Outline outline = cardList[i].AddComponent<Outline>();
+            Outline outline = cardList[i].AddComponent<Outline>();  // 각 카드에 강조 테두리 추가
             outline.effectDistance = new Vector2(3, -3);
 
-            if (CardManager.Instance.inventory[i].GetComponent<CardBase>().inDeck)
+            if (CardManager.Instance.inventory[i].GetComponent<CardBase>().inDeck)  // 덱 포함 여부에 따라 강조 테두리 온오프
             {
                 outline.enabled = true;
             }
@@ -133,6 +133,7 @@ public class DeckManager : MonoBehaviour
         menuTransform.anchoredPosition = cardList[i].GetComponent<RectTransform>().anchoredPosition;
         menuTransform.anchoredPosition += new Vector2(-771, 80);    // 드롭다운 메뉴 위치 지정
 
+        // 결합 옵션 지원 여부에 따라 UI의 형태를 달리한다
         if (CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().index == 4) {
             menuTransform.sizeDelta = new Vector2(menuTransform.rect.width, 200);
             craftButton.SetActive(true);

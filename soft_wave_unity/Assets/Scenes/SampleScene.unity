@@ -4484,6 +4484,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 5913711386207410348, guid: b35f7ee7f0970ed418475ef078f3b211, type: 3}
   dropdownMenu: {fileID: 1043327782}
   craftButton: {fileID: 1692049114}
+  removeButton: {fileID: 1637849386}
   removeMessage: {fileID: 1205181396}
   selectedCard: 0
 --- !u!1 &1372735682

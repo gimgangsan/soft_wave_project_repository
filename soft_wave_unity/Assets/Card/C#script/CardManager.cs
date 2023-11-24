@@ -77,6 +77,8 @@ public class CardManager : MonoBehaviour
             ((ICard)(obj.GetComponent(script))).OnAcquire();     // 카드 추가 효과 호출
         }
         Debug.Log(deck.ToString());
+
+        obj.GetComponent<CardBase>().inDeck = true;
     }
 
     public void addToInventory(int cardIndex)
@@ -130,6 +132,8 @@ public class CardManager : MonoBehaviour
         {
             if (hands[i] == obj) DrawCard(i);
         }
+
+        obj.GetComponent<CardBase>().inDeck = false;
     }
 
     // 카드 사용

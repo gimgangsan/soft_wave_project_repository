@@ -5,4 +5,5 @@ using UnityEngine;
 public class CardBase : MonoBehaviour
 {
     public int index;
+    public bool inDeck;
 }

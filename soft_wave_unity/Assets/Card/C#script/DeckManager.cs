@@ -27,7 +27,6 @@ public class DeckManager : MonoBehaviour
     const int verticalGap = 520;        // 카드 사이의 세로 거리
 
     GameObject[] cardList;              // 표시되고 있는 카드들에 대한 레퍼런스
-    List<GameObject> inventory;
 
     public int selectedCard;            // 현재 선택된 카드
     bool isClosing;                     // 현재 화면을 닫고 있는지 확인
@@ -60,9 +59,7 @@ public class DeckManager : MonoBehaviour
             }
         }
 
-        inventory = CardManager.Instance.inventory;    // 플레이어 덱을 복사
-
-        int size = inventory.Count;     // 덱의 크기
+        int size = CardManager.Instance.inventory.Count;     // 덱의 크기
         cardList = new GameObject[size];                // 오브젝트를 담을 배열 초기화
         int height = size / 4 + 1;                      // 목록에 표시될 행의 개수
 
@@ -84,6 +81,8 @@ public class DeckManager : MonoBehaviour
             cardTransform.anchoredPosition = new Vector2(currentX, currentY);
             cardTransform.localScale = Vector3.one * 1.8f;
 
+            CardClickDetector clickDetector = cardList[i].AddComponent<CardClickDetector>();
+            clickDetector.card = CardManager.Instance.inventory[i];
             Button button = cardList[i].AddComponent<Button>();     // 카드 오브젝트에 버튼 컴포넌트를 추가한 뒤
             int temp = i;                                           // 오류 방지를 위한 임시 변수
             button.onClick.AddListener(() => OnClickCard(temp));    // 카드 클릭시 드롭다운 메뉴를 표시하는 리스너 추가
@@ -96,7 +95,18 @@ public class DeckManager : MonoBehaviour
                 }
             }
 
-            CardUIManager.Instance.UpdateCard(cardList[i], inventory[i].GetComponent<CardBase>().index);  // 카드 외형 갱신
+            CardUIManager.Instance.UpdateCard(cardList[i], CardManager.Instance.inventory[i].GetComponent<CardBase>().index);  // 카드 외형 갱신
+            Outline outline = cardList[i].AddComponent<Outline>();
+            outline.effectDistance = new Vector2(3, -3);
+
+            if (CardManager.Instance.inventory[i].GetComponent<CardBase>().inDeck)
+            {
+                outline.enabled = true;
+            }
+            else
+            {
+                outline.enabled = false;
+            }
 
             if (i % 4 == 3)                 // 현재 표시 중인 카드의 번호에 따라 다음 위치를 설정
             {
@@ -150,7 +160,8 @@ public class DeckManager : MonoBehaviour
     public void OnRemove()
     {
         if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
-        if (inventory.Count < 6) return;    // 최소한의 카드에서 더 제거할 수 없도록 방지
+        if (CardManager.Instance.inventory.Count < 6) return;    // 최소한의 카드에서 더 제거할 수 없도록 방지
+        if (CardManager.Instance.deck.Count < 6 && CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().inDeck) return;
 
         canClose = false;               // 제거 확인 창이 뜬 상태에서는 작업 금지
         removeMessage.SetActive(true);  // 제거 확인 창 활성화
@@ -159,7 +170,7 @@ public class DeckManager : MonoBehaviour
         {
             if (obj.name == "Remove Text")
             {
-                string text = "Remove?\n" + CardInfo.cardInfo[inventory[selectedCard].GetComponent<CardBase>().index].name;
+                string text = "Remove?\n" + CardInfo.cardInfo[CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().index].name;
                 obj.GetComponent<TextMeshProUGUI>().text = text;    // 제거 확인 창에 표시할 텍스트 갱신
             }
         }
@@ -184,7 +195,7 @@ public class DeckManager : MonoBehaviour
     // 제거 확인 버튼 클릭 시 호출
     public void OnConfirmRemove()
     {
-        CardManager.Instance.removeFromInventory(inventory[selectedCard]);  // 덱에서 카드 제거
+        CardManager.Instance.removeFromInventory(CardManager.Instance.inventory[selectedCard]);  // 덱에서 카드 제거
         RefreachCardList();                                             // 카드 목록 새로고침
 
         dropdownMenu.SetActive(false);      // 드롭다운 메뉴 비활성화

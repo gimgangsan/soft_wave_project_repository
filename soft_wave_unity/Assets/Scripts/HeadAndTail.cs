@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class HeadAndTail : MonoBehaviour, ICard
     public int Tails;
     public GameObject TailObject;
     public ICard[] NextNodes;
+    public Action whenDragged;
     public bool IsExecuted { get; private set; }
 
     public string Name { get; set; }
@@ -32,11 +34,9 @@ public class HeadAndTail : MonoBehaviour, ICard
         for (int i = 0; i < Heads; i++)
         {
             GameObject newObject = Instantiate(HeadObject);
-            newObject.transform.SetParent(transform, true);
-            newObject.transform.localPosition = HeadLocalPosOf(i);
-            ConnectorHead script = newObject.GetComponent<ConnectorHead>();
-            script.Parent = this;
-            script.Index = i;
+            ConnectorType script = newObject.GetComponent<ConnectorType>();
+            script.Initiate(i, transform);
+            whenDragged += script.WhenParentDragged;
         }
     }
 
@@ -45,22 +45,10 @@ public class HeadAndTail : MonoBehaviour, ICard
         for (int i = 0; i < Tails; i++)
         {
             GameObject newObject = Instantiate(TailObject);
-            newObject.transform.SetParent(transform, true);
-            newObject.transform.localPosition = TailLocalPosOf(i);
-            newObject.GetComponent<ConnectorTail>().Parent = gameObject;
+            ConnectorType script = newObject.GetComponent<ConnectorType>();
+            script.Initiate(i, transform);
+            whenDragged += script.WhenParentDragged;
         }
-    }
-
-    private Vector2 HeadLocalPosOf(int index)
-    {
-        Vector2 pos = new((float)(index + 1) / (float)(this.Heads + 1) - 0.5f, -0.5f);
-        return pos;
-    }
-
-    private Vector2 TailLocalPosOf(int index)
-    {
-        Vector2 pos = new((float)(index + 1) / (float)(this.Tails + 1) - 0.5f, 0.5f);
-        return pos;
     }
 
     public virtual void OnAcquire()
@@ -82,7 +70,6 @@ public class HeadAndTail : MonoBehaviour, ICard
     {
         if (IsExecuted) return;
         IsExecuted = true;
-        CardManager.Instance.mana.value -= this.ManaCost;
         ReleaseSpell();
         for(int i = 0; i < Heads; i++)
         {
@@ -95,4 +82,6 @@ public class HeadAndTail : MonoBehaviour, ICard
     {
         Debug.Log("ReleaseSpell func not overrided");
     }
+
+    
 }

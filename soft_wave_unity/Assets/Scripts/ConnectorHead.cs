@@ -2,19 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConnectorHead : MonoBehaviour
+public class ConnectorHead : ConnectorType
 {
     private LineRenderer Line;
     private SpriteRenderer Sprite;
-    public HeadAndTail Parent;
     public ConnectorTail CurrentTail;
     public Vector2 InitialPos { get; set; }
-    public int Index { get; set; }
 
     private void Awake()
     {
         Line = GetComponent<LineRenderer>();
         Sprite = GetComponent<SpriteRenderer>();
+    }
+
+    public override void WhenParentDragged()
+    {
+        InitialPos = (Vector2)ParentScript.transform.position + GetInitialLocalPos();
+        if (CurrentTail == null)
+        {
+            Line.SetPosition(0, InitialPos);
+            transform.localPosition = InitialPos;
+        }
+        else
+        {
+            Line.SetPosition(0, InitialPos);
+        }
+    }
+
+    public override Vector2 GetInitialLocalPos()
+    {
+        return new((float)(Index + 1) / (float)(ParentScript.Heads + 1) - 0.5f, -0.5f);
     }
 
     private void OnMouseDown()
@@ -27,7 +44,7 @@ public class ConnectorHead : MonoBehaviour
         {
             CurrentTail.Disconnect();
             CurrentTail = null;
-            Parent.NextNodes[Index] = null;
+            ParentScript.NextNodes[Index] = null;
         }
         Sprite.color = new Color(1, 0, 0, 0.6f);
         Line.SetPosition(0, InitialPos);

@@ -2,24 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConnectorTail : MonoBehaviour
+public class ConnectorTail : ConnectorType
 {
     public bool IsConnected;
-    public GameObject Parent;
 
     private void Awake()
     {
         IsConnected = false;
     }
 
+    public override void WhenParentDragged()
+    {
+        transform.localPosition = GetInitialLocalPos();
+    }
+
+    public override Vector2 GetInitialLocalPos()
+    {
+        return new((float)(Index + 1) / (float)(ParentScript.Heads + 1) - 0.5f, 0.5f);
+    }
+
     public void ConnectHead(ConnectorHead HeadScript)
     {
-        if (this.Parent == HeadScript.Parent) return;
+        if (this.ParentScript == HeadScript.ParentScript) return;
         if (IsConnected) return;
         this.IsConnected = true;
         HeadScript.SetHead(transform.position);
         HeadScript.CurrentTail = this;
-        HeadScript.Parent.NextNodes[HeadScript.Index] = this.Parent.GetComponent<ICard>();
+        HeadScript.ParentScript.NextNodes[HeadScript.Index] = this.ParentScript.GetComponent<ICard>();
     }
 
     public void Disconnect()

@@ -37,16 +37,10 @@ public class CardManager : MonoBehaviour
         hands = new GameObject[5];
         deck = new List<GameObject>(inventory);
 
+
         int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
-        foreach (int i in initInven)
-        {
-            addToInventory(i);
-        }
-        foreach(Transform t in transform)
-        {
-            addToDeck(t.gameObject);
-        }
-        addToInventory(4);
+        bool[] isDeck = { true, true, true, true, false, true, true, true, false, false };
+        LoadData(initInven, isDeck);
     }
 
     void Update()
@@ -206,6 +200,20 @@ public class CardManager : MonoBehaviour
         obj.AddComponent(CardInfo.cardInfo[cardIndex].script);
 
         return obj;
+    }
+
+    // 저장된 정보를 불러와 인벤토리/덱을 생성한다
+    // inventory 매개변수에는 각 카드의 고유 번호를 배열로 저장한다.
+    // isDeck 매개변수에는 각 카드의 덱 포함 여부를 저장한다. (위 배열과 일대일 대응)
+    void LoadData(int[] inventory, bool[] isDeck)
+    {
+        if (inventory.Length != isDeck.Length) return;          // 크기가 다를 경우 리턴
+
+        for(int i = 0; i < inventory.Length; i++)
+        {
+            addToInventory(inventory[i]);                       // 인벤토리에 카드 추가
+            if (isDeck[i]) { addToDeck(this.inventory[i]); }    // 추가된 카드가 덱에 포함되어야 한다면 덱에도 추가
+        }
     }
 
     // 오브젝트로부터 카드 고유 번호를 불러온다

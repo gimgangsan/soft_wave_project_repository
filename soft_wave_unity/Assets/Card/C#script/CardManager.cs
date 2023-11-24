@@ -34,6 +34,9 @@ public class CardManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        hands = new GameObject[5];
+        deck = new List<GameObject>(inventory);
+
         int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
         foreach (int i in initInven)
         {
@@ -43,8 +46,7 @@ public class CardManager : MonoBehaviour
         {
             addToDeck(t.gameObject);
         }
-        deck = new List<GameObject>(inventory);
-        hands = new GameObject[5];
+        addToInventory(4);
     }
 
     void Update()
@@ -84,11 +86,9 @@ public class CardManager : MonoBehaviour
         inventory.Sort((a, b) => IndexFromObject(a) - IndexFromObject(b)) ;
     }
 
-    public void removeFromInventory(int invenIndex)
+    public void removeFromInventory(GameObject obj)
     {
-        GameObject obj = inventory[invenIndex];
-
-        inventory.RemoveAt(invenIndex);
+        inventory.Remove(obj);
         if (deck.Contains(obj)) removeFromDeck(obj);
 
         Destroy(obj);
@@ -97,13 +97,39 @@ public class CardManager : MonoBehaviour
     // 덱에서 cardIndex가 가리키는 카드 제거
     public void removeFromDeck(GameObject obj)
     {
-        int index = IndexFromObject(obj);
-        if (CardInfo.cardInfo[index].script != null)
+        int objIndexInDeck = -1;
+        for(int i = 0; i < deck.Count(); i++)
         {
-            Type script = CardInfo.cardInfo[index].script;
+            if (deck[i] == obj) objIndexInDeck = i;
+        }
+        if (objIndexInDeck == -1) return;
+
+        int cardIndex = IndexFromObject(obj);
+        if (CardInfo.cardInfo[cardIndex].script != null)
+        {
+            Type script = CardInfo.cardInfo[cardIndex].script;
             ((ICard)(obj.GetComponent(script))).OnRemove();
         }
         deck.Remove(obj);
+
+        if (objIndexInDeck < drawIndex)
+        {
+            drawIndex--;
+        }
+        else if (objIndexInDeck == drawIndex)
+        {
+            peekIndex = drawIndex + 1;
+            CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex + 1]));
+        }
+        else if (objIndexInDeck == peekIndex)
+        {
+            CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex + 1]));
+        }
+
+        for(int i = 0; i < hands.Length; i++)
+        {
+            if (hands[i] == obj) DrawCard(i);
+        }
     }
 
     // 카드 사용
@@ -134,6 +160,7 @@ public class CardManager : MonoBehaviour
             ShuffleDeck();
             drawIndex = 0;
         }
+        peekIndex = drawIndex;
         CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
         int index = IndexFromObject(hands[handIndex]);
         if (CardInfo.cardInfo[index].script != null)

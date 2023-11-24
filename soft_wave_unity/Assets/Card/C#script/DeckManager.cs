@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Text;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 // 덱 편집 UI를 관리하는 매니저 스크립트
 public class DeckManager : MonoBehaviour
@@ -16,8 +17,12 @@ public class DeckManager : MonoBehaviour
 
     public GameObject cardPrefab;       // 기본 카드 프리팹
     public GameObject dropdownMenu;     // 결합/제거 등 작업 드롭다운 메뉴
+    public GameObject craftButton;      // 카드 결합 버튼
+    public GameObject removeButton;     // 카드 제거 버튼
     public GameObject removeMessage;    // 카드 제거 시 확인 메시지
 
+    private Vector2 dropdownUpperPos;
+    private Vector2 dropdownLowerPos;
     const int horizontalGap = 380;      // 카드 사이의 가로 거리
     const int verticalGap = 520;        // 카드 사이의 세로 거리
 
@@ -27,6 +32,12 @@ public class DeckManager : MonoBehaviour
     public int selectedCard;            // 현재 선택된 카드
     bool isClosing;                     // 현재 화면을 닫고 있는지 확인
     bool canClose = true;               // 현재 화면을 닫을 수 잇는지 확인
+
+    public void Awake()
+    {
+        dropdownUpperPos = craftButton.GetComponent<RectTransform>().localPosition;
+        dropdownLowerPos = removeButton.GetComponent<RectTransform>().localPosition;
+    }
 
     // 카드 획득 화면에서 관련 버튼 클릭 시 이 함수 호출
     // 덱 편집 관련 UI를 초기화한다
@@ -111,6 +122,20 @@ public class DeckManager : MonoBehaviour
         RectTransform menuTransform = dropdownMenu.GetComponent<RectTransform>();
         menuTransform.anchoredPosition = cardList[i].GetComponent<RectTransform>().anchoredPosition;
         menuTransform.anchoredPosition += new Vector2(-771, 80);    // 드롭다운 메뉴 위치 지정
+
+        if (CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().index == 4) {
+            menuTransform.sizeDelta = new Vector2(menuTransform.rect.width, 200);
+            craftButton.SetActive(true);
+            craftButton.GetComponent<RectTransform>().localPosition = dropdownUpperPos;
+            removeButton.GetComponent<RectTransform>().localPosition = dropdownLowerPos;
+        }
+        else
+        {
+            menuTransform.sizeDelta = new Vector2(menuTransform.rect.width, 125);
+            craftButton.SetActive(false);
+            craftButton.GetComponent<RectTransform>().localPosition = dropdownLowerPos;
+            removeButton.GetComponent<RectTransform>().localPosition = dropdownUpperPos + new Vector2(0, -35);
+        }
     }
 
     // 카드 결합 버튼 클릭 시 호출
@@ -159,7 +184,7 @@ public class DeckManager : MonoBehaviour
     // 제거 확인 버튼 클릭 시 호출
     public void OnConfirmRemove()
     {
-        CardManager.Instance.removeFromInventory(inventory[selectedCard].GetComponent<CardBase>().index);  // 덱에서 카드 제거
+        CardManager.Instance.removeFromInventory(inventory[selectedCard]);  // 덱에서 카드 제거
         RefreachCardList();                                             // 카드 목록 새로고침
 
         dropdownMenu.SetActive(false);      // 드롭다운 메뉴 비활성화

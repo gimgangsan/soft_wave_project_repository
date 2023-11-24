@@ -83,5 +83,11 @@ public class HeadAndTail : MonoBehaviour, ICard
         Debug.Log("ReleaseSpell func not overrided");
     }
 
-    
+    private void OnMouseDrag()
+    {
+        Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        newPos.z = 0;
+        transform.position = newPos;
+        whenDragged();
+    }
 }

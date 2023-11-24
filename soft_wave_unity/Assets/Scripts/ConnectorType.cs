@@ -27,4 +27,9 @@ public class ConnectorType : MonoBehaviour
     {
         return new(0,0);
     }
+
+    public Vector2 GetInitialPos()
+    {
+        return (Vector2)ParentScript.transform.position + GetInitialLocalPos() * ParentScript.transform.localScale.x;
+    }
 }

@@ -7,7 +7,6 @@ public class ConnectorHead : ConnectorType
     private LineRenderer Line;
     private SpriteRenderer Sprite;
     public ConnectorTail CurrentTail;
-    public Vector2 InitialPos { get; set; }
 
     private void Awake()
     {
@@ -17,15 +16,17 @@ public class ConnectorHead : ConnectorType
 
     public override void WhenParentDragged()
     {
-        InitialPos = (Vector2)ParentScript.transform.position + GetInitialLocalPos();
+        Vector2 InitialPos = GetInitialPos();
         if (CurrentTail == null)
         {
             Line.SetPosition(0, InitialPos);
-            transform.localPosition = InitialPos;
+            Line.SetPosition(1, InitialPos);
+            transform.position = InitialPos;
         }
         else
         {
             Line.SetPosition(0, InitialPos);
+            transform.position = CurrentTail.transform.position;
         }
     }
 
@@ -36,18 +37,14 @@ public class ConnectorHead : ConnectorType
 
     private void OnMouseDown()
     {
-        if (CurrentTail == null)
-        {
-            InitialPos = transform.position;
-        }
-        else
+        if(CurrentTail != null)
         {
             CurrentTail.Disconnect();
             CurrentTail = null;
             ParentScript.NextNodes[Index] = null;
         }
         Sprite.color = new Color(1, 0, 0, 0.6f);
-        Line.SetPosition(0, InitialPos);
+        Line.SetPosition(0, GetInitialPos());
     }
 
     private void OnMouseDrag()
@@ -66,7 +63,7 @@ public class ConnectorHead : ConnectorType
         }
         if (CurrentTail == null)
         {
-            SetHead(InitialPos);
+            SetHead(GetInitialPos());
         }
     }
 

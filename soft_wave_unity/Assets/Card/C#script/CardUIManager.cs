@@ -12,6 +12,7 @@ public class CardUIManager : MonoBehaviour
     private GameObject peekCard;
     public GameObject[] cardsInHands;                   // 현재 손에 있는 카드에 대한 레퍼런스를 저장
     public int canvansx;
+    public TMP_FontAsset smoothFont;
 
     private static CardUIManager _instance; // 싱글턴 패턴 구현
     public static CardUIManager Instance
@@ -30,6 +31,13 @@ public class CardUIManager : MonoBehaviour
     public void DrawCard(int handIndex, int cardIndex)
     {
         GameObject newCard = Instantiate(cardPrefab, transform);                // 프리팹으로 카드 오브젝트 생성
+        foreach(Transform obj in newCard.transform)
+        {
+            if (obj.name == "Name" || obj.name == "Description")
+            {
+                obj.GetComponent<TMP_Text>().font = smoothFont;
+            }
+        }
         UpdateCard(newCard, cardIndex);                                         // 카드 정보에 맞게 외형 업데이트
         //newCard.GetComponent<Animator>().SetInteger("HandIndex", handIndex);    // 주어진 번호의 위치로 이동하는 애니메이션 실행
         cardsInHands[handIndex] = newCard;                                      // 그 위치에 있던 카드를 현재 카드로 갱신

@@ -1,5 +1,5 @@
-id,name,imageDirectory,Effect,description
-1,FireBall,FireBall,FireBall,Inflict 2 Damage
-2,Defense,TestImage\Defense,Card_002,Defend 2 Damage
-3,Roll,TestImage\Roll,Card_003,Roll Forward
+﻿id,name,imageDirectory,Effect,description
+1,파이어볼,FireBall,FireBall,Inflict 2 Damage
+2,방어,TestImage\Defense,Card_002,Defend 2 Damage
+3,구르기,TestImage\Roll,Card_003,Roll Forward
 4,Empty,Empty,Empty,empty

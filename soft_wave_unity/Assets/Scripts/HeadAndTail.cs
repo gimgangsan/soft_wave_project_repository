@@ -11,7 +11,7 @@ public class HeadAndTail : MonoBehaviour, ICard
     public GameObject TailObject;
     public Action WhenCasted;
     public Action WhenDragged;
-    public bool IsExecuted { get; private set; }
+    public bool IsExecuted { get; set; }
 
     public string Name { get; set; }
     public Sprite Sprite { get; set; }

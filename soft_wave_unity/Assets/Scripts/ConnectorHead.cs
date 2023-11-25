@@ -40,7 +40,6 @@ public class ConnectorHead : ConnectorType
         {
             CurrentTail.Disconnect();
             CurrentTail = null;
-            ParentScript.NextNodes[Index] = null;
         }
         Sprite.color = new Color(1, 0, 0, 0.6f);
         Line.SetPosition(0, GetInitialPos());

@@ -9,8 +9,8 @@ public class HeadAndTail : MonoBehaviour, ICard
     public GameObject HeadObject;
     public int Tails;
     public GameObject TailObject;
-    public ICard[] NextNodes;
-    public Action whenDragged;
+    public Action WhenCasted;
+    public Action WhenDragged;
     public bool IsExecuted { get; private set; }
 
     public string Name { get; set; }
@@ -26,7 +26,6 @@ public class HeadAndTail : MonoBehaviour, ICard
         ManaCost = 1;
         GenerateHead();
         GenerateTail();
-        NextNodes = new ICard[Heads];
     }
 
     public void GenerateHead()
@@ -36,7 +35,7 @@ public class HeadAndTail : MonoBehaviour, ICard
             GameObject newObject = Instantiate(HeadObject);
             ConnectorType script = newObject.GetComponent<ConnectorType>();
             script.Initiate(i, transform);
-            whenDragged += script.WhenParentDragged;
+            WhenDragged += script.WhenParentDragged;
         }
     }
 
@@ -47,7 +46,7 @@ public class HeadAndTail : MonoBehaviour, ICard
             GameObject newObject = Instantiate(TailObject);
             ConnectorType script = newObject.GetComponent<ConnectorType>();
             script.Initiate(i, transform);
-            whenDragged += script.WhenParentDragged;
+            WhenDragged += script.WhenParentDragged;
         }
     }
 
@@ -71,10 +70,7 @@ public class HeadAndTail : MonoBehaviour, ICard
         if (IsExecuted) return;
         IsExecuted = true;
         ReleaseSpell();
-        for(int i = 0; i < Heads; i++)
-        {
-            (NextNodes[i])?.OnUse();
-        }
+        WhenCasted?.Invoke();
         IsExecuted = false;
     }
 
@@ -88,6 +84,6 @@ public class HeadAndTail : MonoBehaviour, ICard
         Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPos.z = 0;
         transform.position = newPos;
-        whenDragged();
+        WhenDragged?.Invoke();
     }
 }

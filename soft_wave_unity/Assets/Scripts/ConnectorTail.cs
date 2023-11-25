@@ -26,12 +26,13 @@ public class ConnectorTail : ConnectorType
         if (CurrentHead != null) return;
         HeadScript.SetHead(transform.position);
         HeadScript.CurrentTail = this;
-        HeadScript.ParentScript.NextNodes[HeadScript.Index] = this.ParentScript.GetComponent<ICard>();
+        HeadScript.ParentScript.WhenCasted += this.ParentScript.OnUse;
         this.CurrentHead = HeadScript;
     }
 
     public void Disconnect()
     {
+        CurrentHead.ParentScript.WhenCasted -= this.ParentScript.OnUse;
         this.CurrentHead = null;
     }
 }

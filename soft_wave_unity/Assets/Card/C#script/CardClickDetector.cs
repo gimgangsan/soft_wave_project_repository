@@ -9,7 +9,6 @@ public class CardClickDetector : MonoBehaviour, IPointerClickHandler
 {
     public GameObject card;
     public CardBase cardBase;
-    public GameObject highlight;
 
     // 덱 매니저에서 카드를 더블 클릭하면 해당 카드의 덱 포함 여부를 토글한다
     public void OnPointerClick(PointerEventData eventData)
@@ -22,12 +21,12 @@ public class CardClickDetector : MonoBehaviour, IPointerClickHandler
             {
                 if (CardManager.Instance.deck.Count < 6) return;
                 CardManager.Instance.removeFromDeck(card);
-                highlight.SetActive(false);
+                GetComponent<Outline>().enabled = false;
             }
             else
             {
                 CardManager.Instance.addToDeck(card);
-                highlight.SetActive(true);
+                GetComponent<Outline>().enabled = true;
             }
         }
     }

@@ -20,7 +20,6 @@ public class DeckManager : MonoBehaviour
     public GameObject craftButton;      // 카드 결합 버튼
     public GameObject removeButton;     // 카드 제거 버튼
     public GameObject removeMessage;    // 카드 제거 시 확인 메시지
-    public Sprite highlightSprite;
 
     private Vector2 dropdownUpperPos;
     private Vector2 dropdownLowerPos;
@@ -82,19 +81,8 @@ public class DeckManager : MonoBehaviour
             cardTransform.anchoredPosition = new Vector2(currentX, currentY);
             cardTransform.localScale = Vector3.one * 1.8f;
 
-            GameObject hl = new GameObject();
-            hl.name = "Highlight";
-            hl.transform.SetParent(cardList[i].transform, false);
-            hl.AddComponent<RectTransform>();
-            hl.GetComponent<RectTransform>().sizeDelta = new Vector2(180, 270);
-            Image hlImg = hl.AddComponent<Image>();
-            hlImg.sprite = highlightSprite;
-            hlImg.type = Image.Type.Sliced;
-
             CardClickDetector clickDetector = cardList[i].AddComponent<CardClickDetector>();
             clickDetector.card = CardManager.Instance.inventory[i];
-            clickDetector.highlight = hl;
-
             Button button = cardList[i].AddComponent<Button>();     // 카드 오브젝트에 버튼 컴포넌트를 추가한 뒤
             int temp = i;                                           // 오류 방지를 위한 임시 변수
             button.onClick.AddListener(() => OnClickCard(temp));    // 카드 클릭시 드롭다운 메뉴를 표시하는 리스너 추가
@@ -108,14 +96,16 @@ public class DeckManager : MonoBehaviour
             }
 
             CardUIManager.Instance.UpdateCard(cardList[i], CardManager.Instance.inventory[i].GetComponent<CardBase>().index);  // 카드 외형 갱신
+            Outline outline = cardList[i].AddComponent<Outline>();  // 각 카드에 강조 테두리 추가
+            outline.effectDistance = new Vector2(3, -3);
 
             if (CardManager.Instance.inventory[i].GetComponent<CardBase>().inDeck)  // 덱 포함 여부에 따라 강조 테두리 온오프
             {
-                hl.SetActive(true);
+                outline.enabled = true;
             }
             else
             {
-                hl.SetActive(false);
+                outline.enabled = false;
             }
 
             if (i % 4 == 3)                 // 현재 표시 중인 카드의 번호에 따라 다음 위치를 설정

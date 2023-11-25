@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class ConnectorTail : ConnectorType
 {
-    public bool IsConnected;
-
-    private void Awake()
-    {
-        IsConnected = false;
-    }
+    public ConnectorHead CurrentHead;
 
     public override void WhenParentDragged()
     {
         transform.localPosition = GetInitialLocalPos();
+        if (CurrentHead != null)
+        {
+            CurrentHead.SetHead(transform.position);
+        }
     }
 
     public override Vector2 GetInitialLocalPos()
@@ -24,15 +23,15 @@ public class ConnectorTail : ConnectorType
     public void ConnectHead(ConnectorHead HeadScript)
     {
         if (this.ParentScript == HeadScript.ParentScript) return;
-        if (IsConnected) return;
-        this.IsConnected = true;
+        if (CurrentHead != null) return;
         HeadScript.SetHead(transform.position);
         HeadScript.CurrentTail = this;
         HeadScript.ParentScript.NextNodes[HeadScript.Index] = this.ParentScript.GetComponent<ICard>();
+        this.CurrentHead = HeadScript;
     }
 
     public void Disconnect()
     {
-        this.IsConnected = false;
+        this.CurrentHead = null;
     }
 }

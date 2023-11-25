@@ -17,15 +17,14 @@ public class ConnectorHead : ConnectorType
     public override void WhenParentDragged()
     {
         Vector2 InitialPos = GetInitialPos();
+        Line.SetPosition(0, InitialPos);
         if (CurrentTail == null)
         {
-            Line.SetPosition(0, InitialPos);
             Line.SetPosition(1, InitialPos);
             transform.position = InitialPos;
         }
         else
         {
-            Line.SetPosition(0, InitialPos);
             transform.position = CurrentTail.transform.position;
         }
     }

@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
-  speed: 2
+  speed: 3
   contactDistance: 1
   attackCoolRate: 1
   attackRange: 2

@@ -144,7 +144,7 @@ public class BasicActions : MonoBehaviour
 
     void MoveToTarget() //마우스 좌표로 플레이어 이동
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * MoveSpeed);
+        transform.position = Vector2.MoveTowards(transform.position, targetPos, Time.deltaTime * MoveSpeed);
         if(transform.position != targetPos)
             animator.SetBool("isWalking", true);
         else

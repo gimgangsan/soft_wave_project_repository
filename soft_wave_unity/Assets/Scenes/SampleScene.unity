@@ -1234,6 +1234,7 @@ GameObject:
   - component: {fileID: 334471510}
   - component: {fileID: 334471511}
   - component: {fileID: 334471512}
+  - component: {fileID: 334471513}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1411,6 +1412,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireballPrefab: {fileID: 5323509310419244303, guid: 4b35a1b0db93ae5409793364c59fe4af, type: 3}
   ballSpeed: 5
+--- !u!50 &334471513
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334471506}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &394639455
 GameObject:
   m_ObjectHideFlags: 0
@@ -4418,7 +4440,6 @@ MonoBehaviour:
   deck: []
   hands: []
   drawIndex: 0
-  peekIndex: 0
   mana: {fileID: 330250566}
   manaRestoreSpeed: 10
   manaConsume: 10

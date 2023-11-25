@@ -43,11 +43,11 @@ public static class CardInfo
 
             string[] datas = line.Split(',');                           // data에 각 카드의 데이터를 string배열로 저장
 
-            int     id       = int.Parse(datas[0]);                     // id           문자열을 정수형으로 변환
-            string  name     = datas[1];                                // name
-            Sprite  image    = Resources.Load<Sprite>(datas[2]);        // image        Resoures폴더에서 data[2]주소에 해당하는 이미지를 가져옴
-            string  desc     = datas[4];                                // desc
-            Type script      = Type.GetType(datas[3]);                  // script                                                 // 존재하지 않는 경우 null로 처리
+            int     id      = int.Parse(datas[0]);                      // id           문자열을 정수형으로 변환
+            string  name    = datas[1];                                 // name
+            Sprite  image   = Resources.Load<Sprite>(datas[2]);         // image        Resoures폴더에서 data[2]주소에 해당하는 이미지를 가져옴
+            string  desc    = datas[4];                                 // desc
+            Type    script  = Type.GetType(datas[3]);                   // script       존재하지 않는 경우 null로 처리
 
             cardInfo[id] = new Card(name, image, desc, script);   // id를 key로 Card구조체를 value값으로 저장
             Debug.Log(id + " saved");

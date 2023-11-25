@@ -23,11 +23,8 @@ public class GetCardManager : MonoBehaviour
     public bool isClosing;              // 닫는 도중에 조작할 수 없도록 하기 위한 변수
 
     private static GetCardManager _instance;       // 싱글턴 패턴 구현부
-
     public static GetCardManager Instance
-    {
-        get { return _instance; }
-    }
+    { get { return _instance; } }
 
     void Start()
     {

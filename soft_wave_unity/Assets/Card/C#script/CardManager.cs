@@ -18,25 +18,22 @@ public class CardManager : MonoBehaviour
     public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
 
     public List<GameObject> inventory = new List<GameObject>();
-    public List<GameObject> deck;              // 플레이어가 소지한 덱
-    public GameObject[] hands;           // 플레이어가 손에 들고 있는 패
+    public List<GameObject> deck;       // 플레이어가 소지한 덱
+    public GameObject[] hands;          // 플레이어가 손에 들고 있는 패
     public int drawIndex = 0;           // 이번 드로우에서 뽑을 카드 인덱스
     public Slider mana;                 // 마나
-    public float manaRestoreSpeed;      // 실제 스태미나
+    public float manaRestoreSpeed;
     public int manaConsume;
 
     private static CardManager _instance;       // 싱글턴 패턴 구현부
     public static CardManager Instance
-    {
-        get { return _instance; }
-    }
+    { get { return _instance; } }
 
     void Awake()
     {
         _instance = this;
         hands = new GameObject[5];
         deck = new List<GameObject>(inventory);
-
 
         int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
         bool[] isDeck = { true, true, true, true, false, true, true, true, false, false };
@@ -53,11 +50,10 @@ public class CardManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) UseCard(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) UseCard(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) UseCard(3);
-        
-        for (int handIndex = 0; handIndex < 4; handIndex++)                     
-        {
-            if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       // 빈 패를 확인하고 드로우
-        }        
+
+        // 빈 패를 확인하고 드로우
+        for (int handIndex = 0; handIndex < CardUIManager.Instance.cardsInHands.Length; handIndex++)
+            if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       
     }
 
     // 덱에 카드 추가
@@ -110,16 +106,6 @@ public class CardManager : MonoBehaviour
         deck.Remove(obj);                               // 덱에서 카드 제거
         obj.GetComponent<CardBase>().inDeck = false;
 
-        for(int i = 0; i < hands.Length; i++)           // 제거한 카드가 손패에 있었다면
-        {
-            if (hands[i] == obj)
-            {
-                CardUIManager.Instance.Discard(i);      // 카드를 손패에서 뺀 후
-                DrawCard(i);                            // 새로 카드 드로우
-                break;
-            }
-        }
-
         if (drawIndex >= deck.Count)                    // 다음에 뽑을 인덱스가 범위를 벗어나 있으면
         {
             ShuffleDeck();                              // 셔플 후 다시 드로우 시작
@@ -135,6 +121,15 @@ public class CardManager : MonoBehaviour
             else if (objIndexInDeck < drawIndex)        // drawIndex 앞에 있는 카드를 제거했다면
             {
                 drawIndex--;                            // drawIndex를 하나 줄여 정상적으로 진행되도록 함
+            }
+        }
+
+        for(int i = 0; i < hands.Length; i++)           // 제거한 카드가 손패에 있었다면
+        {
+            if (hands[i] == obj)
+            {
+                CardUIManager.Instance.Discard(i);      // 카드를 손패에서 뺀 후
+                DrawCard(i);                            // 새로 카드 드로우
             }
         }
     } 
@@ -162,7 +157,7 @@ public class CardManager : MonoBehaviour
     {
         CardUIManager.Instance.DrawCard(handIndex, IndexFromObject(deck[drawIndex]));  // UI에 카드 뽑기 함수를 호출
         hands[handIndex] = deck[drawIndex++];       // 손에 든 패 갱신 후, drawIndex 증가
-        if (drawIndex == deck.Count())
+        if (drawIndex >= deck.Count())
         {
             ShuffleDeck();
             drawIndex = 0;

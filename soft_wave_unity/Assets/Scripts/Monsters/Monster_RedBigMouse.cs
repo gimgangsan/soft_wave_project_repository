@@ -12,5 +12,6 @@ public class Monster_RedBigMouse : MonsterBehavior
         attackCoolRate = 1f;
         attackRange = 2f;
         attackDamage = 1;
+        isMelee = true;
     }
 }

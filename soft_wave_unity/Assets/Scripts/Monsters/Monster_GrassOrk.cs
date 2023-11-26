@@ -12,5 +12,6 @@ public class Monster_GrassOrk : MonsterBehavior
         attackCoolRate = 1f;
         attackRange = 2f;
         attackDamage = 10;
+        isMelee = true;
     }
 }

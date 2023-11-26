@@ -29,6 +29,7 @@ public class BasicActions : MonoBehaviour
         PlayerRend = GetComponent<SpriteRenderer>();
         General.Instance.script_player = this;
         whenHPChanged.Invoke(WriteHPInfo());
+        targetPos = new Vector3(0, -16, 0);
     }
 
     // Update is called once per frame
@@ -60,8 +61,8 @@ public class BasicActions : MonoBehaviour
                 PlayerRend.flipX = false;
             CalTargetPos();
         }
-            
-        MoveToTarget();
+        if(targetPos != transform.position)
+            MoveToTarget();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

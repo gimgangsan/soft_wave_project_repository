@@ -11,8 +11,7 @@ public class MiniBoss_PurpleHood : MonsterBehavior
         contactDistance = 10f;
         attackCoolRate = 3f;
         attackRange = 15f;
-        attackDamage = 20;
-        projectileSpeed = 10f;
+        projectileSpeed = 15f;
         isMelee = false;
     }
 }

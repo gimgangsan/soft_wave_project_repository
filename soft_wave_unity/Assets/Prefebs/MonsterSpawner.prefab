@@ -50,3 +50,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  MiniBosses:
+  - {fileID: 4102173293285460914, guid: a25c9093186396e4087a9d98229e15da, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

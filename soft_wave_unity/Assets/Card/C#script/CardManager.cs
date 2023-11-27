@@ -144,7 +144,8 @@ public class CardManager : MonoBehaviour
         if (CardInfo.cardInfo[index].script != null)
         {
             Type script = CardInfo.cardInfo[index].script;
-            ((ICard)(hands[handIndex].GetComponent(script))).OnUse(new AimInfo(Vector2.zero, Vector2.right));     // 카드 사용 효과 호출
+            AimInfo CurrentAimInfo = new AimInfo(General.Instance.script_player.transform.position, General.Instance.MousePos());
+            ((ICard)(hands[handIndex].GetComponent(script))).OnUse(CurrentAimInfo);     // 카드 사용 효과 호출
         }
 
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출

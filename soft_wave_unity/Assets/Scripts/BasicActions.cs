@@ -13,7 +13,7 @@ public class BasicActions : MonoBehaviour
     public UnityEvent onDead;
     Animator animator;
     SpriteRenderer PlayerRend;
-    Vector3 mousePos, transPos, targetPos;
+    Vector3 targetPos;
     public float MoveSpeed = 5f;
 
     public int MaxHP = 500;
@@ -35,31 +35,13 @@ public class BasicActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            GetDamage(100);
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            GetDamage(50);
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            GetHeal(50, 0);
-        }
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            GetHeal(0, 50);
-        }
-
         if(Input.GetMouseButton(1)) //우클릭 시 플레이어 이동
         {
             if(transform.position.x > targetPos.x)
                 PlayerRend.flipX = true;
             else
                 PlayerRend.flipX = false;
-            CalTargetPos();
+            targetPos = General.Instance.MousePos();
         }
         if(targetPos != transform.position)
             MoveToTarget();
@@ -135,12 +117,6 @@ public class BasicActions : MonoBehaviour
     public int CalculateDamage(int power)
     {
         return (power - Defense) * DamageRatio;
-    }
-    void CalTargetPos() //마우스 좌표
-    {
-        mousePos = Input.mousePosition;
-        transPos = Camera.main.ScreenToWorldPoint(mousePos);
-        targetPos = new Vector3(transPos.x, transPos.y, 0);
     }
 
     void MoveToTarget() //마우스 좌표로 플레이어 이동

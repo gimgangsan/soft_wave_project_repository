@@ -11,7 +11,6 @@ public class MonsterBehavior : MonoBehaviour
     Transform target;
     SpriteRenderer rend;
     Animator animator;
-    BasicActions player;
     Color originalColor;
 
     public GameObject Projectile;
@@ -34,8 +33,7 @@ public class MonsterBehavior : MonoBehaviour
         rend = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<BasicActions>();
+        target = General.Instance.script_player.transform;
         originalColor = rend.color; // 현재 색상 저장
     }
 
@@ -73,7 +71,7 @@ public class MonsterBehavior : MonoBehaviour
             {
                 if(isMelee)
                 {
-                    player.GetDamage(attackDamage);
+                    General.Instance.script_player.GetDamage(attackDamage);
                     attackCooldown = attackCoolRate;
                     animator.SetTrigger("isAttack");
                 }
@@ -81,7 +79,6 @@ public class MonsterBehavior : MonoBehaviour
                 {
                     GameObject proj = Instantiate(Projectile);
                     Vector2 playerDirection = (target.position - transform.position).normalized;
-                    SpriteRenderer rend = GetComponent<SpriteRenderer>();
                     Rigidbody2D projectileRb = proj.GetComponent<Rigidbody2D>();
 
                     proj.transform.position = transform.position;

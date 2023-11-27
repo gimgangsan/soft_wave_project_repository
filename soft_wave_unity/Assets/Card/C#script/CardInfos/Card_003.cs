@@ -13,7 +13,7 @@ public class Card_003 : MonoBehaviour, ICard
         Debug.Log("Card 003 Drew");
     }
 
-    public void OnUse()
+    public void OnUse(AimInfo aimInfo)
     {
         Debug.Log("Card 003 Used");
     }

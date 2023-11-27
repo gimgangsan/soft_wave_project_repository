@@ -9,7 +9,7 @@ public interface ICard
     void OnDraw();
 
     // 손패에 있는 카드를 사용했을 때 발동하는 효과
-    void OnUse();
+    void OnUse(AimInfo aimInfo);
 
     // 덱에서 카드를 제거할 때 발동하는 효과
     void OnRemove();

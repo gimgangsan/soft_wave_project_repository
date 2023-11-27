@@ -6,15 +6,25 @@ public class RepeatCaster : HeadAndTail
 {
     public int RepeatCount;
 
-    public override void OnUse()
+    public override void OnUse(AimInfo aimInfo)
     {
         if (IsExecuted) return;
         IsExecuted = true;
-        for(int i = 0; i < RepeatCount; i++)
-        {
-            ReleaseSpell();
-            WhenCasted?.Invoke();
-        }
+        ReleaseSpell(aimInfo);
+        StartCoroutine(RepeatCast(aimInfo));
         IsExecuted = false;
+    }
+
+    public override void ReleaseSpell(AimInfo aimInfo)
+    {
+        Debug.Log("RepeatCaster casted");
+    }
+
+    private IEnumerator RepeatCast(AimInfo aimInfo)
+    {
+        WhenCasted?.Invoke(aimInfo);
+        yield return new WaitForSeconds(0.2f);
+        WhenCasted?.Invoke(aimInfo);
+        yield break;
     }
 }

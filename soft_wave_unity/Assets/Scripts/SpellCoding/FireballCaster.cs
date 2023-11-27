@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class FireballCaster : HeadAndTail
 {
-    public override void ReleaseSpell()
+    public GameObject Fireball;
+    public override void ReleaseSpell(AimInfo aimInfo)
     {
         Debug.Log("fireball casted");
+        Instantiate(Fireball).GetComponent<Fireball>().SetDir(aimInfo.CastAngle());
     }
 }

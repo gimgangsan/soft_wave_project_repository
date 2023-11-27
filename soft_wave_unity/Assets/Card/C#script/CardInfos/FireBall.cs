@@ -14,7 +14,7 @@ public class FireBall :MonoBehaviour, ICard
         Debug.Log("Card 001 Drew");
     }
 
-    public void OnUse()
+    public void OnUse(AimInfo aimInfo)
     {
         GameObject player = GameObject.Find("Player");
         player.GetComponent<TestFireBall>().ShootFireBall();

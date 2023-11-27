@@ -634,6 +634,7 @@ MonoBehaviour:
   HeadObject: {fileID: 209672305068758647, guid: feff520068ce3934c86e850229ffdf05, type: 3}
   Tails: 1
   TailObject: {fileID: 7661399269194565366, guid: f2b64f11869c5304e901af351ee5ddf7, type: 3}
+  Fireball: {fileID: 5323509310419244303, guid: 4b35a1b0db93ae5409793364c59fe4af, type: 3}
 --- !u!61 &1956122393
 BoxCollider2D:
   m_ObjectHideFlags: 0

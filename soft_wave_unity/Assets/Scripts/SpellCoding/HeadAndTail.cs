@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class HeadAndTail : MonoBehaviour, ICard
@@ -9,7 +10,7 @@ public class HeadAndTail : MonoBehaviour, ICard
     public GameObject HeadObject;
     public int Tails;
     public GameObject TailObject;
-    public Action WhenCasted;
+    public Action<AimInfo> WhenCasted;
     public Action WhenDragged;
     public bool IsExecuted { get; set; }
 
@@ -65,16 +66,16 @@ public class HeadAndTail : MonoBehaviour, ICard
 
     }
 
-    public virtual void OnUse()
+    public virtual void OnUse(AimInfo aimInfo)
     {
         if (IsExecuted) return;
         IsExecuted = true;
-        ReleaseSpell();
-        WhenCasted?.Invoke();
+        ReleaseSpell(aimInfo);
+        WhenCasted?.Invoke(aimInfo);
         IsExecuted = false;
     }
 
-    public virtual void ReleaseSpell()
+    public virtual void ReleaseSpell(AimInfo aimInfo)
     {
         Debug.Log("ReleaseSpell func not overrided");
     }

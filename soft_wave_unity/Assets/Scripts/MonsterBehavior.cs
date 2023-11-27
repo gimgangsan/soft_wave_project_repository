@@ -92,8 +92,13 @@ public class MonsterBehavior : MonoBehaviour
         }
     }
 
-    public void Attacked()
+    public void Attacked(float damage)
     {
+        this.health -= damage;
+        if(this.health < 0)
+        {
+            Destroy(gameObject);
+        }
         StartCoroutine(BlinkObject());
     }
 

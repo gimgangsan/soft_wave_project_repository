@@ -16,8 +16,8 @@ public class FireBall :MonoBehaviour, ICard
 
     public void OnUse(AimInfo aimInfo)
     {
-        GameObject player = GameObject.Find("Player");
-        player.GetComponent<TestFireBall>().ShootFireBall();
+        GameObject caster = GameObject.Find("FireballCaster");
+        caster.GetComponent<FireballCaster>().OnUse(aimInfo);
     }
 
     public void OnRemove()

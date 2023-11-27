@@ -17,7 +17,7 @@ public class CardManager : MonoBehaviour
     public UnityEvent<int> whenCasting; // 카드 사용시 이벤트 (카드 ID를 매개변수로 전달)
     public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
 
-    public List<GameObject> inventory = new List<GameObject>();
+    public List<GameObject> inventory;
     public List<GameObject> deck;       // 플레이어가 소지한 덱
     public GameObject[] hands;          // 플레이어가 손에 들고 있는 패
     public int drawIndex = 0;           // 이번 드로우에서 뽑을 카드 인덱스
@@ -33,6 +33,7 @@ public class CardManager : MonoBehaviour
     {
         _instance = this;
         hands = new GameObject[5];
+        inventory = new List<GameObject>();
         deck = new List<GameObject>(inventory);
 
         int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
@@ -144,7 +145,7 @@ public class CardManager : MonoBehaviour
         if (CardInfo.cardInfo[index].script != null)
         {
             Type script = CardInfo.cardInfo[index].script;
-            AimInfo CurrentAimInfo = new AimInfo(General.Instance.script_player.transform.position, General.Instance.MousePos());
+            AimInfo CurrentAimInfo = new(General.Instance.script_player.transform.position, General.Instance.MousePos());
             ((ICard)(hands[handIndex].GetComponent(script))).OnUse(CurrentAimInfo);     // 카드 사용 효과 호출
         }
 
@@ -187,7 +188,7 @@ public class CardManager : MonoBehaviour
     // 카드 오브젝트 생성
     GameObject InstantiateCard(int cardIndex)
     {
-        GameObject obj = new GameObject();
+        GameObject obj = new();
         obj.transform.SetParent(transform);
 
         obj.name = "Card" + cardIndex;

@@ -17,6 +17,7 @@ public class MonsterBehavior : MonoBehaviour
     private float blinkDuration = 0.5f;
     public float health;
     public float speed;
+    public int dropExp;
 
     public float ContactDistance;
     protected float MeleeCooldown = 0;
@@ -31,6 +32,7 @@ public class MonsterBehavior : MonoBehaviour
         animator = GetComponent<Animator>();
         target = General.Instance.script_player.transform;
         originalColor = rend.color; // 현재 색상 저장
+
     }
 
     private void Update()
@@ -68,6 +70,7 @@ public class MonsterBehavior : MonoBehaviour
         this.health -= damage;
         if(this.health <= 0)
         {
+            General.Instance.script_player.GetExp(dropExp);
             Destroy(gameObject);
         }
         StartCoroutine(BlinkObject());

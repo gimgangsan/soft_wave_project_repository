@@ -7,6 +7,7 @@ public class General : MonoBehaviour
     public string tag_enemy = "Enemy";
     public int layer_ConnetorTail = 7;
     public BasicActions script_player;
+    public GetCardManager getCardManager;
 
     private static General _instance;
 

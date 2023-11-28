@@ -122,11 +122,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   speed: 3
+  dropExp: 200
   ContactDistance: 2
   MeleeRate: 3
   MeleeDamage: 10
   Projectile: {fileID: 5323509310419244303, guid: d6d2908153f878c438e69cfc237409d1, type: 3}
-  projectileSpeed: 15
   FireRate: 5
   FireDistance: 15
 --- !u!50 &4102173293285460917

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BasicActions : MonoBehaviour, IDamagable
 {
@@ -14,11 +15,15 @@ public class BasicActions : MonoBehaviour, IDamagable
     Animator animator;
     SpriteRenderer PlayerRend;
     Vector3 targetPos;
+    public Slider ExpBar;
     public float MoveSpeed = 5f;
 
     public int MaxHP = 500;
     public int HP = 500;
     public int Amour = 0;
+    public int Exp = 0;     // 경험치
+    public int MaxExp = 50; // 레벨업에 필요한 경험치
+    private const int ExpStep = 30; // 레벨업 시, MaxExp가 얼마나 증가할 것인가
 
     public int Defense = 0;
     public int DamageRatio = 1;
@@ -29,6 +34,8 @@ public class BasicActions : MonoBehaviour, IDamagable
         PlayerRend = GetComponent<SpriteRenderer>();
         whenHPChanged.Invoke(WriteHPInfo());
         targetPos = new Vector3(0, -16, 0);
+        ExpBar.value = Exp;
+        ExpBar.maxValue = MaxExp;
     }
 
     // Update is called once per frame
@@ -125,5 +132,27 @@ public class BasicActions : MonoBehaviour, IDamagable
             animator.SetBool("isWalking", true);
         else
             animator.SetBool("isWalking", false);
+    }
+
+    public void GetExp(int exp)
+    {
+        Exp += exp;
+
+        //레벨업
+        if (Exp >= MaxExp)
+        {
+            Exp %= MaxExp;
+            MaxExp += ExpStep;
+
+            //선택지에 올라올 카드 선별
+            int[] cardIndexes = new int[3];
+            for(int i = 0; i < 3; i++)
+                cardIndexes[i] = UnityEngine.Random.Range(0, CardInfo.size);
+            General.Instance.getCardManager.GetCard(cardIndexes);   //카드 선택
+        }
+
+        //UI 조정
+        ExpBar.maxValue = MaxExp;
+        ExpBar.value = Exp;
     }
 }

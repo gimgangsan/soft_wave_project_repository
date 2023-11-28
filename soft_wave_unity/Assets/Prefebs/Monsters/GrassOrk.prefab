@@ -167,12 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329e5c6b375ca104cb97affb0a4922eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 0}
   health: 5
   speed: 3
-  contactDistance: 1
-  projectileSpeed: 0
-  attackCoolRate: 1
-  attackRange: 2
-  attackDamage: 10
-  isMelee: 1
+  dropExp: 50
+  ContactDistance: 1
+  MeleeRate: 1
+  MeleeDamage: 10

@@ -149,6 +149,7 @@ public class CardManager : MonoBehaviour
             ((ICard)(hands[handIndex].GetComponent(script))).OnUse(CurrentAimInfo);     // 카드 사용 효과 호출
         }
 
+        hands[handIndex] = null;
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
 
         mana.value -= manaConsume;       // 스태미나 소모

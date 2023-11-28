@@ -1,5 +1,0 @@
-﻿id,name,imageDirectory,Effect,description
-1,파이어볼,FireBall,FireBall,2 피해를 가한다
-2,방어,TestImage\Defense,Card_002,2 방어한다
-3,구르기,TestImage\Roll,Card_003,앞으로 구른다
-4,Empty,Empty,Empty,empty

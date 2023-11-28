@@ -76,8 +76,11 @@ public class MonsterBehavior : MonoBehaviour
             General.Instance.script_player.GetExp(dropExp);
             Destroy(gameObject);
         }
-        Audio.Play();
-        StartCoroutine(BlinkObject());
+        else
+        {
+            Audio.Play();
+            StartCoroutine(BlinkObject());
+        }
     }
 
     IEnumerator BlinkObject()

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 678151642556929600}
   - component: {fileID: 6069061838704656884}
   - component: {fileID: 6069061838704656885}
+  - component: {fileID: 4677854149400242166}
   m_Layer: 0
   m_Name: EmptyCard
   m_TagString: Untagged
@@ -49,7 +50,7 @@ MonoBehaviour:
   index: 3
   name: "\uBE48 \uCE74\uB4DC"
   description: "\uC608\uC2DC"
-  icon: {fileID: 21300000, guid: 6385210290fd23446ba9558e66c646cc, type: 3}
+  icon: {fileID: 21300000, guid: ceb1d502b7f7f6d4db980ec7dcbc4b0a, type: 3}
   inDeck: 0
 --- !u!212 &6069061838704656884
 SpriteRenderer:
@@ -92,7 +93,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6385210290fd23446ba9558e66c646cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ceb1d502b7f7f6d4db980ec7dcbc4b0a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,3 +130,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4677854149400242166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6069061838704656887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb0b9630e586464583fd12d23207008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Heads: 1
+  HeadObject: {fileID: 209672305068758647, guid: feff520068ce3934c86e850229ffdf05, type: 3}
+  TailObject: {fileID: 7661399269194565366, guid: f2b64f11869c5304e901af351ee5ddf7, type: 3}

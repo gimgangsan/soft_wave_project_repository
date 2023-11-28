@@ -21,6 +21,8 @@ public class DeckManager : MonoBehaviour
     public GameObject craftButton;      // 카드 결합 버튼
     public GameObject removeButton;     // 카드 제거 버튼
     public GameObject removeMessage;    // 카드 제거 시 확인 메시지
+    public GameObject BackgroundUI;
+    public GameObject CardListViewUI;
     public Sprite highlightSprite;
 
     private Vector2 dropdownUpperPos;
@@ -33,6 +35,7 @@ public class DeckManager : MonoBehaviour
     public int selectedCard;            // 현재 선택된 카드
     bool isClosing;                     // 현재 화면을 닫고 있는지 확인
     bool canClose = true;               // 현재 화면을 닫을 수 잇는지 확인
+    bool isCrafting = false;
 
     private void Awake()
     {
@@ -173,10 +176,13 @@ public class DeckManager : MonoBehaviour
     {
         if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
 
+        isCrafting = true;
+        BackgroundUI.SetActive(false);
+        CardListViewUI.SetActive(false);
+
         // 카드 결합 관련 내용...
         Camera.main.transform.position = new Vector3(-100.5f, -18.25f ,Camera.main.transform.position.z);
         Canvas.SetActive(false);
-        deckManagerUI.SetActive(false);
     }
 
     public void OnCraftEnd()
@@ -184,7 +190,7 @@ public class DeckManager : MonoBehaviour
         Vector2 PlayerPos = General.Instance.script_player.transform.position;
         Camera.main.transform.position = new Vector3(PlayerPos.x, PlayerPos.y, Camera.main.transform.position.z);
         Canvas.SetActive(true);
-        deckManagerUI.SetActive(true);
+        isCrafting = false;
     }
 
     // 카드 제거 버튼 클릭 시 호출
@@ -211,6 +217,15 @@ public class DeckManager : MonoBehaviour
     public void OnComplete()
     {
         if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
+
+        if (isCrafting)
+        {
+            BackgroundUI.SetActive(true);
+            CardListViewUI.SetActive(true);
+            OnCraftEnd();
+            return;
+        }
+
         isClosing = true;                   // 닫는 중으로 설정
 
         dropdownMenu.SetActive(false);      // 드롭다운 메뉴 비활성화

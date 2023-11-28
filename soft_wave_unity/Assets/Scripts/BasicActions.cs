@@ -5,7 +5,7 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BasicActions : MonoBehaviour
+public class BasicActions : MonoBehaviour, IDamagable
 {
     public UnityEvent<DamageInfo> whenHarmed;
     public UnityEvent<HealInfo> whenHealed;
@@ -27,7 +27,6 @@ public class BasicActions : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         PlayerRend = GetComponent<SpriteRenderer>();
-        General.Instance.script_player = this;
         whenHPChanged.Invoke(WriteHPInfo());
         targetPos = new Vector3(0, -16, 0);
     }

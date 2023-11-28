@@ -1881,7 +1881,7 @@ MonoBehaviour:
   tag_player: Player
   tag_enemy: Enemy
   layer_ConnetorTail: 7
-  script_player: {fileID: 0}
+  script_player: {fileID: 334471507}
 --- !u!1 &490814182
 GameObject:
   m_ObjectHideFlags: 0

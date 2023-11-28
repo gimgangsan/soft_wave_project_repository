@@ -9,7 +9,7 @@ public class FireballCaster : HeadAndTail
     {
         Debug.Log("fireball casted");
         GameObject newFireball = Instantiate(Fireball);
-        newFireball.transform.position = General.Instance.script_player.transform.position;
+        newFireball.transform.position = aimInfo.ShooterPos;
         newFireball.GetComponent<Fireball>().SetDir(aimInfo.CastAngle());
     }
 }

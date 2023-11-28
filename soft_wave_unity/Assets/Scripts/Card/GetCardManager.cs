@@ -35,10 +35,16 @@ public class GetCardManager : MonoBehaviour
 
     void Update()
     {
-        // 테스트 목적: F1-F2 키를 누르면 카드 선택 UI를 표시
-        if (Input.GetKeyDown(KeyCode.F1)) GetCard(new int[1] { 1 });
-        if (Input.GetKeyDown(KeyCode.F2)) GetCard(new int[2] { 1, 2 });
-        if (Input.GetKeyDown(KeyCode.F3)) GetCard(new int[3] { 1, 2, 3 });
+        // 테스트 목적: F2 키를 누르면 카드 선택 UI를 표시
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            int[] cards = new int[3];
+            for(int i = 0; i < 3; i++)
+            {
+                cards[i] = Random.Range(0, CardManager.Instance.cardsList.Length);
+            }
+            GetCard(cards);
+        }
     }
 
     // 외부에서 함수 호출 시 이용하기 위한 함수
@@ -47,6 +53,7 @@ public class GetCardManager : MonoBehaviour
     public void GetCard(int[] cardsToChoose)
     {
         General.Instance.isPause = true;    //일시정지
+        General.Instance.canOpenMenu = false;
         getCardUI.SetActive(true);
         Initialize();
         DisplayCards(cardsToChoose);
@@ -156,6 +163,7 @@ public class GetCardManager : MonoBehaviour
         StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
 
         General.Instance.isPause = false;
+        General.Instance.canOpenMenu = true;
     }
 
     // 덱 수정 버튼 클릭 시 발생하는 이벤트

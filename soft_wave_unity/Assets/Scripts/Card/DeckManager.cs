@@ -34,16 +34,24 @@ public class DeckManager : MonoBehaviour
     bool isClosing;                     // 현재 화면을 닫고 있는지 확인
     bool canClose = true;               // 현재 화면을 닫을 수 잇는지 확인
 
-    public void Awake()
+    private void Awake()
     {
         dropdownUpperPos = craftButton.GetComponent<RectTransform>().localPosition;
         dropdownLowerPos = removeButton.GetComponent<RectTransform>().localPosition;
     }
 
-    // 카드 획득 화면에서 관련 버튼 클릭 시 이 함수 호출
-    // 덱 편집 관련 UI를 초기화한다
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape) && General.Instance.canOpenMenu)
+        {
+            Initialize();
+        }
+    }
+
+    // 덱 편집 UI를 호출한다
     public void Initialize()
     {
+        General.Instance.isPause = true;
         deckManagerUI.SetActive(true);                                  // 캔버스 활성화
         deckManagerUI.GetComponent<Animator>().SetTrigger("Fade In");   // 페이드인 애니메이션 재생
 
@@ -144,7 +152,20 @@ public class DeckManager : MonoBehaviour
         menuTransform.anchoredPosition = cardList[i].GetComponent<RectTransform>().anchoredPosition;
         menuTransform.anchoredPosition += new Vector2(-771, 80);    // 드롭다운 메뉴 위치 지정
 
-        craftButton.SetActive(true);
+        if (CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().index == 6)
+        {
+            menuTransform.sizeDelta = new Vector2(menuTransform.rect.width, 200);
+            craftButton.SetActive(true);
+            craftButton.GetComponent<RectTransform>().localPosition = dropdownUpperPos;
+            removeButton.GetComponent<RectTransform>().localPosition = dropdownLowerPos;
+        }
+        else
+        {
+            menuTransform.sizeDelta = new Vector2(menuTransform.rect.width, 125);
+            craftButton.SetActive(false);
+            craftButton.GetComponent<RectTransform>().localPosition = dropdownLowerPos;
+            removeButton.GetComponent<RectTransform>().localPosition = dropdownUpperPos + new Vector2(0, -35);
+        }
     }
 
     // 카드 결합 버튼 클릭 시 호출

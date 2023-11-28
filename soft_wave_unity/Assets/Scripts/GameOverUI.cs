@@ -8,11 +8,13 @@ using UnityEngine.SceneManagement;
 public class GameOverUI : MonoBehaviour
 {
     public GameObject[] text;
+    public GameObject button;
     private CanvasGroup cvGroup;
 
     private void Start()
     {
         cvGroup = GetComponent<CanvasGroup>();
+        button.SetActive(false);
     }
 
     private void UpdateText(bool isWin)
@@ -35,14 +37,17 @@ public class GameOverUI : MonoBehaviour
     {
         General.Instance.isPause = true;
         General.Instance.canOpenMenu = false;
+        button.SetActive(true);
         StartCoroutine("FadeIn");
         UpdateText(false);
+
     }
 
     public void DoWin()
     {
         General.Instance.isPause = true;
         General.Instance.canOpenMenu = false;
+        button.SetActive(true);
         StartCoroutine("FadeIn");
         UpdateText(true);
     }

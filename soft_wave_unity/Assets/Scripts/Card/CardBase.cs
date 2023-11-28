@@ -9,5 +9,6 @@ public class CardBase : MonoBehaviour
     public string name;
     public string description;
     public Sprite icon;
+    [HideInInspector]
     public bool inDeck;     // 카드의 덱 포함 여부
 }

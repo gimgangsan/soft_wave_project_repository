@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6725105634296691708
+--- !u!1 &4658603563596604503
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,58 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6725105634296691682}
-  - component: {fileID: 4581386397667715897}
-  - component: {fileID: 6725105634296691683}
-  - component: {fileID: 6725105634296691681}
-  - component: {fileID: 6257343220067452839}
-  - component: {fileID: 8924175926397147241}
+  - component: {fileID: 4658603563596604489}
+  - component: {fileID: 4658603563596604502}
+  - component: {fileID: 4679817247297576115}
+  - component: {fileID: 4694596451266067230}
   m_Layer: 0
-  m_Name: HealCaster
+  m_Name: BlackholeCaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6725105634296691682
+--- !u!4 &4658603563596604489
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6725105634296691708}
+  m_GameObject: {fileID: 4658603563596604503}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.24, y: 1.18, z: 0}
+  m_LocalPosition: {x: -5.4, y: 0.2, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4581386397667715897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6725105634296691708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 496e2540758c11841a8d7c3bbb1a70dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
-  name: "\uD790"
-  description: "\uD790"
-  icon: {fileID: 21300000, guid: a70895c73f9251a45825e110a17cd43f, type: 3}
-  inDeck: 0
---- !u!212 &6725105634296691683
+--- !u!212 &4658603563596604502
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6725105634296691708}
+  m_GameObject: {fileID: 4658603563596604503}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -94,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a70895c73f9251a45825e110a17cd43f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6385210290fd23446ba9558e66c646cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,62 +86,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6725105634296691681
+--- !u!114 &4679817247297576115
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6725105634296691708}
+  m_GameObject: {fileID: 4658603563596604503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbd91c8aa91c3eb42a89331308fc4561, type: 3}
+  m_Script: {fileID: 11500000, guid: 645bf9f6dfe628847b5ce0a834d7c5dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Heads: 0
   HeadObject: {fileID: 209672305068758647, guid: feff520068ce3934c86e850229ffdf05, type: 3}
   TailObject: {fileID: 7661399269194565366, guid: f2b64f11869c5304e901af351ee5ddf7, type: 3}
-  HealEffect: {fileID: 4538739244481553339, guid: e0ecd8d377ac9934cbe489ae6cc451b9, type: 3}
---- !u!61 &6257343220067452839
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6725105634296691708}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &8924175926397147241
+  BlackholeObject: {fileID: 3520257944234382534, guid: 364e6b16681bada43b2e5b62be3afc2e, type: 3}
+--- !u!114 &4694596451266067230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6725105634296691708}
+  m_GameObject: {fileID: 4658603563596604503}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 496e2540758c11841a8d7c3bbb1a70dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  name: "\uD790"
-  description: "\uCCB4\uB825 10\uD68C\uBCF5"
-  icon: {fileID: 21300000, guid: a70895c73f9251a45825e110a17cd43f, type: 3}
+  name: "\uBE14\uB799\uD640"
+  description: "\uC8FC\uBCC0 \uC801\uC744 \uB2F9\uAE30\uB294 \uD22C\uC0AC\uCCB4"
+  icon: {fileID: 21300000, guid: 6385210290fd23446ba9558e66c646cc, type: 3}
   inDeck: 0

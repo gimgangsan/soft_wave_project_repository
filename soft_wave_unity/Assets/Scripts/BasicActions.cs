@@ -16,6 +16,7 @@ public class BasicActions : MonoBehaviour, IDamagable
     SpriteRenderer PlayerRend;
     Vector3 targetPos;
     public Slider ExpBar;
+    public GameObject PinPoint;
     public float MoveSpeed = 5f;
 
     public int MaxHP = 500;
@@ -51,8 +52,13 @@ public class BasicActions : MonoBehaviour, IDamagable
                 PlayerRend.flipX = false;
             targetPos = General.Instance.MousePos();
         }
-        if(targetPos != transform.position)
+        if (targetPos != transform.position)
+        {
             MoveToTarget();
+            PinPoint.SetActive(true);
+            PinPoint.transform.position = targetPos;
+        }
+        else    PinPoint.SetActive(false);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

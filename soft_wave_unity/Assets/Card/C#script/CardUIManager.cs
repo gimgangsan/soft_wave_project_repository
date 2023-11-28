@@ -53,11 +53,11 @@ public class CardUIManager : MonoBehaviour
         {
             if (obj.name == "Image")                                                                                // 그림 갱신
             {
-                obj.GetComponent<Image>().sprite = CardInfo.cardInfo[cardIndex].image;
+                obj.GetComponent<Image>().sprite = CardManager.Instance.cardsList[cardIndex].GetComponent<CardBase>().icon;
                 obj.GetComponent<Image>().color = Color.white;
             }
-            if (obj.name == "Name") obj.GetComponent<TMP_Text>().text = CardInfo.cardInfo[cardIndex].name;          // 이름 갱신
-            if (obj.name == "Description") obj.GetComponent<TMP_Text>().text = CardInfo.cardInfo[cardIndex].desc;   // 설명 갱신
+            if (obj.name == "Name") obj.GetComponent<TMP_Text>().text = CardManager.Instance.cardsList[cardIndex].GetComponent<CardBase>().name;          // 이름 갱신
+            if (obj.name == "Description") obj.GetComponent<TMP_Text>().text = CardManager.Instance.cardsList[cardIndex].GetComponent<CardBase>().description;   // 설명 갱신
         }
     }
 

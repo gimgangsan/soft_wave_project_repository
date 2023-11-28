@@ -14,6 +14,7 @@ using System.Text;
 
 public class CardManager : MonoBehaviour
 {
+    public GameObject[] cardsList;
     public UnityEvent<int> whenCasting; // 카드 사용시 이벤트 (카드 ID를 매개변수로 전달)
     public UnityEvent<int> whenHit; // 데미지를 줄 때 이벤트 (준 데미지 량을 매개변수로 전달)
 
@@ -62,11 +63,8 @@ public class CardManager : MonoBehaviour
     {
         deck.Add(obj);                                          // 인벤토리에 있는 obj 카드를 덱에 추가한다
         int index = IndexFromObject(obj);
-        if (CardInfo.cardInfo[index].script != null)
-        {
-            Type script = CardInfo.cardInfo[index].script;
-            ((ICard)(obj.GetComponent(script))).OnAcquire();    // 카드 추가 효과 호출
-        }
+
+        obj.GetComponent<ICard>().OnAcquire();                  // 카드 추가 효과 호출
 
         obj.GetComponent<CardBase>().inDeck = true;             // 카드가 deck에 있다고 표시
     }
@@ -84,7 +82,7 @@ public class CardManager : MonoBehaviour
     {
         inventory.Remove(obj);                          // 인벤토리에서 카드 제거
         if (deck.Contains(obj)) removeFromDeck(obj);    // 덱에도 카드가 있다면 덱에서도 제거
-
+        obj.GetComponent<ICard>().OnRemove();           // 카드 제거 효과 호출
         Destroy(obj);                                   // 카드 오브젝트 파괴
     }
 
@@ -99,11 +97,6 @@ public class CardManager : MonoBehaviour
         if (objIndexInDeck == -1) return;               // 덱 내에 카드가 없으면 리턴
 
         int cardIndex = IndexFromObject(obj);
-        if (CardInfo.cardInfo[cardIndex].script != null)
-        {
-            Type script = CardInfo.cardInfo[cardIndex].script;
-            ((ICard)(obj.GetComponent(script))).OnRemove();     // 카드 제거 효과 호출
-        }
         deck.Remove(obj);                               // 덱에서 카드 제거
         obj.GetComponent<CardBase>().inDeck = false;
 
@@ -142,12 +135,10 @@ public class CardManager : MonoBehaviour
         if (mana.value < manaConsume) return;                                   // 스태미나가 충분한지 검사
         Debug.Log(handIndex + "/" + hands.Length);
         int index = IndexFromObject(hands[handIndex]);
-        if (CardInfo.cardInfo[index].script != null)
-        {
-            Type script = CardInfo.cardInfo[index].script;
-            AimInfo CurrentAimInfo = new(General.Instance.script_player.transform.position, General.Instance.MousePos());
-            ((ICard)(hands[handIndex].GetComponent(script))).OnUse(CurrentAimInfo);     // 카드 사용 효과 호출
-        }
+        AimInfo CurrentAimInfo = new(General.Instance.script_player.transform.position, General.Instance.MousePos());
+        hands[handIndex].GetComponent<ICard>().OnUse(CurrentAimInfo);     // 카드 사용 효과 호출
+
+        
 
         hands[handIndex] = null;
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
@@ -166,12 +157,7 @@ public class CardManager : MonoBehaviour
             drawIndex = 0;
         }
         CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
-        int index = IndexFromObject(hands[handIndex]);
-        if (CardInfo.cardInfo[index].script != null)
-        {
-            Type script = CardInfo.cardInfo[index].script;
-            ((ICard)(hands[handIndex].GetComponent(script))).OnDraw();     // 카드 드로우 효과 호출
-        }
+        hands[handIndex].GetComponent<ICard>().OnDraw(); // 카드 드로우 효과 호출
     }
 
     // 덱 셔플
@@ -189,13 +175,9 @@ public class CardManager : MonoBehaviour
     // 카드 오브젝트 생성
     GameObject InstantiateCard(int cardIndex)
     {
-        GameObject obj = new();
+        GameObject obj = Instantiate(cardsList[cardIndex]);
         obj.transform.SetParent(transform);
-
-        obj.name = "Card" + cardIndex;
-        obj.AddComponent<CardBase>();
         obj.GetComponent<CardBase>().index = cardIndex;
-        obj.AddComponent(CardInfo.cardInfo[cardIndex].script);
 
         return obj;
     }

@@ -14,16 +14,10 @@ public class HeadAndTail : MonoBehaviour, ICard
     public Action WhenDragged;
     public bool IsExecuted { get; set; }
 
-    public string Name { get; set; }
-    public Sprite Sprite { get; set; }
-    public string Describtion { get; set; }
     public int ManaCost { get; set; }
 
     private void Awake()
     {
-        Name = gameObject.name;
-        Sprite = null;
-        Describtion = "empty describtion";
         ManaCost = 1;
         GenerateHead();
         GenerateTail();

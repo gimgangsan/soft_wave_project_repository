@@ -11,6 +11,7 @@ public class MonsterBehavior : MonoBehaviour
     protected Transform target;
     SpriteRenderer rend;
     Animator animator;
+    AudioSource Audio;
     Color originalColor;
 
     
@@ -32,7 +33,7 @@ public class MonsterBehavior : MonoBehaviour
         animator = GetComponent<Animator>();
         target = General.Instance.script_player.transform;
         originalColor = rend.color; // 현재 색상 저장
-
+        Audio = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -75,6 +76,7 @@ public class MonsterBehavior : MonoBehaviour
             General.Instance.script_player.GetExp(dropExp);
             Destroy(gameObject);
         }
+        Audio.Play();
         StartCoroutine(BlinkObject());
     }
 

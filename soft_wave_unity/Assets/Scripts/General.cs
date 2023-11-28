@@ -22,7 +22,6 @@ public class General : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        cardsList = cardManager.cardsList;
     }
 
     public Vector2 MousePos()

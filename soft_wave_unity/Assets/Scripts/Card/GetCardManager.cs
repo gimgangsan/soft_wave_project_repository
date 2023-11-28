@@ -35,10 +35,16 @@ public class GetCardManager : MonoBehaviour
 
     void Update()
     {
-        // 테스트 목적: F1-F2 키를 누르면 카드 선택 UI를 표시
-        if (Input.GetKeyDown(KeyCode.F1)) GetCard(new int[1] { 1 });
-        if (Input.GetKeyDown(KeyCode.F2)) GetCard(new int[2] { 1, 2 });
-        if (Input.GetKeyDown(KeyCode.F3)) GetCard(new int[3] { 1, 2, 3 });
+        // 테스트 목적: F2 키를 누르면 카드 선택 UI를 표시
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            int[] cards = new int[3];
+            for(int i = 0; i < 3; i++)
+            {
+                cards[i] = Random.Range(0, CardManager.Instance.cardsList.Length);
+            }
+            GetCard(cards);
+        }
     }
 
     // 외부에서 함수 호출 시 이용하기 위한 함수

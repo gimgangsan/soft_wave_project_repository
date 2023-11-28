@@ -79,6 +79,11 @@ public class BasicActions : MonoBehaviour, IDamagable
             onDead.Invoke();
         }
         whenHPChanged.Invoke(WriteHPInfo());
+
+        if (HP <= 0)
+        {
+            GameObject.Find("GameOver UI").GetComponent<GameOverUI>().DoGameOver();
+        }
     }
 
     public HPInfo WriteHPInfo()

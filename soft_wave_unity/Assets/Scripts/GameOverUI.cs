@@ -34,14 +34,16 @@ public class GameOverUI : MonoBehaviour
     public void DoGameOver()
     {
         General.Instance.isPause = true;
+        General.Instance.canOpenMenu = false;
         StartCoroutine("FadeIn");
         UpdateText(false);
     }
 
     public void DoWin()
     {
-        StartCoroutine("FadeIn");
         General.Instance.isPause = true;
+        General.Instance.canOpenMenu = false;
+        StartCoroutine("FadeIn");
         UpdateText(true);
     }
 

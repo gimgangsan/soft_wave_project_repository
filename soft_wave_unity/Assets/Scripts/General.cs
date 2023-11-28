@@ -11,6 +11,7 @@ public class General : MonoBehaviour
     public CardManager cardManager;
     public GameObject[] cardsList;
     public bool isPause = false;
+    public bool canOpenMenu = true;
 
     private static General _instance;
 

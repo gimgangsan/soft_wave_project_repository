@@ -53,6 +53,7 @@ public class GetCardManager : MonoBehaviour
     public void GetCard(int[] cardsToChoose)
     {
         General.Instance.isPause = true;    //일시정지
+        General.Instance.canOpenMenu = false;
         getCardUI.SetActive(true);
         Initialize();
         DisplayCards(cardsToChoose);
@@ -162,6 +163,7 @@ public class GetCardManager : MonoBehaviour
         StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
 
         General.Instance.isPause = false;
+        General.Instance.canOpenMenu = true;
     }
 
     // 덱 수정 버튼 클릭 시 발생하는 이벤트

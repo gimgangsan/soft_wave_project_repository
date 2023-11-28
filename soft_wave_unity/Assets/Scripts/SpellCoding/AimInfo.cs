@@ -23,6 +23,6 @@ public struct AimInfo
 
     public Vector2 NomarlizeInto(float ThisLength)
     {
-        return (MousePos - (Vector2)ShooterTransform.position) * ThisLength;
+        return (MousePos - (Vector2)ShooterTransform.position).normalized * ThisLength;
     }
 }

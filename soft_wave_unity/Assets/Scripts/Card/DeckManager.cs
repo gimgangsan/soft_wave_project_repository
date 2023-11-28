@@ -155,6 +155,7 @@ public class DeckManager : MonoBehaviour
         // 카드 결합 관련 내용...
         Camera.main.transform.position = new Vector3(-100.5f, -18.25f ,Camera.main.transform.position.z);
         Canvas.SetActive(false);
+        deckManagerUI.SetActive(false);
     }
 
     public void OnCraftEnd()
@@ -162,6 +163,7 @@ public class DeckManager : MonoBehaviour
         Vector2 PlayerPos = General.Instance.script_player.transform.position;
         Camera.main.transform.position = new Vector3(PlayerPos.x, PlayerPos.y, Camera.main.transform.position.z);
         Canvas.SetActive(true);
+        deckManagerUI.SetActive(true);
     }
 
     // 카드 제거 버튼 클릭 시 호출

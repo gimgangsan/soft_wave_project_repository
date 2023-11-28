@@ -1291,7 +1291,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Heads: 0
   HeadObject: {fileID: 209672305068758647, guid: feff520068ce3934c86e850229ffdf05, type: 3}
-  Tails: 1
   TailObject: {fileID: 7661399269194565366, guid: f2b64f11869c5304e901af351ee5ddf7, type: 3}
   Fireball: {fileID: 5323509310419244303, guid: 4b35a1b0db93ae5409793364c59fe4af, type: 3}
 --- !u!212 &290666110
@@ -5008,6 +5007,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b05aac21dd39ff4cbc9d24292bbcef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardsList:
+  - {fileID: 6494290815172479117, guid: ed48e144f9b3f0c43ab25e6d17f3ef02, type: 3}
+  - {fileID: 6066544954325536167, guid: 9ef67d6ffa02c4e499c945e23c762640, type: 3}
+  - {fileID: 3395153035314014992, guid: e2ec43287d736584ea52142762427848, type: 3}
+  - {fileID: 8795789294908492155, guid: 6564f213ca8d664489cc61196d4484b6, type: 3}
+  - {fileID: 6069061838704656887, guid: 5e45ffee036b90549b0ce78d4a80dd17, type: 3}
   whenCasting:
     m_PersistentCalls:
       m_Calls: []

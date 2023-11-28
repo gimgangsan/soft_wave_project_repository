@@ -38,7 +38,7 @@ public class CardManager : MonoBehaviour
         deck = new List<GameObject>(inventory);
 
         int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // �׽�Ʈ �������� ������ ���� �����ϵ��� ��
-        bool[] isDeck = { true, true, true, true, false, true, true, true, false, false };
+        bool[] isDeck = { true, true, true, true, false, true, true, true, true, false };
         LoadData(initInven, isDeck);
     }
 
@@ -64,7 +64,7 @@ public class CardManager : MonoBehaviour
         deck.Add(obj);                                          // �κ��丮�� �ִ� obj ī�带 ���� �߰��Ѵ�
         int index = IndexFromObject(obj);
 
-        obj.GetComponent<ICard>().OnAcquire();                  // ī�� �߰� ȿ�� ȣ��
+        obj.GetComponent<ICard>()?.OnAcquire();                  // ī�� �߰� ȿ�� ȣ��
 
         obj.GetComponent<CardBase>().inDeck = true;             // ī�尡 deck�� �ִٰ� ǥ��
     }
@@ -82,7 +82,7 @@ public class CardManager : MonoBehaviour
     {
         inventory.Remove(obj);                          // �κ��丮���� ī�� ����
         if (deck.Contains(obj)) removeFromDeck(obj);    // ������ ī�尡 �ִٸ� �������� ����
-        obj.GetComponent<ICard>().OnRemove();           // ī�� ���� ȿ�� ȣ��
+        obj.GetComponent<ICard>()?.OnRemove();           // ī�� ���� ȿ�� ȣ��
         Destroy(obj);                                   // ī�� ������Ʈ �ı�
     }
 
@@ -136,7 +136,7 @@ public class CardManager : MonoBehaviour
         Debug.Log(handIndex + "/" + hands.Length);
         int index = IndexFromObject(hands[handIndex]);
         AimInfo CurrentAimInfo = new(General.Instance.script_player.transform, General.Instance.MousePos());
-        hands[handIndex].GetComponent<ICard>().OnUse(CurrentAimInfo);     // ī�� ��� ȿ�� ȣ��
+        hands[handIndex].GetComponent<ICard>()?.OnUse(CurrentAimInfo);     // ī�� ��� ȿ�� ȣ��
         hands[handIndex] = null;
         CardUIManager.Instance.Discard(handIndex);      // UI�� ī�� ��� �Լ��� ȣ��
 
@@ -154,15 +154,23 @@ public class CardManager : MonoBehaviour
             drawIndex = 0;
         }
         CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
-        hands[handIndex].GetComponent<ICard>().OnDraw(); // ī�� ��ο� ȿ�� ȣ��
+        hands[handIndex].GetComponent<ICard>()?.OnDraw(); // ī�� ��ο� ȿ�� ȣ��
     }
 
     // �� ����
     // �Ǽ�-������(Fisher-Yate) ���� ������� ����
     void ShuffleDeck()
     {
-        for (int i = deck.Count() - 1; i > 1; i--) {
+        for (int i = deck.Count() - 5; i > 1; i--) {
             int rand = UnityEngine.Random.Range(0, i + 1);
+            GameObject temp = deck[rand];
+            deck[rand] = deck[i];
+            deck[i] = temp;
+        }
+
+        for (int i = deck.Count() - 1; i > deck.Count() - 5; i--)
+        {
+            int rand = UnityEngine.Random.Range(4, i + 1);
             GameObject temp = deck[rand];
             deck[rand] = deck[i];
             deck[i] = temp;

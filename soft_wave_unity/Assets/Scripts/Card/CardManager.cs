@@ -184,7 +184,9 @@ public class CardManager : MonoBehaviour
         GameObject obj = Instantiate(cardsList[cardIndex]);
         obj.transform.SetParent(transform);
         obj.GetComponent<CardBase>().index = cardIndex;
-        obj.transform.position = new Vector3(-100.5f, -18.25f, 0);
+        float posX = UnityEngine.Random.Range(-116f, -84f);
+        float posY = UnityEngine.Random.Range(-24f, -12f);
+        obj.transform.position = new Vector3(posX, posY, 0);
 
         return obj;
     }

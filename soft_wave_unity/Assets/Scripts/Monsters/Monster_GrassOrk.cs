@@ -6,8 +6,8 @@ public class Monster_GrassOrk : MonsterBehavior
 {
     public Monster_GrassOrk() : base()
     {
-        health = 3f;
-        speed = 2f;
+        health = 5f;
+        speed = 3f;
         contactDistance = 1f;
         attackCoolRate = 1f;
         attackRange = 2f;

@@ -20,8 +20,6 @@ public class MonsterBehavior : MonoBehaviour
     public float contactDistance;
     public float projectileSpeed;
 
-    //bool follow = false;
-
     private float attackCooldown = 0;
     public float attackCoolRate;
     public float attackRange;

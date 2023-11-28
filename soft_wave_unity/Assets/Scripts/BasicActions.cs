@@ -41,6 +41,8 @@ public class BasicActions : MonoBehaviour, IDamagable
     // Update is called once per frame
     void Update()
     {
+        if (General.Instance.isPause) return;
+
         if(Input.GetMouseButton(1)) //우클릭 시 플레이어 이동
         {
             if(transform.position.x > targetPos.x)
@@ -147,7 +149,7 @@ public class BasicActions : MonoBehaviour, IDamagable
             //선택지에 올라올 카드 선별
             int[] cardIndexes = new int[3];
             for(int i = 0; i < 3; i++)
-                cardIndexes[i] = UnityEngine.Random.Range(0, CardInfo.size);
+                cardIndexes[i] = UnityEngine.Random.Range(1, CardInfo.size);
             General.Instance.getCardManager.GetCard(cardIndexes);   //카드 선택
         }
 

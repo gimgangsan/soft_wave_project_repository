@@ -8,6 +8,8 @@ public class General : MonoBehaviour
     public int layer_ConnetorTail = 7;
     public BasicActions script_player;
     public GetCardManager getCardManager;
+    public CardManager cardManager;
+    public GameObject[] cardsList;
     public bool isPause = false;
 
     private static General _instance;
@@ -20,6 +22,7 @@ public class General : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        cardsList = cardManager.cardsList;
     }
 
     public Vector2 MousePos()

@@ -178,7 +178,7 @@ public class DeckManager : MonoBehaviour
         {
             if (obj.name == "Remove Text")
             {
-                string text = "Remove?\n" + CardInfo.cardInfo[CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().index].name;
+                string text = "Remove?\n" + CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().name;
                 obj.GetComponent<TextMeshProUGUI>().text = text;    // 제거 확인 창에 표시할 텍스트 갱신
             }
         }

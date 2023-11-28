@@ -150,12 +150,18 @@ public class CardManager : MonoBehaviour
     void DrawCard(int handIndex)
     {
         CardUIManager.Instance.DrawCard(handIndex, IndexFromObject(deck[drawIndex]));  // UI�� ī�� �̱� �Լ��� ȣ��
-        hands[handIndex] = deck[drawIndex++];       // �տ� �� �� ���� ��, drawIndex ����
+        hands[handIndex] = deck[drawIndex];       // �տ� �� �� ���� ��, drawIndex ����
+        while (drawIndex < deck.Count() && hands.Contains(deck[drawIndex])) drawIndex++;
+
         if (drawIndex >= deck.Count())
         {
-            ShuffleDeck();
+            do {
+                ShuffleDeck();
+            }
+            while (hands.Contains(deck[0]));
             drawIndex = 0;
         }
+
         CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
         hands[handIndex].GetComponent<ICard>()?.OnDraw(); // ī�� ��ο� ȿ�� ȣ��
     }
@@ -164,16 +170,8 @@ public class CardManager : MonoBehaviour
     // �Ǽ�-������(Fisher-Yate) ���� ������� ����
     void ShuffleDeck()
     {
-        for (int i = deck.Count() - 5; i > 1; i--) {
+        for (int i = deck.Count() - 1; i > 1; i--) {
             int rand = UnityEngine.Random.Range(0, i + 1);
-            GameObject temp = deck[rand];
-            deck[rand] = deck[i];
-            deck[i] = temp;
-        }
-
-        for (int i = deck.Count() - 1; i > deck.Count() - 5; i--)
-        {
-            int rand = UnityEngine.Random.Range(4, i + 1);
             GameObject temp = deck[rand];
             deck[rand] = deck[i];
             deck[i] = temp;

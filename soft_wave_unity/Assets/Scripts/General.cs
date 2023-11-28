@@ -8,6 +8,7 @@ public class General : MonoBehaviour
     public int layer_ConnetorTail = 7;
     public BasicActions script_player;
     public GetCardManager getCardManager;
+    public bool isPause = false;
 
     private static General _instance;
 

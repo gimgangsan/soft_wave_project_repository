@@ -37,6 +37,8 @@ public class MonsterBehavior : MonoBehaviour
 
     private void Update()
     {
+        if (General.Instance.isPause) return;   //일시정지
+
         MeleeCooldown -= Time.deltaTime;
         FollowTarget();
     }

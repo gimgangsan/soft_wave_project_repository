@@ -27,6 +27,8 @@ public class MonsterSpawner : MonoBehaviour
 
     void Update()
     {
+        if (General.Instance.isPause) return;
+
         cool[0] += Time.deltaTime;
         cool[1] += Time.deltaTime;
         time += Time.deltaTime;

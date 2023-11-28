@@ -213,6 +213,8 @@ public class DeckManager : MonoBehaviour
 
         deckManagerUI.GetComponent<Animator>().SetTrigger("Fade Out");  // 페이드 아웃 애니메이션 재생
         StartCoroutine("FadeOff");                                      // UI 비활성화를 위한 코루틴 호출
+
+        General.Instance.isPause = false;
     }
 
     // 제거 확인 버튼 클릭 시 호출

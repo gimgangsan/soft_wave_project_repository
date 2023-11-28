@@ -46,6 +46,7 @@ public class GetCardManager : MonoBehaviour
     // 인자 배열에는 1~3개의 카드 번호를 넣는다
     public void GetCard(int[] cardsToChoose)
     {
+        General.Instance.isPause = true;    //일시정지
         getCardUI.SetActive(true);
         Initialize();
         DisplayCards(cardsToChoose);
@@ -153,6 +154,8 @@ public class GetCardManager : MonoBehaviour
             cardsRef[i].GetComponent<Animator>().SetTrigger("Fade Off");
         }
         StartCoroutine(FadeOff());                                          // 0.3초 뒤에 카드 선택 UI를 비활성화
+
+        General.Instance.isPause = false;
     }
 
     // 덱 수정 버튼 클릭 시 발생하는 이벤트

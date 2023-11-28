@@ -12,6 +12,7 @@ using UnityEngine.EventSystems;
 // 덱 편집 UI를 관리하는 매니저 스크립트
 public class DeckManager : MonoBehaviour
 {
+    public GameObject Canvas;
     public GameObject deckManagerUI;    // 덱 편집 UI 캔버스
     public GameObject contentBox;       // 카드들이 표시될 목록 상자
 
@@ -37,6 +38,8 @@ public class DeckManager : MonoBehaviour
     {
         dropdownUpperPos = craftButton.GetComponent<RectTransform>().localPosition;
         dropdownLowerPos = removeButton.GetComponent<RectTransform>().localPosition;
+        Invoke("OnCraft", 0.5f);
+        Invoke("OnCraftEnd", 1);
     }
 
     // 카드 획득 화면에서 관련 버튼 클릭 시 이 함수 호출
@@ -165,6 +168,15 @@ public class DeckManager : MonoBehaviour
         if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
 
         // 카드 결합 관련 내용...
+        Camera.main.transform.position = new Vector3(-100.5f, -18.25f ,Camera.main.transform.position.z);
+        Canvas.SetActive(false);
+    }
+
+    public void OnCraftEnd()
+    {
+        Vector2 PlayerPos = General.Instance.script_player.transform.position;
+        Camera.main.transform.position = new Vector3(PlayerPos.x, PlayerPos.y, Camera.main.transform.position.z);
+        Canvas.SetActive(true);
     }
 
     // 카드 제거 버튼 클릭 시 호출

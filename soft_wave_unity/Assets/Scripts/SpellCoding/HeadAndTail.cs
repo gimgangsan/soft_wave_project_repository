@@ -80,7 +80,7 @@ public class HeadAndTail : MonoBehaviour, ICard
 
     public virtual void ReleaseSpell(AimInfo aimInfo)
     {
-        Debug.Log("ReleaseSpell func not overrided");
+        Debug.Log(gameObject.name + " casted");
     }
 
     private void OnMouseDrag()

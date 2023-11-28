@@ -15,11 +15,6 @@ public class RepeatCaster : HeadAndTail
         IsExecuted = false;
     }
 
-    public override void ReleaseSpell(AimInfo aimInfo)
-    {
-        Debug.Log("RepeatCaster casted");
-    }
-
     private IEnumerator RepeatCast(AimInfo aimInfo)
     {
         WhenCasted?.Invoke(aimInfo);

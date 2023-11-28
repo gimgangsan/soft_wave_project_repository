@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class WallCaster : HeadAndTail
 {
-    public float MaxRange = 5;
+    public float MaxRange = 4;
     public GameObject WallObject;
     public override void ReleaseSpell(AimInfo aimInfo)
     {
-        Debug.Log("WallCaster casted");
+        base.ReleaseSpell(aimInfo);
         GameObject newWall = Instantiate(WallObject);
-        if(Vector2.Distance(aimInfo.ShooterPos, aimInfo.MousePos) > 5)
+        if(Vector2.Distance(aimInfo.ShooterTransform.position, aimInfo.MousePos) > MaxRange)
         {
-            newWall.transform.position = aimInfo.ShooterPos + aimInfo.NomarlizeInto(MaxRange);
+            newWall.transform.position = (Vector2)aimInfo.ShooterTransform.position + aimInfo.NomarlizeInto(MaxRange);
         }
         else
         {

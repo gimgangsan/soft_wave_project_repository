@@ -4,25 +4,25 @@ using UnityEngine;
 
 public struct AimInfo
 {
-    public Vector2 ShooterPos;
+    public Transform ShooterTransform;
     public Vector2 MousePos;
 
-    public AimInfo(Vector2 ShooterPos, Vector2 MousePos)
+    public AimInfo(Transform ShooterTransform, Vector2 MousePos)
     {
-        this.ShooterPos = ShooterPos;
+        this.ShooterTransform = ShooterTransform;
         this.MousePos = MousePos;
     }
 
     public float CastAngle()
     {
         Vector2 TargetDir = this.NomarlizeInto(1);
-        bool IsPositiveRadian = ShooterPos.y < MousePos.y;
+        bool IsPositiveRadian = ShooterTransform.position.y < MousePos.y;
         float Radian = Vector2.Angle(TargetDir, Vector2.right);
         return (IsPositiveRadian ? Radian : -Radian);
     }
 
     public Vector2 NomarlizeInto(float ThisLength)
     {
-        return (MousePos - ShooterPos) * ThisLength;
+        return (MousePos - (Vector2)ShooterTransform.position) * ThisLength;
     }
 }

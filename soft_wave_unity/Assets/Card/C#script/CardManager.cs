@@ -15,18 +15,18 @@ using System.Text;
 public class CardManager : MonoBehaviour
 {
     public GameObject[] cardsList;
-    public UnityEvent<int> whenCasting; // Ä«µå »ç¿ë½Ã ÀÌº¥Æ® (Ä«µå ID¸¦ ¸Å°³º¯¼ö·Î Àü´Þ)
-    public UnityEvent<int> whenHit; // µ¥¹ÌÁö¸¦ ÁÙ ¶§ ÀÌº¥Æ® (ÁØ µ¥¹ÌÁö ·®À» ¸Å°³º¯¼ö·Î Àü´Þ)
+    public UnityEvent<int> whenCasting; // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® (Ä«ï¿½ï¿½ IDï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+    public UnityEvent<int> whenHit; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ìºï¿½Æ® (ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
     public List<GameObject> inventory;
-    public List<GameObject> deck;       // ÇÃ·¹ÀÌ¾î°¡ ¼ÒÁöÇÑ µ¦
-    public GameObject[] hands;          // ÇÃ·¹ÀÌ¾î°¡ ¼Õ¿¡ µé°í ÀÖ´Â ÆÐ
-    public int drawIndex = 0;           // ÀÌ¹ø µå·Î¿ì¿¡¼­ »ÌÀ» Ä«µå ÀÎµ¦½º
-    public Slider mana;                 // ¸¶³ª
+    public List<GameObject> deck;       // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    public GameObject[] hands;          // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Õ¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½
+    public int drawIndex = 0;           // ï¿½Ì¹ï¿½ ï¿½ï¿½Î¿ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
+    public Slider mana;                 // ï¿½ï¿½ï¿½ï¿½
     public float manaRestoreSpeed;
     public int manaConsume;
 
-    private static CardManager _instance;       // ½Ì±ÛÅÏ ÆÐÅÏ ±¸ÇöºÎ
+    private static CardManager _instance;       // ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public static CardManager Instance
     { get { return _instance; } }
 
@@ -37,131 +37,128 @@ public class CardManager : MonoBehaviour
         inventory = new List<GameObject>();
         deck = new List<GameObject>(inventory);
 
-        int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // Å×½ºÆ® ¸ñÀûÀ¸·Î ÀÓÀÇÀÇ µ¦À» ¼ÒÀ¯ÇÏµµ·Ï ÇÔ
+        int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½
         bool[] isDeck = { true, true, true, true, false, true, true, true, false, false };
         LoadData(initInven, isDeck);
     }
 
     void Update()
     {
-        mana.value += manaRestoreSpeed * Time.deltaTime;      // ½ºÅÂ¹Ì³ª È¸º¹
+        mana.value += manaRestoreSpeed * Time.deltaTime;      // ï¿½ï¿½ï¿½Â¹Ì³ï¿½ È¸ï¿½ï¿½
 
-        // Å×½ºÆ® ¸ñÀû
-        // 1-4 Å°¸¦ ´©¸£¸é ¼Õ¿¡ µç Ä«µå¸¦ ³¿
+        // ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        // 1-4 Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ ï¿½ï¿½ Ä«ï¿½å¸¦ ï¿½ï¿½
         if (Input.GetKeyDown(KeyCode.Alpha1)) UseCard(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) UseCard(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) UseCard(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) UseCard(3);
 
-        // ºó ÆÐ¸¦ È®ÀÎÇÏ°í µå·Î¿ì
+        // ï¿½ï¿½ ï¿½Ð¸ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½Î¿ï¿½
         for (int handIndex = 0; handIndex < CardUIManager.Instance.cardsInHands.Length; handIndex++)
             if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       
     }
 
-    // µ¦¿¡ Ä«µå Ãß°¡
+    // ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ß°ï¿½
     public void addToDeck(GameObject obj)
     {
-        deck.Add(obj);                                          // ÀÎº¥Åä¸®¿¡ ÀÖ´Â obj Ä«µå¸¦ µ¦¿¡ Ãß°¡ÇÑ´Ù
+        deck.Add(obj);                                          // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½Ö´ï¿½ obj Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½
         int index = IndexFromObject(obj);
 
-        obj.GetComponent<ICard>().OnAcquire();                  // Ä«µå Ãß°¡ È¿°ú È£Ãâ
+        obj.GetComponent<ICard>().OnAcquire();                  // Ä«ï¿½ï¿½ ï¿½ß°ï¿½ È¿ï¿½ï¿½ È£ï¿½ï¿½
 
-        obj.GetComponent<CardBase>().inDeck = true;             // Ä«µå°¡ deck¿¡ ÀÖ´Ù°í Ç¥½Ã
+        obj.GetComponent<CardBase>().inDeck = true;             // Ä«ï¿½å°¡ deckï¿½ï¿½ ï¿½Ö´Ù°ï¿½ Ç¥ï¿½ï¿½
     }
 
-    // ÀÎº¥Åä¸®¿¡ Ä«µå Ãß°¡
+    // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ß°ï¿½
     public void addToInventory(int cardIndex)
     {
-        GameObject obj = InstantiateCard(cardIndex);            // Ä«µå ¿ÀºêÁ§Æ® »ý¼º
-        inventory.Add(obj);                                     // ÀÎº¥Åä¸®¿¡ Ä«µå ¿ÀºêÁ§Æ® Ãß°¡
-        inventory.Sort((a, b) => IndexFromObject(a) - IndexFromObject(b)) ; // Á¤·Ä
+        GameObject obj = InstantiateCard(cardIndex);            // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        inventory.Add(obj);                                     // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½
+        inventory.Sort((a, b) => IndexFromObject(a) - IndexFromObject(b)) ; // ï¿½ï¿½ï¿½ï¿½
     }
 
-    // ÀÎº¥Åä¸®¿¡¼­ Ä«µå Á¦°Å
+    // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void removeFromInventory(GameObject obj)
     {
-        inventory.Remove(obj);                          // ÀÎº¥Åä¸®¿¡¼­ Ä«µå Á¦°Å
-        if (deck.Contains(obj)) removeFromDeck(obj);    // µ¦¿¡µµ Ä«µå°¡ ÀÖ´Ù¸é µ¦¿¡¼­µµ Á¦°Å
-        obj.GetComponent<ICard>().OnRemove();           // Ä«µå Á¦°Å È¿°ú È£Ãâ
-        Destroy(obj);                                   // Ä«µå ¿ÀºêÁ§Æ® ÆÄ±«
+        inventory.Remove(obj);                          // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (deck.Contains(obj)) removeFromDeck(obj);    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        obj.GetComponent<ICard>().OnRemove();           // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ È£ï¿½ï¿½
+        Destroy(obj);                                   // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ä±ï¿½
     }
 
-    // µ¦¿¡¼­ Ä«µå Á¦°Å
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void removeFromDeck(GameObject obj)
     {
-        int objIndexInDeck = -1;                        // µ¦ ³»¿¡¼­ Á¦°ÅÇÒ Ä«µåÀÇ ÀÎµ¦½º¸¦ ±¸ÇÑ´Ù
+        int objIndexInDeck = -1;                        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½
         for(int i = 0; i < deck.Count(); i++)
         {
             if (deck[i] == obj) objIndexInDeck = i;
         }
-        if (objIndexInDeck == -1) return;               // µ¦ ³»¿¡ Ä«µå°¡ ¾øÀ¸¸é ¸®ÅÏ
+        if (objIndexInDeck == -1) return;               // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         int cardIndex = IndexFromObject(obj);
-        deck.Remove(obj);                               // µ¦¿¡¼­ Ä«µå Á¦°Å
+        deck.Remove(obj);                               // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         obj.GetComponent<CardBase>().inDeck = false;
 
-        if (drawIndex >= deck.Count)                    // ´ÙÀ½¿¡ »ÌÀ» ÀÎµ¦½º°¡ ¹üÀ§¸¦ ¹þ¾î³ª ÀÖÀ¸¸é
+        if (drawIndex >= deck.Count)                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³ª ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            ShuffleDeck();                              // ¼ÅÇÃ ÈÄ ´Ù½Ã µå·Î¿ì ½ÃÀÛ
+            ShuffleDeck();                              // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½
             drawIndex = 0;
             CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
         }
         else
         {
-            if (objIndexInDeck == drawIndex)            // ´ÙÀ½¿¡ »ÌÀ» ÀÎµ¦½º¿¡¼­ Ä«µå¸¦ Á¦°ÅÇß´Ù¸é
+            if (objIndexInDeck == drawIndex)            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ß´Ù¸ï¿½
             {
-                CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));    // ¹Ì¸®º¸±â °»½Å
+                CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));    // ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
-            else if (objIndexInDeck < drawIndex)        // drawIndex ¾Õ¿¡ ÀÖ´Â Ä«µå¸¦ Á¦°ÅÇß´Ù¸é
+            else if (objIndexInDeck < drawIndex)        // drawIndex ï¿½Õ¿ï¿½ ï¿½Ö´ï¿½ Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ß´Ù¸ï¿½
             {
-                drawIndex--;                            // drawIndex¸¦ ÇÏ³ª ÁÙ¿© Á¤»óÀûÀ¸·Î ÁøÇàµÇµµ·Ï ÇÔ
+                drawIndex--;                            // drawIndexï¿½ï¿½ ï¿½Ï³ï¿½ ï¿½Ù¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½
             }
         }
 
-        for(int i = 0; i < hands.Length; i++)           // Á¦°ÅÇÑ Ä«µå°¡ ¼ÕÆÐ¿¡ ÀÖ¾ú´Ù¸é
+        for(int i = 0; i < hands.Length; i++)           // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½Ð¿ï¿½ ï¿½Ö¾ï¿½ï¿½Ù¸ï¿½
         {
             if (hands[i] == obj)
             {
-                CardUIManager.Instance.Discard(i);      // Ä«µå¸¦ ¼ÕÆÐ¿¡¼­ »« ÈÄ
-                DrawCard(i);                            // »õ·Î Ä«µå µå·Î¿ì
+                CardUIManager.Instance.Discard(i);      // Ä«ï¿½å¸¦ ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
+                DrawCard(i);                            // ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½
             }
         }
     } 
 
-    // Ä«µå »ç¿ë
+    // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½
     void UseCard(int handIndex)
     {
-        if (CardUIManager.Instance.cardsInHands[handIndex] == null) return;     // ÆÐ¸¦ °¡Áö°í ÀÖ´ÂÁö °Ë»ç
-        if (mana.value < manaConsume) return;                                   // ½ºÅÂ¹Ì³ª°¡ ÃæºÐÇÑÁö °Ë»ç
+        if (CardUIManager.Instance.cardsInHands[handIndex] == null) return;     // ï¿½Ð¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
+        if (mana.value < manaConsume) return;                                   // ï¿½ï¿½ï¿½Â¹Ì³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
         Debug.Log(handIndex + "/" + hands.Length);
         int index = IndexFromObject(hands[handIndex]);
-        AimInfo CurrentAimInfo = new(General.Instance.script_player.transform.position, General.Instance.MousePos());
-        hands[handIndex].GetComponent<ICard>().OnUse(CurrentAimInfo);     // Ä«µå »ç¿ë È¿°ú È£Ãâ
-
-        
-
+        AimInfo CurrentAimInfo = new(General.Instance.script_player.transform, General.Instance.MousePos());
+        hands[handIndex].GetComponent<ICard>().OnUse(CurrentAimInfo);     // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ È£ï¿½ï¿½
         hands[handIndex] = null;
-        CardUIManager.Instance.Discard(handIndex);      // UI¿¡ Ä«µå »ç¿ë ÇÔ¼ö¸¦ È£Ãâ
+        CardUIManager.Instance.Discard(handIndex);      // UIï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
 
-        mana.value -= manaConsume;       // ½ºÅÂ¹Ì³ª ¼Ò¸ð
+        mana.value -= manaConsume;       // ï¿½ï¿½ï¿½Â¹Ì³ï¿½ ï¿½Ò¸ï¿½
     }
 
-    // Ä«µå »Ì±â
+    // Ä«ï¿½ï¿½ ï¿½Ì±ï¿½
     void DrawCard(int handIndex)
     {
-        CardUIManager.Instance.DrawCard(handIndex, IndexFromObject(deck[drawIndex]));  // UI¿¡ Ä«µå »Ì±â ÇÔ¼ö¸¦ È£Ãâ
-        hands[handIndex] = deck[drawIndex++];       // ¼Õ¿¡ µç ÆÐ °»½Å ÈÄ, drawIndex Áõ°¡
+        CardUIManager.Instance.DrawCard(handIndex, IndexFromObject(deck[drawIndex]));  // UIï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½Ì±ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
+        hands[handIndex] = deck[drawIndex++];       // ï¿½Õ¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, drawIndex ï¿½ï¿½ï¿½ï¿½
         if (drawIndex >= deck.Count())
         {
             ShuffleDeck();
             drawIndex = 0;
         }
         CardUIManager.Instance.UpdatePeekCard(IndexFromObject(deck[drawIndex]));
-        hands[handIndex].GetComponent<ICard>().OnDraw(); // Ä«µå µå·Î¿ì È¿°ú È£Ãâ
+        hands[handIndex].GetComponent<ICard>().OnDraw(); // Ä«ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ È¿ï¿½ï¿½ È£ï¿½ï¿½
     }
 
-    // µ¦ ¼ÅÇÃ
-    // ÇÇ¼Å-¿¹ÀÌÃ÷(Fisher-Yate) ¼ÅÇÃ ¹æ½ÄÀ¸·Î ±¸Çö
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½Ç¼ï¿½-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(Fisher-Yate) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void ShuffleDeck()
     {
         for (int i = deck.Count() - 1; i > 1; i--) {
@@ -172,7 +169,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    // Ä«µå ¿ÀºêÁ§Æ® »ý¼º
+    // Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     GameObject InstantiateCard(int cardIndex)
     {
         GameObject obj = Instantiate(cardsList[cardIndex]);
@@ -183,33 +180,33 @@ public class CardManager : MonoBehaviour
         return obj;
     }
 
-    // ÀúÀåµÈ Á¤º¸¸¦ ºÒ·¯¿Í ÀÎº¥Åä¸®/µ¦À» »ý¼ºÇÑ´Ù
-    // inventory ¸Å°³º¯¼ö¿¡´Â °¢ Ä«µåÀÇ °íÀ¯ ¹øÈ£¸¦ ¹è¿­·Î ÀúÀåÇÑ´Ù.
-    // isDeck ¸Å°³º¯¼ö¿¡´Â °¢ Ä«µåÀÇ µ¦ Æ÷ÇÔ ¿©ºÎ¸¦ ÀúÀåÇÑ´Ù. (À§ ¹è¿­°ú ÀÏ´ëÀÏ ´ëÀÀ)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸®/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+    // inventory ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+    // isDeck ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. (ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     void LoadData(int[] inventory, bool[] isDeck)
     {
-        if (inventory.Length != isDeck.Length) return;          // Å©±â°¡ ´Ù¸¦ °æ¿ì ¸®ÅÏ
+        if (inventory.Length != isDeck.Length) return;          // Å©ï¿½â°¡ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         for(int i = 0; i < inventory.Length; i++)
         {
-            addToInventory(inventory[i]);                       // ÀÎº¥Åä¸®¿¡ Ä«µå Ãß°¡
-            if (isDeck[i]) { addToDeck(this.inventory[i]); }    // Ãß°¡µÈ Ä«µå°¡ µ¦¿¡ Æ÷ÇÔµÇ¾î¾ß ÇÑ´Ù¸é µ¦¿¡µµ Ãß°¡
+            addToInventory(inventory[i]);                       // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ß°ï¿½
+            if (isDeck[i]) { addToDeck(this.inventory[i]); }    // ï¿½ß°ï¿½ï¿½ï¿½ Ä«ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÔµÇ¾ï¿½ï¿½ ï¿½Ñ´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         }
     }
 
-    // ¿ÀºêÁ§Æ®·ÎºÎÅÍ Ä«µå °íÀ¯ ¹øÈ£¸¦ ºÒ·¯¿Â´Ù
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Îºï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½Â´ï¿½
     public int IndexFromObject(GameObject obj)
     {
         return obj.GetComponent<CardBase>().index;
     }
 
-    // ÀÎº¥Åä¸® ÀÎµ¦½º·ÎºÎÅÍ Ä«µå °íÀ¯ ¹øÈ£¸¦ ºÒ·¯¿Â´Ù
+    // ï¿½Îºï¿½ï¿½ä¸® ï¿½Îµï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½Â´ï¿½
     public int IndexFromInven(int i)
     {
         return inventory[i].GetComponent<CardBase>().index;
     }
 
-    // µ¦ ÀÎµ¦½º·ÎºÎÅÍ Ä«µå °íÀ¯ ¹øÈ£¸¦ ºÒ·¯¿Â´Ù
+    // ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½Â´ï¿½
     public int IndexFromDeck(int i)
     {
         return deck[i].GetComponent<CardBase>().index;

@@ -7,9 +7,9 @@ public class FireballCaster : HeadAndTail
     public GameObject Fireball;
     public override void ReleaseSpell(AimInfo aimInfo)
     {
-        Debug.Log("fireball casted");
+        base.ReleaseSpell(aimInfo);
         GameObject newFireball = Instantiate(Fireball);
-        newFireball.transform.position = aimInfo.ShooterPos;
+        newFireball.transform.position = aimInfo.ShooterTransform.position;
         newFireball.GetComponent<Fireball>().SetDir(aimInfo.CastAngle());
     }
 }

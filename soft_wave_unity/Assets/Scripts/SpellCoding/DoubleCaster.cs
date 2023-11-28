@@ -5,8 +5,5 @@ using UnityEngine;
 
 public class DoubleCaster : HeadAndTail
 {
-    public override void ReleaseSpell(AimInfo aimInfo)
-    {
-        Debug.Log("doubleCaster casted");
-    }
+
 }

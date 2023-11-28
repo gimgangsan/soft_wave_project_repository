@@ -178,6 +178,7 @@ public class CardManager : MonoBehaviour
         GameObject obj = Instantiate(cardsList[cardIndex]);
         obj.transform.SetParent(transform);
         obj.GetComponent<CardBase>().index = cardIndex;
+        obj.transform.position = new Vector3(500f, 0f, 0f);
 
         return obj;
     }

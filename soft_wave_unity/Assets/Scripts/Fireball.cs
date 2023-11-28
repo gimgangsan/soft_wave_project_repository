@@ -8,6 +8,7 @@ public class Fireball : MonoBehaviour
 {
     Rigidbody2D Rigidbody;
     public float Speed;
+    public int Damage;
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
@@ -22,14 +23,10 @@ public class Fireball : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        float Radian = transform.eulerAngles.z * Mathf.Deg2Rad;
-        Rigidbody.velocity = new Vector2(Mathf.Cos(Radian) * Speed, Mathf.Sin(Radian) * Speed) ;
-    }
-
     public void SetDir(float degree)
     {
         transform.eulerAngles = new Vector3(0, 0, degree);
+        float Radian = transform.eulerAngles.z * Mathf.Deg2Rad;
+        Rigidbody.velocity = new Vector2(Mathf.Cos(Radian) * Speed, Mathf.Sin(Radian) * Speed);
     }
 }

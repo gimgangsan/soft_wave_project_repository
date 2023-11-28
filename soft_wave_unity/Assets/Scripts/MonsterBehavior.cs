@@ -8,23 +8,21 @@ using UnityEngine;
 public class MonsterBehavior : MonoBehaviour
 {
     Rigidbody2D rb;
-    Transform target;
+    protected Transform target;
     SpriteRenderer rend;
     Animator animator;
     Color originalColor;
 
-    public GameObject Projectile;
+    
     private float blinkDuration = 0.5f;
     public float health;
     public float speed;
-    public float contactDistance;
-    public float projectileSpeed;
 
-    private float attackCooldown = 0;
-    public float attackCoolRate;
-    public float attackRange;
-    public int attackDamage;
-    public bool isMelee;
+    public float ContactDistance;
+    protected float MeleeCooldown = 0;
+    public float MeleeRate;
+    public int MeleeDamage;
+
 
     void Start()
     {
@@ -35,21 +33,19 @@ public class MonsterBehavior : MonoBehaviour
         originalColor = rend.color; // 현재 색상 저장
     }
 
-    void Update()
+    private void Update()
     {
+        MeleeCooldown -= Time.deltaTime;
         FollowTarget();
-        Attacking();
-        if(attackCooldown >= 0)
-            attackCooldown -= Time.deltaTime;
     }
     
-    void FollowTarget()
+    public void FollowTarget()
     {
         if(transform.position.x - target.position.x < 0)
             rend.flipX = false;
         else
             rend.flipX = true;
-        if(Vector2.Distance(transform.position, target.position) > contactDistance)
+        if(Vector2.Distance(transform.position, target.position) > ContactDistance)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
             animator.SetBool("isMoving", true);
@@ -58,42 +54,19 @@ public class MonsterBehavior : MonoBehaviour
         {
             animator.SetBool("isMoving", false);
             rb.velocity = Vector2.zero;
-        }       
-    }
-
-    void Attacking()
-    {
-        if(Vector2.Distance(transform.position, target.position) <= attackRange)
-        {
-            if(attackCooldown <= 0)
+            if (MeleeCooldown <= 0)
             {
-                if(isMelee)
-                {
-                    General.Instance.script_player.GetDamage(attackDamage);
-                    attackCooldown = attackCoolRate;
-                    animator.SetTrigger("isAttack");
-                }
-                else
-                {
-                    GameObject proj = Instantiate(Projectile);
-                    Vector2 playerDirection = (target.position - transform.position).normalized;
-                    Rigidbody2D projectileRb = proj.GetComponent<Rigidbody2D>();
-
-                    proj.transform.position = transform.position;
-                    projectileRb.velocity = playerDirection * projectileSpeed;
-                    attackCooldown = attackCoolRate;
-                    float angle = Mathf.Atan2(playerDirection.y, playerDirection.x) * Mathf.Rad2Deg;
-                    proj.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                    Destroy(proj, 10);
-                }
+                General.Instance.script_player.GetDamage(MeleeDamage);
+                MeleeCooldown = MeleeRate;
+                animator.SetTrigger("isAttack");
             }
-        }
+        }       
     }
 
     public void Attacked(float damage)
     {
         this.health -= damage;
-        if(this.health < 0)
+        if(this.health <= 0)
         {
             Destroy(gameObject);
         }

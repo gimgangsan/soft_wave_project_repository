@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4102173293285460912}
   - component: {fileID: 4102173293285460913}
   - component: {fileID: 4102173293285460917}
+  - component: {fileID: 3550715595992729927}
   m_Layer: 0
   m_Name: MiniBoss_PurpleHood
   m_TagString: Enemy
@@ -119,15 +120,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb6af81011d3584585c42ecd9e5bc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Projectile: {fileID: 5323509310419244303, guid: d6d2908153f878c438e69cfc237409d1, type: 3}
   health: 10
   speed: 3
-  contactDistance: 10
+  ContactDistance: 2
+  MeleeRate: 3
+  MeleeDamage: 10
+  Projectile: {fileID: 5323509310419244303, guid: d6d2908153f878c438e69cfc237409d1, type: 3}
   projectileSpeed: 15
-  attackCoolRate: 3
-  attackRange: 15
-  attackDamage: 0
-  isMelee: 0
+  FireRate: 5
+  FireDistance: 15
 --- !u!50 &4102173293285460917
 Rigidbody2D:
   serializedVersion: 4
@@ -149,3 +150,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!61 &3550715595992729927
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4102173293285460914}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.375, y: 0.53125}
+    newSize: {x: 0.375, y: 0.53125}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.375, y: 0.53125}
+  m_EdgeRadius: 0

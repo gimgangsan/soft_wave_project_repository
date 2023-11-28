@@ -6,12 +6,10 @@ public class Monster_GrassOrk : MonsterBehavior
 {
     public Monster_GrassOrk() : base()
     {
-        health = 5f;
-        speed = 3f;
-        contactDistance = 1f;
-        attackCoolRate = 1f;
-        attackRange = 2f;
-        attackDamage = 10;
-        isMelee = true;
+        health = 3f;
+        speed = 2f;
+        ContactDistance = 1f;
+        MeleeRate = 1f;
+        MeleeDamage = 10;
     }
 }

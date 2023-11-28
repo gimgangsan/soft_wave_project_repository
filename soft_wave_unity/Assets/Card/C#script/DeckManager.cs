@@ -38,8 +38,6 @@ public class DeckManager : MonoBehaviour
     {
         dropdownUpperPos = craftButton.GetComponent<RectTransform>().localPosition;
         dropdownLowerPos = removeButton.GetComponent<RectTransform>().localPosition;
-        Invoke("OnCraft", 0.5f);
-        Invoke("OnCraftEnd", 1);
     }
 
     // 카드 획득 화면에서 관련 버튼 클릭 시 이 함수 호출

@@ -31,7 +31,7 @@ public class ConnectorHead : ConnectorType
 
     public override Vector2 GetInitialLocalPos()
     {
-        return new((float)(Index + 1) / (float)(ParentScript.Heads + 1) - 0.5f, -0.5f);
+        return new((float)(Index + 1) / (float)(ParentScript.Heads + 1) - 0.5f, -0.55f);
     }
 
     private void OnMouseDown()

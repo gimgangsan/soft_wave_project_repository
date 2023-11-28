@@ -17,7 +17,7 @@ public class ConnectorTail : ConnectorType
 
     public override Vector2 GetInitialLocalPos()
     {
-        return new((float)(Index + 1) / (float)(ParentScript.Tails + 1) - 0.5f, 0.5f);
+        return new((float)(Index + 1) / (float)(2) - 0.5f, 0.55f);
     }
 
     public void ConnectHead(ConnectorHead HeadScript)

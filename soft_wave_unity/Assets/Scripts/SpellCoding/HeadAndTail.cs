@@ -8,8 +8,8 @@ public class HeadAndTail : MonoBehaviour, ICard
 {
     public int Heads;
     public GameObject HeadObject;
-    public int Tails;
     public GameObject TailObject;
+    private ConnectorTail MyTail;
     public Action<AimInfo> WhenCasted;
     public Action WhenDragged;
     public bool IsExecuted { get; set; }
@@ -42,13 +42,11 @@ public class HeadAndTail : MonoBehaviour, ICard
 
     public void GenerateTail()
     {
-        for (int i = 0; i < Tails; i++)
-        {
-            GameObject newObject = Instantiate(TailObject);
-            ConnectorType script = newObject.GetComponent<ConnectorType>();
-            script.Initiate(i, transform);
-            WhenDragged += script.WhenParentDragged;
-        }
+        GameObject newObject = Instantiate(TailObject);
+        ConnectorTail script = newObject.GetComponent<ConnectorTail>();
+        script.Initiate(0, transform);
+        WhenDragged += script.WhenParentDragged;
+        MyTail = script;
     }
 
     public virtual void OnAcquire()
@@ -63,7 +61,12 @@ public class HeadAndTail : MonoBehaviour, ICard
 
     public virtual void OnRemove()
     {
-
+        if(MyTail.CurrentHead != null)
+        {
+            MyTail.CurrentHead.SetHead(MyTail.CurrentHead.GetInitialPos());
+            MyTail.CurrentHead.ParentScript.WhenCasted -= this.OnUse;
+        }
+        Destroy(gameObject);
     }
 
     public virtual void OnUse(AimInfo aimInfo)

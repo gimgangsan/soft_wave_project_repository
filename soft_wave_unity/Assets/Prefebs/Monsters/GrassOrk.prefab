@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329e5c6b375ca104cb97affb0a4922eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageTextPrefab: {fileID: 6237458403604526484, guid: fffbfed9b03f6fc4a97baa4b749ae71f, type: 3}
   health: 5
   speed: 3
   dropExp: 50

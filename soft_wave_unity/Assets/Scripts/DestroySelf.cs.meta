@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: b0f1511156cc32e45a28dcc6fdb1f710
+guid: 85ded2d4ac4ff384cbbb4ff8ccc0c40c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - DamageTextPrefab: {fileID: 6237458403604526484, guid: fffbfed9b03f6fc4a97baa4b749ae71f, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Tilemaps;
+using TMPro;
 
 //using System.Diagnostics;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class MonsterBehavior : MonoBehaviour
     Animator animator;
     AudioSource Audio;
     Color originalColor;
+    public GameObject DamageTextPrefab;
 
     
     private float blinkDuration = 0.5f;
@@ -71,7 +73,13 @@ public class MonsterBehavior : MonoBehaviour
     public void Attacked(float damage)
     {
         this.health -= damage;
-        if(this.health <= 0)
+
+        //대미지 텍스트 생성
+        GameObject damageText = Instantiate(DamageTextPrefab, General.Instance.DamageTextCanvas.transform);     //캔버스의 자식으로 생성
+        damageText.transform.position = transform.position;                                                     //위치 조정
+        damageText.GetComponent<TMP_Text>().text = damage.ToString();                                           //표시될 대미지
+
+        if (this.health <= 0)
         {
             General.Instance.script_player.GetExp(dropExp);
             Destroy(gameObject);

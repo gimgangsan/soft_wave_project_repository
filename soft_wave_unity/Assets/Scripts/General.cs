@@ -10,6 +10,7 @@ public class General : MonoBehaviour
     public GetCardManager getCardManager;
     public CardManager cardManager;
     public GameObject[] cardsList;
+    public GameObject DamageTextCanvas;
     public bool isPause = false;
     public bool canOpenMenu = true;
 

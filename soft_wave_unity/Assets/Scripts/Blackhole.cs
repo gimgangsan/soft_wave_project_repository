@@ -5,7 +5,7 @@ using UnityEngine;
 public class Blackhole : MonoBehaviour
 {
     private float Duration = 3;
-    private float Speed = 5;
+    private float Speed = 3;
     Rigidbody2D Rigidbody;
     private void Awake()
     {

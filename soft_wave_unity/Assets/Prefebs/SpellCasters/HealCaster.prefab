@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   name: "\uD790"
-  description: "\uD790"
+  description: "\uCCB4\uB825 10 \uD68C\uBCF5"
   icon: {fileID: 21300000, guid: a70895c73f9251a45825e110a17cd43f, type: 3}
   inDeck: 0
 --- !u!212 &6725105634296691683

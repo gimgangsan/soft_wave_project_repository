@@ -9,10 +9,8 @@ public class BlackholeCaster : HeadAndTail
     public override void ReleaseSpell(AimInfo aimInfo)
     {
         base.ReleaseSpell(aimInfo);
-        Vector2 newBlackholePos = (Vector2.Distance(aimInfo.ShooterTransform.position, aimInfo.MousePos) > MaxRange) ?
-                                (Vector2)aimInfo.ShooterTransform.position + aimInfo.NomarlizeInto(MaxRange) : aimInfo.MousePos;
         GameObject newBlackhole = Instantiate(BlackholeObject);
-        newBlackhole.transform.position = newBlackholePos;
+        newBlackhole.transform.position = aimInfo.ShooterTransform.position;
         newBlackhole.GetComponent<Blackhole>().SetDir(aimInfo.CastAngle());
     }
 }

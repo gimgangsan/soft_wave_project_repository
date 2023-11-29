@@ -43,7 +43,7 @@ public class DeckManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && General.Instance.canOpenMenu)
+        if(Input.GetKeyDown(KeyCode.Space) && General.Instance.canOpenMenu)
         {
             Initialize();
         }
@@ -195,8 +195,8 @@ public class DeckManager : MonoBehaviour
     public void OnRemove()
     {
         if (isClosing || !canClose) return; // UI를 닫는 중, 또는 제거 확인 창이 뜬 상태이면 바로 리턴
-        if (CardManager.Instance.inventory.Count < 9) return;    // 최소한의 카드에서 더 제거할 수 없도록 방지
-        if (CardManager.Instance.deck.Count < 9 && CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().inDeck) return;
+        if (CardManager.Instance.inventory.Count < 6) return;    // 최소한의 카드에서 더 제거할 수 없도록 방지
+        if (CardManager.Instance.deck.Count < 6 && CardManager.Instance.inventory[selectedCard].GetComponent<CardBase>().inDeck) return;
 
         canClose = false;               // 제거 확인 창이 뜬 상태에서는 작업 금지
         removeMessage.SetActive(true);  // 제거 확인 창 활성화

@@ -20,7 +20,7 @@ public class CardClickDetector : MonoBehaviour, IPointerClickHandler
         {
             if (cardBase.inDeck)        // 덱 포함 여부 토글
             {
-                if (CardManager.Instance.deck.Count < 9) return;
+                if (CardManager.Instance.deck.Count < 6) return;
                 CardManager.Instance.removeFromDeck(card);
                 highlight.SetActive(false);
             }

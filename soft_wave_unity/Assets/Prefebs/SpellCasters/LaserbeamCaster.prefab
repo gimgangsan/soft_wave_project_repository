@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6924276206811698541}
   - component: {fileID: 6924276206811698542}
   - component: {fileID: 6924276206811698543}
+  - component: {fileID: 58380472752425733}
   m_Layer: 0
   m_Name: LaserbeamCaster
   m_TagString: Untagged
@@ -119,3 +120,29 @@ MonoBehaviour:
   HeadObject: {fileID: 209672305068758647, guid: feff520068ce3934c86e850229ffdf05, type: 3}
   TailObject: {fileID: 7661399269194565366, guid: f2b64f11869c5304e901af351ee5ddf7, type: 3}
   LaserObject: {fileID: 7548546768109966065, guid: 4ac06e047ddfb1e408c74d0669f1c19b, type: 3}
+--- !u!61 &58380472752425733
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6924276206811698536}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

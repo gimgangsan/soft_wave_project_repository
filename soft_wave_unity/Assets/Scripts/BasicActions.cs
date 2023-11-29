@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -58,12 +59,9 @@ public class BasicActions : MonoBehaviour, IDamagable
             PinPoint.transform.position = targetPos;
         }
         else    PinPoint.SetActive(false);
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag(General.Instance.tag_relic))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            collision.gameObject.GetComponent<IRelic>().GetEquiped();
+            onDead.Invoke();
         }
     }
 

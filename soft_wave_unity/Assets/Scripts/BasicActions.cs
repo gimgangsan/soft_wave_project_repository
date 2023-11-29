@@ -160,7 +160,7 @@ public class BasicActions : MonoBehaviour, IDamagable
             //선택지에 올라올 카드 선별
             int[] cardIndexes = new int[3];
             for(int i = 0; i < 3; i++)
-                cardIndexes[i] = UnityEngine.Random.Range(1, CardManager.Instance.cardsList.Length);
+                cardIndexes[i] = UnityEngine.Random.Range(0, CardManager.Instance.cardsList.Length);
             General.Instance.getCardManager.GetCard(cardIndexes);   //카드 선택
             Debug.Log(String.Format("{0}, {1}, {2}", cardIndexes[0], cardIndexes[1], cardIndexes[2]));
         }

@@ -37,9 +37,14 @@ public class CardManager : MonoBehaviour
         inventory = new List<GameObject>();
         deck = new List<GameObject>(inventory);
 
-        int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
-        bool[] isDeck = { true, true, true, true, false, true, true, true, true, false };
+        int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 3, 3, 6 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
+        bool[] isDeck = { true, true, true, true, false, true, true, true, true, true };
         LoadData(initInven, isDeck);
+
+        CardManager.Instance.DrawCard(0);
+        CardManager.Instance.DrawCard(1);
+        CardManager.Instance.DrawCard(2);
+        CardManager.Instance.DrawCard(3);
     }
 
     void Update()
@@ -56,8 +61,8 @@ public class CardManager : MonoBehaviour
         }
 
         // 빈 패를 확인하고 드로우
-        for (int handIndex = 0; handIndex < CardUIManager.Instance.cardsInHands.Length; handIndex++)
-            if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       
+        //for (int handIndex = 0; handIndex < CardUIManager.Instance.cardsInHands.Length; handIndex++)
+        //    if (CardUIManager.Instance.cardsInHands[handIndex] == null) DrawCard(handIndex);       
     }
 
     // 덱에 카드 추가
@@ -143,10 +148,11 @@ public class CardManager : MonoBehaviour
         CardUIManager.Instance.Discard(handIndex);      // UI에 카드 사용 함수를 호출
 
         mana.value -= manaConsume;       // 스태미나 소모
+        DrawCard(handIndex);
     }
 
     // 카드 뽑기
-    void DrawCard(int handIndex)
+    public void DrawCard(int handIndex)
     {
         CardUIManager.Instance.DrawCard(handIndex, IndexFromObject(deck[drawIndex]));  // UI에 카드 뽑기 함수를 호출
         hands[handIndex] = deck[drawIndex];       // 손에 든 패 갱신 후, drawIndex 증가

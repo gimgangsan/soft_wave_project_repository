@@ -76,7 +76,7 @@ public class CardUIManager : MonoBehaviour
         {
             currentPos.y += Screen.height/200;
             card.transform.position = currentPos;
-            yield return null;
+            yield return new WaitForSeconds(0.001f);
         }
 
         Destroy(card);       // 기존에 그 위치에 있던 카드는 파괴
@@ -94,11 +94,11 @@ public class CardUIManager : MonoBehaviour
         newCard.transform.position = StartPos; 
         while (currentPos.x < EndPos.x)
         {
-            currentPos.x += Screen.width/200;
+            currentPos.x += Screen.width / 200 * (handIndex + 1);
             currentPos.y = -a * ((currentPos.x - StartPos.x) * (currentPos.x - EndPos.x)) + StartPos.y;  // 포물선 궤적을 그리며 움직임
 
             newCard.transform.position = currentPos;
-            yield return null;      // 다음 프레임때 반복문을 이어하기
+            yield return new WaitForSeconds(0.001f);      // 다음 프레임때 반복문을 이어하기
         }
         newCard.transform.position = EndPos;   // 카드위치 조정
 

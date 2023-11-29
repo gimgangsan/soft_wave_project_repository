@@ -11,13 +11,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
   - UI_2
   - ConnectorTail
   - ConnectorHead
-  - 
+  - Player
   - 
   - 
   - 

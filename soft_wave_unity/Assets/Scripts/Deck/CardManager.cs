@@ -49,10 +49,10 @@ public class CardManager : MonoBehaviour
         // 1-4 키를 누르면 손에 든 카드를 냄
         if (!General.Instance.isPause)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) UseCard(0);
-            if (Input.GetKeyDown(KeyCode.Alpha2)) UseCard(1);
-            if (Input.GetKeyDown(KeyCode.Alpha3)) UseCard(2);
-            if (Input.GetKeyDown(KeyCode.Alpha4)) UseCard(3);
+            if (Input.GetKeyDown(KeyCode.Q)) UseCard(0);
+            if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
+            if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
+            if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
         }
 
         // 빈 패를 확인하고 드로우

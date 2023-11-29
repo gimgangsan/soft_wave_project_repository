@@ -23,7 +23,7 @@ public class BasicActions : MonoBehaviour, IDamagable
     public int Amour = 0;
     public int Exp = 0;     // 경험치
     public int MaxExp = 50; // 레벨업에 필요한 경험치
-    private const int ExpStep = 30; // 레벨업 시, MaxExp가 얼마나 증가할 것인가
+    private float ExpStep = 1.5f; // 레벨업 시, MaxExp가 얼마나 증가할 것인가
 
     public int Defense = 0;
     public int DamageRatio = 1;
@@ -78,11 +78,6 @@ public class BasicActions : MonoBehaviour, IDamagable
             onDead.Invoke();
         }
         whenHPChanged.Invoke(WriteHPInfo());
-
-        if (HP <= 0)
-        {
-            GameObject.Find("GameOver UI").GetComponent<GameOverUI>().DoGameOver();
-        }
     }
 
     public HPInfo WriteHPInfo()
@@ -154,7 +149,7 @@ public class BasicActions : MonoBehaviour, IDamagable
         if (Exp >= MaxExp)
         {
             Exp %= MaxExp;
-            MaxExp += ExpStep;
+            MaxExp = Mathf.FloorToInt(MaxExp * ExpStep);
 
             //선택지에 올라올 카드 선별
             int[] cardIndexes = new int[3];

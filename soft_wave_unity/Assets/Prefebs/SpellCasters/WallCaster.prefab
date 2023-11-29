@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 3
-  name: "\uBCBD \uC138\uC6B0\uAE30"
+  name: "\uC801 \uD22C\uC0AC\uCCB4 \uBC29\uC5B4"
   description: "\uC608\uC2DC"
   icon: {fileID: 21300000, guid: 8ab109a3536f9b6428ae9914b34167c4, type: 3}
   inDeck: 0

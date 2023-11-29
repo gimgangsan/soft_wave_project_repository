@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   name: "\uD50C\uB798\uC2DC"
-  description: "\uD50C\uB798\uC2DC"
+  description: "\uB9C8\uC6B0\uC2A4 \uC704\uCE58 \uC21C\uAC04\uC774\uB3D9"
   icon: {fileID: 21300000, guid: 1cef46e40283e394cae1205f9b587ccb, type: 3}
   inDeck: 0
 --- !u!212 &3395153035314014998

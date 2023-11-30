@@ -194,12 +194,18 @@ public class DeckManager : MonoBehaviour
             }
             else
             {
-                int temp = available % 4;
-                int xStart = -109 + 3 * ((available - temp) / 4);
-                int yStart = -15 - 3 * temp;
-                available++;
-                CardManager.Instance.inventory[i].transform.position = new Vector3(xStart, yStart, 0);
-                CardManager.Instance.inventory[i].GetComponent<HeadAndTail>().WhenDragged();
+                HeadAndTail CasterScript = CardManager.Instance.inventory[i].GetComponent<HeadAndTail>();
+                if (CasterScript.WhenCasted is null
+                    && CasterScript.MyTail.CurrentHead is null)
+                {
+                    int temp = available % 4;
+                    int xStart = -109 + 3 * ((available - temp) / 4);
+                    int yStart = -15 - 3 * temp;
+                    available++;
+                    CardManager.Instance.inventory[i].transform.position = new Vector3(xStart, yStart, 0);
+                    CardManager.Instance.inventory[i].GetComponent<HeadAndTail>().WhenDragged();
+                }
+                
             }
         }
     }

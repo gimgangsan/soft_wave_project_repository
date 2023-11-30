@@ -6,9 +6,10 @@ using UnityEngine;
 public class HeadAndTail : MonoBehaviour, ICard
 {
     public int Heads;
+
     public GameObject HeadObject;
     public GameObject TailObject;
-    private ConnectorTail MyTail;
+    public ConnectorTail MyTail;
     public Action<AimInfo> WhenCasted;
     public Action WhenDragged;
     public bool IsExecuted { get; set; }

@@ -8,5 +8,7 @@ public class EmptyCaster : HeadAndTail
     {
         ManaCost = 1;
         GenerateHead();
+        GenerateTail();
+        MyTail.transform.gameObject.SetActive(false);
     }
 }

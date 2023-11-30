@@ -16,7 +16,7 @@ public class MiniBoss_HellFire : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            other.GetComponent<BasicActions>().GetDamage(50);
+            other.GetComponent<IDamagable>().GetDamage(50);
             Destroy(gameObject);
         }
     }

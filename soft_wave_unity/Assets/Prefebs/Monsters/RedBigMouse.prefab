@@ -174,7 +174,7 @@ MonoBehaviour:
   dropExp: 20
   ContactDistance: 1
   MeleeRate: 1
-  MeleeDamage: 1
+  MeleeDamage: 5
 --- !u!82 &-7206999889847746147
 AudioSource:
   m_ObjectHideFlags: 0

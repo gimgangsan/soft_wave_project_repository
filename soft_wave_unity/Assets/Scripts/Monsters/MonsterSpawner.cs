@@ -7,7 +7,7 @@ public class MonsterSpawner : MonoBehaviour
 {
     public GameObject[] Monsters = new GameObject[5];
     public GameObject[] MiniBosses = new GameObject[5];
-    private int[,] WaveMonsters = new int[,] {{0, 10, 20, 30, 30, 40}, {0, 0, 0, 10, 20 ,30}}; //1웨이브 10마리, 2웨이브 20마리...
+    private int[,] WaveMonsters = new int[,] {{0, 10, 10, 10, 15, 20}, {0, 0, 0, 5, 10 ,15}}; //1웨이브 10마리, 2웨이브 20마리...
     private int wave = 0;
     //private int level = 0;
     private int bosslevel = 0;
@@ -65,7 +65,7 @@ public class MonsterSpawner : MonoBehaviour
             }
             SpawnperWave[i] = WaveCool / WaveMonsters[i, wave];
         }
-        if(wave%5 == 0)
+        if(wave%2 == 0)
         {
             GameObject MiniBoss = Instantiate(MiniBosses[bosslevel]);
             MiniBoss.transform.position = transform.position;

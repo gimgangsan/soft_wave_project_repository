@@ -23,8 +23,8 @@ public class BasicActions : MonoBehaviour, IDamagable
     public int HP = 500;
     public int Amour = 0;
     public int Exp = 0;     // 경험치
-    public int MaxExp = 50; // 레벨업에 필요한 경험치
-    private float ExpStep = 1.5f; // 레벨업 시, MaxExp가 얼마나 증가할 것인가
+    public int MaxExp = 40; // 레벨업에 필요한 경험치
+    private float ExpStep = 2f; // 레벨업 시, MaxExp가 얼마나 증가할 것인가
 
     public int Defense = 0;
     public int DamageRatio = 1;

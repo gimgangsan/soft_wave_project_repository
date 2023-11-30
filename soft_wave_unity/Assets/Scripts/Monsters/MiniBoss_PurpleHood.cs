@@ -22,7 +22,7 @@ public class MiniBoss_PurpleHood : MonsterBehavior
     private void Update()
     {
         if (General.Instance.isPause) return;
-        MeleeRate -= Time.deltaTime;
+        MeleeCooldown -= Time.deltaTime;
         FireCooldown -= Time.deltaTime;
         FollowTarget();
         ShootFire();

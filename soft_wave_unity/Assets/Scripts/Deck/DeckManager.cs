@@ -181,6 +181,27 @@ public class DeckManager : MonoBehaviour
         // 카드 결합 관련 내용...
         Camera.main.transform.position = new Vector3(-100.5f, -18.25f ,Camera.main.transform.position.z);
         Canvas.SetActive(false);
+
+        // 결합시 caster 위치 결정
+        // deck에 없고 inventory에 있는 caster만 화면에 띄움
+        int available = 0;
+        for(int i = 0; i <CardManager.Instance.inventory.Count; i++)
+        {
+            if (CardManager.Instance.deck.Contains(CardManager.Instance.inventory[i])
+                && CardManager.Instance.inventory[i].GetComponent<CardBase>().name != "빈 카드")
+            {
+                CardManager.Instance.inventory[i].transform.position = new Vector3(-1000, 0, 0);
+            }
+            else
+            {
+                int temp = available % 4;
+                int xStart = -109 + 3 * ((available - temp) / 4);
+                int yStart = -15 - 3 * temp;
+                available++;
+                CardManager.Instance.inventory[i].transform.position = new Vector3(xStart, yStart, 0);
+                CardManager.Instance.inventory[i].GetComponent<HeadAndTail>().WhenDragged();
+            }
+        }
     }
 
     public void OnCraftEnd()

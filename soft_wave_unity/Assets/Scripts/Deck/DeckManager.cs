@@ -203,9 +203,8 @@ public class DeckManager : MonoBehaviour
                     int yStart = -15 - 3 * temp;
                     available++;
                     CardManager.Instance.inventory[i].transform.position = new Vector3(xStart, yStart, 0);
-                    CardManager.Instance.inventory[i].GetComponent<HeadAndTail>().WhenDragged();
                 }
-                
+                CasterScript.WhenDragged.Invoke();
             }
         }
     }

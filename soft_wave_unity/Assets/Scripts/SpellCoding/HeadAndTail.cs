@@ -45,7 +45,11 @@ public class HeadAndTail : MonoBehaviour, ICard
 
     public virtual void OnAcquire()
     {
-
+        Debug.Log(gameObject.name);
+        if(MyTail.CurrentHead != null)
+        {
+            MyTail.Disconnect();
+        }
     }
 
     public virtual void OnDraw()

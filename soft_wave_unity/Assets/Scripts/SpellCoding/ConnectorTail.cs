@@ -32,6 +32,7 @@ public class ConnectorTail : ConnectorType
 
     public void Disconnect()
     {
+        CurrentHead.CurrentTail = null;
         CurrentHead.ParentScript.WhenCasted -= this.ParentScript.OnUse;
         this.CurrentHead = null;
     }

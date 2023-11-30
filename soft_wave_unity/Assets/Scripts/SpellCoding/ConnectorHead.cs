@@ -39,7 +39,6 @@ public class ConnectorHead : ConnectorType
         if(CurrentTail != null)
         {
             CurrentTail.Disconnect();
-            CurrentTail = null;
         }
         Sprite.color = new Color(1, 0, 0, 0.6f);
         Line.SetPosition(0, GetInitialPos());

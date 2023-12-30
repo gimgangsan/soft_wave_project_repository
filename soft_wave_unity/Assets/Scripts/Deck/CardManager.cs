@@ -37,8 +37,8 @@ public class CardManager : MonoBehaviour
         inventory = new List<GameObject>();
         deck = new List<GameObject>(inventory);
 
-        int[] initInven = { 1, 1, 1, 2, 2, 3, 3, 6 }; // 테스트 목적으로 임의의 덱을 소유하도록 함
-        bool[] isDeck = { true, true, true, false, false, true, false, true };
+        int[] initInven = { 0,1, 1, 1, 2, 2, 3, 3, 6 ,7, 7}; // 테스트 목적으로 임의의 덱을 소유하도록 함
+        bool[] isDeck = { false,true, true, false, true, false, false, false, true, true,false };
         LoadData(initInven, isDeck);
 
         CardManager.Instance.DrawCard(0);

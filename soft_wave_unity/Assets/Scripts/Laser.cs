@@ -12,8 +12,7 @@ public class Laser : MonoBehaviour
 
     public void HitAll()
     {
-        Collider2D[] Collisions = Physics2D.OverlapBoxAll(transform.position, new Vector2(6, 0.6f), transform.eulerAngles.z);
-        Debug.Log("hit");
+        Collider2D[] Collisions = Physics2D.OverlapBoxAll(transform.position, new Vector2(10, 0.6f), transform.eulerAngles.z);
         for(int i = 0; i < Collisions.Length; i++)
         {
             if (Collisions[i].CompareTag("Enemy"))
